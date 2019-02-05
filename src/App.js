@@ -1,28 +1,43 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import Header from './Header.js';
+import Footer from "./Footer";
+import {magicDescription, wayDescription, cultureDescription} from "./store";
+import InfoGrid from './InfoGrid'
+
+
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentView: magicDescription
+        };
+        this.changeView = this.changeView.bind(this);
+    }
+
+    changeView(viewName) {
+        console.log('Received ' + viewName);
+        if (viewName === 'magic') {
+            this.setState({currentView: magicDescription});
+        } else if (viewName === 'way') {
+            this.setState({currentView: wayDescription});
+        } else if (viewName === 'culture') {
+            this.setState({currentView: cultureDescription});
+        }
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Header onclick={this.changeView}/>
+                <div style={{padding: 20}}>
+                    {<InfoGrid />}
+                </div>
+                <Footer/>
+            </div>
+        );
+    }
 }
 
 export default App;
