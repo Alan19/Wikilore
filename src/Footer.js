@@ -10,7 +10,7 @@ function getFooter(props) {
   if (window.innerWidth <= 500) {
     return (
       <BottomNavigation
-        style={{ position: "fixed", bottom: "0", width: "100%" }}
+        style={{ position: "sticky", bottom: "0", width: "100%" }}
         showLabels
         value={0}
       >

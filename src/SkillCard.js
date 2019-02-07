@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Card, CardActions, CardContent, CardHeader, Typography} from "@material-ui/core";
+import {Button, Card, CardActions, CardContent, CardHeader, Grow, Slide, Typography} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid'
 
 function SkillTitle(props) {
@@ -36,13 +36,16 @@ export class SkillCard extends Component {
 export class GenerateInfo extends React.Component {
     render() {
         return (
-            <Grid container justify="flex-start" alignItems={"stretch"}>
-                {this.props.currentView.map(skill => (
-                    <Grid key={skill.id} item sm={3} style={{padding: 30}}>
-                        <SkillCard learnMore={this.props.learnMore} skill={skill}/>
-                    </Grid>
-                ))}
-            </Grid>
+            <Grow in={true} mountOnEnter unmountOnExit>
+                <Grid container justify="flex-start" alignItems={"stretch"}>
+                    {this.props.currentView.map(skill => (
+                        <Grid key={skill.id} item sm={3} style={{padding: 30}}>
+                            <SkillCard learnMore={this.props.learnMore} skill={skill}/>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Grow>
+
         )
     }
 
