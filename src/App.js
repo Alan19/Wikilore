@@ -19,13 +19,10 @@ class App extends Component {
 
     changeView(viewName) {
         if (viewName === "magic" && this.state.currentView !== magicDescription) {
-            this.forceUpdate();
             this.setState({currentView: magicDescription, inDepth: false});
         } else if (viewName === "way" && this.state.currentView !== wayDescription) {
-            this.forceUpdate();
             this.setState({currentView: wayDescription, inDepth: false});
         } else if (viewName === "culture" && this.state.currentView !== cultureDescription) {
-            this.forceUpdate();
             this.setState({currentView: cultureDescription, inDepth: false});
         }
     }

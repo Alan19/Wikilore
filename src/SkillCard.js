@@ -4,14 +4,14 @@ import Grid from '@material-ui/core/Grid'
 
 function SkillTitle(props) {
     return (
-        <>
+        <span>
             <img
                 src={props.skill.icon}
                 height={20}
                 alt={props.skill.name}
             />{" "}
             {props.skill.name}
-        </>
+        </span>
     );
 }
 
