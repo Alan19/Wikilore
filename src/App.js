@@ -4,6 +4,7 @@ import Header from "./Header.js";
 import Footer from "./Footer";
 import {cultureDescription, magicDescription, wayDescription} from "./store";
 import {GenerateInfo} from "./SkillCard";
+import {InDepthView} from "./InDepthView";
 
 class App extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class App extends Component {
             inDepth: false
         };
         this.changeView = this.changeView.bind(this);
+        this.displayInDepthView = this.displayInDepthView.bind(this);
     }
 
     changeView(viewName) {
@@ -25,12 +27,19 @@ class App extends Component {
         }
     }
 
+    displayInDepthView(effect){
+        console.log("Changing screens!");
+        console.log(effect);
+        this.setState({topic: effect, inDepth: true, currentView:null})
+    }
+
     render() {
         return (
             <div className="App">
                 <Header onclick={this.changeView}/>
                 <div style={{padding: 20}}>
-                    <GenerateInfo currentView={this.state.currentView}/>
+                    {this.state.inDepth && <InDepthView skillObject={this.state.topic} />}
+                    {!this.state.inDepth && <GenerateInfo learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}
                 </div>
                 <Footer/>
             </div>
