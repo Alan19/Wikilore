@@ -17,20 +17,20 @@ const bottomNav = <BottomNavigation
   <BottomNavigationAction icon={<CultureIcon />} label="Culture" />
 </BottomNavigation>;
 
-const copyrightText = (<Typography variant={"caption"} style={{right:0}}>{copyright}</Typography>);
+const copyrightText = (<Typography variant={"caption"} style={{textAlign: 'center', paddingRight: 10}}>{copyright}</Typography>);
 
 
 function getFooter(props) {
   if (window.innerWidth <= 500) {
     return (
-        <span style={{ position: "sticky", bottom: "0"}}>
+        <div style={{ position: "sticky", bottom: "0"}}>
           {bottomNav}
-          <div style={{position: 'relative', marginLeft: 10}}>{copyrightText}</div>
-        </span>
+          <div style={{position: 'relative', marginLeft: 10, backgroundColor:"white"}}>{copyrightText}</div>
+        </div>
 
     );
   } else {
-    return <div style={{ position: "fixed", bottom: 0, right: 0, marginRight:10, marginBottom: 10}}>{copyrightText}</div>;
+    return <div>{copyrightText}</div>;
   }
 
 }
