@@ -5,12 +5,13 @@ import Grid from '@material-ui/core/Grid'
 function SkillTitle(props) {
     return (
         <span>
+            {props.skill.name}
+            &nbsp;
             <img
                 src={props.skill.icon}
                 height={20}
                 alt={props.skill.name}
             />{" "}
-            {props.skill.name}
         </span>
     );
 }
@@ -20,7 +21,7 @@ export class SkillCard extends Component {
         return (
             <Card>
                 <CardHeader title={<SkillTitle skill={this.props.skill}/>}/>
-                <CardContent style={{height: 200, textOverflow: 'ellipsis', overflow: 'hidden'}}>
+                <CardContent style={{height: 175, textOverflow: 'ellipsis', overflow: 'hidden'}}>
                     <Typography variant={"body1"}>{this.props.skill.description}</Typography>
                 </CardContent>
                 <CardActions>
@@ -39,7 +40,7 @@ export class GenerateInfo extends React.Component {
             <Grow in={true} mountOnEnter unmountOnExit>
                 <Grid container justify="flex-start" alignItems={"stretch"}>
                     {this.props.currentView.map(skill => (
-                        <Grid key={skill.id} item sm={3} style={{padding: 30}}>
+                        <Grid key={skill.id} item sm={4} style={{padding: 20}}>
                             <SkillCard learnMore={this.props.learnMore} skill={skill}/>
                         </Grid>
                     ))}
