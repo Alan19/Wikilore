@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import "./App.css";
-import {RenderAppBar} from "./Header";
-import Footer from "./Footer";
+import {RenderAppBar} from "./components/Header";
+import Footer from "./components/Footer";
 import {cultureDescription, magicDescription, wayDescription} from "./store";
-import {Overview} from "./Overview";
-import {InDepthView} from "./InDepthView";
+import {Overview} from "./components/Overview";
+import {InDepthView} from "./components/InDepthView";
 
 function HistoryObject(currentState){
     this.currentState = currentState;
@@ -38,6 +38,7 @@ class App extends Component {
         } else if (viewName === "culture" && this.state.currentView !== cultureDescription) {
             this.setState({currentView: cultureDescription, inDepth: false});
         }
+        this.forceUpdate();
     }
 
     displayInDepthView(effect) {

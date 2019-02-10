@@ -1,9 +1,9 @@
 import {BottomNavigation, BottomNavigationAction, Slide, Typography} from "@material-ui/core";
-import MagicIcon from "./icon-classes/magic-icon";
-import WayIcon from "./icon-classes/way-icon";
-import CultureIcon from "./icon-classes/culture-icon";
+import MagicIcon from "../icon-classes/magic-icon";
+import WayIcon from "../icon-classes/way-icon";
+import CultureIcon from "../icon-classes/culture-icon";
 import React from "react";
-import {copyright} from './store'
+import {copyright} from '../store'
 
 export default getFooter;
 

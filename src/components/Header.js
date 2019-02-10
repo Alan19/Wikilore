@@ -6,9 +6,9 @@ import {
     Typography
 } from "@material-ui/core";
 import React, {Component} from "react";
-import MagicIcon from "./icon-classes/magic-icon";
-import WayIcon from "./icon-classes/way-icon";
-import CultureIcon from "./icon-classes/culture-icon";
+import MagicIcon from "../icon-classes/magic-icon";
+import WayIcon from "../icon-classes/way-icon";
+import CultureIcon from "../icon-classes/culture-icon";
 import * as PropTypes from "prop-types";
 
 class AppBarButtons extends Component {
