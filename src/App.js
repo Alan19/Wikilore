@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import "./App.css";
-import Header from "./Header.js";
+import {RenderAppBar} from "./Header";
 import Footer from "./Footer";
 import {cultureDescription, magicDescription, wayDescription} from "./store";
-import {GenerateInfo} from "./SkillCard";
+import {Overview} from "./Overview";
 import {InDepthView} from "./InDepthView";
 
 class App extends Component {
@@ -15,6 +15,14 @@ class App extends Component {
         };
         this.changeView = this.changeView.bind(this);
         this.displayInDepthView = this.displayInDepthView.bind(this);
+        this.back = this.back.bind(this);
+    }
+
+    back() {
+        this.setState({
+                inDepth: false
+            }
+        );
     }
 
     changeView(viewName) {
@@ -27,20 +35,21 @@ class App extends Component {
         }
     }
 
-    displayInDepthView(effect){
+    displayInDepthView(effect) {
         console.log("Changing screens!");
         console.log(effect);
-        this.setState({topic: effect, inDepth: true, currentView:null})
+        this.setState({topic: effect, inDepth: true})
     }
 
     render() {
         window.scrollTo(0, 0);
         return (
             <div className="App">
-                <Header onclick={this.changeView}/>
+                <RenderAppBar onclick={this.changeView} back={this.back} indepth={this.state.inDepth}/>
                 <div style={{padding: 20}}>
-                    {this.state.inDepth && <InDepthView skillObject={this.state.topic} />}
-                    {!this.state.inDepth && <GenerateInfo learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}
+                    {this.state.inDepth && <InDepthView skillObject={this.state.topic}/>}
+                    {!this.state.inDepth &&
+                    <Overview learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}
                 </div>
                 <Footer/>
             </div>

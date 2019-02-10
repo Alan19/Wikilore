@@ -34,7 +34,7 @@ export class InDepthView extends React.Component {
                                 {section.title}
                             </Typography>
                             <Typography variant={"body1"} paragraph={true}>
-                                {section.description}
+                                {section.text}
                             </Typography>
                         </div>)
                     }

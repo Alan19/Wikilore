@@ -22,7 +22,7 @@ export class SkillCard extends Component {
             <Card>
                 <CardHeader title={<SkillTitle skill={this.props.skill}/>}/>
                 <CardContent style={{height: 175, textOverflow: 'ellipsis', overflow: 'hidden'}}>
-                    <Typography variant={"body1"}>{this.props.skill.description}</Typography>
+                    <Typography variant={"body1"}>{this.props.skill.text}</Typography>
                 </CardContent>
                 <CardActions>
                     <Button size="small" onClick={() => this.props.learnMore(this.props.skill)}>Learn
@@ -34,13 +34,13 @@ export class SkillCard extends Component {
 
 }
 
-export class GenerateInfo extends React.Component {
+export class Overview extends React.Component {
     render() {
         return (
             <Grow in={true} mountOnEnter unmountOnExit>
                 <Grid container justify="flex-start" alignItems={"stretch"}>
                     {this.props.currentView.map(skill => (
-                        <Grid key={skill.id} item sm={4} style={{padding: 20}}>
+                        <Grid key={skill.id} item sm={3} style={{padding: 20}}>
                             <SkillCard learnMore={this.props.learnMore} skill={skill}/>
                         </Grid>
                     ))}
