@@ -55,7 +55,7 @@ export class RenderAppBar extends Component {
     
     render() {
         var showBackButton;
-        if (this.props.indepth){
+        if (this.props.backable){
             showBackButton = 'visible'
         }
         else {

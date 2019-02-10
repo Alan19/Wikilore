@@ -6,7 +6,13 @@ import {cultureDescription, magicDescription, wayDescription} from "./store";
 import {Overview} from "./Overview";
 import {InDepthView} from "./InDepthView";
 
+function HistoryObject(currentState){
+    this.currentState = currentState;
+}
+
 class App extends Component {
+    stack = [];
+
     constructor(props) {
         super(props);
         this.state = {
@@ -19,10 +25,9 @@ class App extends Component {
     }
 
     back() {
-        this.setState({
-                inDepth: false
-            }
-        );
+        this.stack.pop();
+        let stateObject = this.stack.pop();
+        this.setState(stateObject.currentState);
     }
 
     changeView(viewName) {
@@ -38,14 +43,16 @@ class App extends Component {
     displayInDepthView(effect) {
         console.log("Changing screens!");
         console.log(effect);
-        this.setState({topic: effect, inDepth: true})
+        this.setState({topic: effect, inDepth: true, currentView:null})
     }
 
     render() {
+        this.stack.push(new HistoryObject(this.state));
+        console.log(this.stack);
         window.scrollTo(0, 0);
         return (
             <div className="App">
-                <RenderAppBar onclick={this.changeView} back={this.back} indepth={this.state.inDepth}/>
+                <RenderAppBar onclick={this.changeView} back={this.back} backable={this.stack.length > 1}/>
                 <div style={{padding: 20}}>
                     {this.state.inDepth && <InDepthView skillObject={this.state.topic}/>}
                     {!this.state.inDepth &&
