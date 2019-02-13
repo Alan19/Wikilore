@@ -53,8 +53,8 @@ class App extends Component {
         window.scrollTo(0, 0);
         return (
             <div className="App">
-                <RenderAppBar onclick={this.changeView} back={this.back} backable={this.stack.length > 1}/>
-                <div style={{padding: 20}}>
+                <RenderAppBar changeview={this.displayInDepthView} onclick={this.changeView} back={this.back} backable={this.stack.length > 1}/>
+                <div style={{"width": "70%", margin: 'auto', padding: 20}}>
                     {this.state.inDepth && <InDepthView skillObject={this.state.topic}/>}
                     {!this.state.inDepth &&
                     <Overview learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}

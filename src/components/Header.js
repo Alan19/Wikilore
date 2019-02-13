@@ -10,6 +10,7 @@ import MagicIcon from "../icon-classes/magic-icon";
 import WayIcon from "../icon-classes/way-icon";
 import CultureIcon from "../icon-classes/culture-icon";
 import * as PropTypes from "prop-types";
+import SearchBar from './SearchBar'
 
 class AppBarButtons extends Component {
     render() {
@@ -52,24 +53,26 @@ AppBarButtons.propTypes = {
 };
 
 export class RenderAppBar extends Component {
-    
+
     render() {
         var showBackButton;
-        if (this.props.backable){
+        if (this.props.backable) {
             showBackButton = 'visible'
-        }
-        else {
+        } else {
             showBackButton = 'hidden'
         }
         return (
             <AppBar position="sticky">
                 <Toolbar>
-                    <IconButton style={{visibility:showBackButton}} color="inherit" aria-label="Menu" onClick={() => this.props.back()}>
-                        <Icon>arrow_back</Icon>
-                    </IconButton>
-                    <Typography variant="headline" style={{flexGrow: 1}} color="inherit">
-                        Cheat Sheet
-                    </Typography>
+                        <IconButton style={{visibility: showBackButton}} color="inherit" aria-label="Menu"
+                                    onClick={() => this.props.back()}>
+                            <Icon>arrow_back</Icon>
+                        </IconButton>
+                        <Typography variant="headline" color="inherit" style={{flexGrow:1}}>
+                            Cheat Sheet
+                        </Typography>
+                    <SearchBar changeview={this.props.changeview}/>
+
                     <AppBarButtons onClick={() => this.props.onclick("magic")}
                                    onClick1={() => this.props.onclick("way")}
                                    onClick2={() => this.props.onclick("culture")}/>

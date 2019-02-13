@@ -1,5 +1,15 @@
 import React, {Component} from "react";
-import {Button, Card, CardActions, CardContent, CardHeader, Grow, Slide, Typography} from "@material-ui/core";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Grow, Icon,
+    IconButton,
+    Slide,
+    Typography
+} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid'
 
 function SkillTitle(props) {
@@ -24,9 +34,12 @@ export class SkillCard extends Component {
                 <CardContent style={{height: 175, textOverflow: 'ellipsis', overflow: 'hidden'}}>
                     <Typography variant={"body1"}>{this.props.skill.text}</Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small" onClick={() => this.props.learnMore(this.props.skill)}>Learn
-                        More</Button>
+                <CardActions disableActionSpacing>
+                    <div className={"left"} style={{flexGrow: 1}}>
+                        <Button size="small" onClick={() => this.props.learnMore(this.props.skill)}>Learn
+                            More</Button>
+                    </div>
+                    <IconButton><Icon>favorite</Icon></IconButton>
                 </CardActions>
             </Card>
         );
@@ -40,7 +53,7 @@ export class Overview extends React.Component {
             <Grow in={true} mountOnEnter unmountOnExit>
                 <Grid container justify="flex-start" alignItems={"stretch"}>
                     {this.props.currentView.map(skill => (
-                        <Grid key={skill.id} item sm={3} style={{padding: 20}}>
+                        <Grid key={skill.id} item sm={4} style={{padding: 20}}>
                             <SkillCard learnMore={this.props.learnMore} skill={skill}/>
                         </Grid>
                     ))}
