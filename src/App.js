@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import {cultureDescription, magicDescription, wayDescription} from "./store";
 import {Overview} from "./components/Overview";
 import {InDepthView} from "./components/InDepthView";
+import SearchBar from "./components/SearchBar";
 
 function HistoryObject(currentState){
     this.currentState = currentState;

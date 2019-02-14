@@ -1,105 +1,180 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import deburr from 'lodash/deburr';
 import Autosuggest from 'react-autosuggest';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import {cultureDescription, wayDescription, magicDescription} from "../store";
-import Popper from "@material-ui/core/Popper";
-import Paper from "@material-ui/core/Paper";
-import {withStyles} from "@material-ui/core";
+import {withStyles} from '@material-ui/core/styles';
+import {cultureDescription, magicDescription, wayDescription} from "../store";
 
-const suggestions = cultureDescription.concat(wayDescription).concat(magicDescription);
+const suggestions = magicDescription.concat(wayDescription).concat(cultureDescription);
+
+function renderInputComponent(inputProps) {
+    const {
+        classes, inputRef = () => {
+        }, ref, ...other
+    } = inputProps;
+
+    return (
+        <TextField
+            fullWidth
+            InputProps={{
+                inputRef: node => {
+                    ref(node);
+                    inputRef(node);
+                },
+                classes: {
+                    input: classes.input,
+                },
+            }}
+            {...other}
+        />
+    );
+}
+
+function getSuggestions(value) {
+    const inputValue = deburr(value.trim()).toLowerCase();
+    const inputLength = inputValue.length;
+    let count = 0;
+
+    return inputLength === 0
+        ? []
+        : suggestions.filter(suggestion => {
+            const keep =
+                count < 5 && suggestion.name.slice(0, inputLength).toLowerCase() === inputValue;
+
+            if (keep) {
+                count += 1;
+            }
+
+            return keep;
+        });
+}
+
+function getSuggestionValue(suggestion) {
+    return suggestion.name;
+}
 
 const styles = theme => ({
-
+    root: {
+        flexGrow: 1,
+    },
+    container: {
+        position: 'relative',
+    },
+    suggestionsContainerOpen: {
+        position: 'absolute',
+        zIndex: 1,
+        marginTop: theme.spacing.unit,
+        left: 0,
+        right: 0,
+    },
+    suggestion: {
+        display: 'block',
+    },
+    suggestionsList: {
+        margin: 0,
+        padding: 0,
+        listStyleType: 'none',
+    },
+    divider: {
+        height: theme.spacing.unit * 2,
+    },
 });
 
-
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
-
-    return inputLength === 0 ? [] : suggestions.filter(lang =>
-        lang.name.toLowerCase().slice(0, inputLength) === inputValue
-    );
-};
-
-// When suggestion is clicked, Autosuggest needs to populate the input
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
-const getSuggestionValue = suggestion => suggestion.name;
-
-
 class SearchBar extends React.Component {
-    // Use your imagination to render suggestions.
-    renderSuggestion = suggestion => (
-        <MenuItem onClick={(event) => this.props.changeview(suggestion)}>
-            {suggestion.name}
-        </MenuItem>
-    );
+    state = {
+        single: '',
+        popper: '',
+        suggestions: [],
+    };
 
-
-    constructor() {
-        super();
-
-        // Autosuggest is a controlled component.
-        // This means that you need to provide an input value
-        // and an onChange handler that updates this value (see below).
-        // Suggestions also need to be provided to the Autosuggest,
-        // and they are initially empty because the Autosuggest is closed.
-        this.state = {
-            value: '',
-            suggestions: []
-        };
-    }
-
-    onChange = (event, {newValue}) => {
+    handleSuggestionsFetchRequested = ({value}) => {
         this.setState({
-            value: newValue
+            suggestions: getSuggestions(value),
         });
     };
 
-    // Autosuggest will call this function every time you need to update suggestions.
-    // You already implemented this logic above, so just use it.
-    onSuggestionsFetchRequested = ({value}) => {
+    handleSuggestionsClearRequested = () => {
         this.setState({
-            suggestions: getSuggestions(value)
+            suggestions: [],
         });
     };
 
-    // Autosuggest will call this function every time you need to clear suggestions.
-    onSuggestionsClearRequested = () => {
+    handleChange = name => (event, {newValue}) => {
         this.setState({
-            suggestions: []
+            [name]: newValue,
         });
+    };
+
+    renderSuggestion = (suggestion, {query, isHighlighted}) => {
+        const matches = match(suggestion.name, query);
+        const parts = parse(suggestion.name, matches);
+        console.log(suggestion);
+
+        return (
+            <MenuItem onClick={() => this.props.changeview(suggestion)} selected={isHighlighted} component="div">
+                <div>
+                    {parts.map((part, index) =>
+                            part.highlight ? (
+                                <span key={String(index)} style={{fontWeight: 500}}>
+              {part.text}
+            </span>
+                            ) : (
+                                <strong key={String(index)} style={{fontWeight: 300}}>
+                                    {part.text}
+                                </strong>
+                            ),
+                    )}
+                </div>
+            </MenuItem>
+        );
     };
 
     render() {
-        const {value, suggestions} = this.state;
+        const {classes} = this.props;
 
-        // Autosuggest will pass through all these props to the input.
-        const inputProps = {
-            placeholder: 'Type a programming language',
-            value,
-            onChange: this.onChange
+        const autosuggestProps = {
+            renderInputComponent,
+            suggestions: this.state.suggestions,
+            onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
+            onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
+            getSuggestionValue
         };
 
-        // Finally, render it!
         return (
-            <Autosuggest
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={this.renderSuggestion}
-                inputProps={inputProps}
-                renderSuggestionsContainer={options => (
-                    <Paper style={{position:'fixed', margin:0, padding:0, display:'block'}} {...options.containerProps} square>
-                        {options.children}
-                    </Paper>
-                )}
-            />
+            <div className={classes.root}>
+                <Autosuggest
+                    renderSuggestion={this.renderSuggestion}
+                    {...autosuggestProps}
+                    inputProps={{
+                        classes,
+                        placeholder: 'Search a skill',
+                        value: this.state.single,
+                        onChange: this.handleChange('single'),
+                    }}
+                    theme={{
+                        container: classes.container,
+                        suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                        suggestionsList: classes.suggestionsList,
+                        suggestion: classes.suggestion,
+                    }}
+                    renderSuggestionsContainer={options => (
+                        <Paper {...options.containerProps} square>
+                            {options.children}
+                        </Paper>
+                    )}
+                />
+            </div>
         );
     }
 }
+
+SearchBar.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(SearchBar);

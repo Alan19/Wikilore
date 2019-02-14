@@ -14,7 +14,7 @@ import SearchBar from './SearchBar'
 
 class AppBarButtons extends Component {
     render() {
-        return <>
+        return <div>
             <Tooltip title={"Magic"}>
                 <IconButton
                     onClick={this.props.onClick}
@@ -42,7 +42,7 @@ class AppBarButtons extends Component {
                     <CultureIcon/>
                 </IconButton>
             </Tooltip>
-        </>;
+        </div>;
     }
 }
 
@@ -68,7 +68,7 @@ export class RenderAppBar extends Component {
                                     onClick={() => this.props.back()}>
                             <Icon>arrow_back</Icon>
                         </IconButton>
-                        <Typography variant="headline" color="inherit" style={{flexGrow:1}}>
+                        <Typography variant="headline" color="inherit" style={{marginRight:10}}>
                             Cheat Sheet
                         </Typography>
                     <SearchBar changeview={this.props.changeview}/>
