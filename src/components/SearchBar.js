@@ -9,6 +9,8 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles} from '@material-ui/core/styles';
 import {cultureDescription, magicDescription, wayDescription} from "../info";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import {Icon} from "@material-ui/core";
 
 const suggestions = magicDescription.concat(wayDescription).concat(cultureDescription);
 
@@ -29,6 +31,12 @@ function renderInputComponent(inputProps) {
                 classes: {
                     input: classes.input,
                 },
+                disableUnderline:true,
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <Icon color={"primary"}>search</Icon>
+                    </InputAdornment>
+                ),
             }}
             {...other}
         />
@@ -59,8 +67,16 @@ function getSuggestionValue(suggestion) {
 }
 
 const styles = theme => ({
+    positionStart:{
+        color:'#FFFFFF'
+    },
     root: {
-        flexGrow: 1,
+        width: 400,
+        backgroundColor: 'rgba(255, 255, 255, 0.15)',
+        borderRadius:4
+    },
+    input:{
+        color:'#FFFFFF',
     },
     container: {
         position: 'relative',
@@ -71,6 +87,7 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         left: 0,
         right: 0,
+        backgroundColor: '#fff',
     },
     suggestion: {
         display: 'block',
@@ -83,6 +100,7 @@ const styles = theme => ({
     divider: {
         height: theme.spacing.unit * 2,
     },
+
 });
 
 class SearchBar extends React.Component {

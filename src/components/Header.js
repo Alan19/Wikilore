@@ -68,14 +68,17 @@ export class RenderAppBar extends Component {
                                     onClick={() => this.props.back()}>
                             <Icon>arrow_back</Icon>
                         </IconButton>
-                        <Typography variant="headline" color="inherit" style={{marginRight:10}}>
+                        <Typography variant="headline" color="inherit" style={{flexGrow:1}}>
                             Cheat Sheet
                         </Typography>
                     <SearchBar changeview={this.props.changeview}/>
 
-                    <AppBarButtons onClick={() => this.props.onclick("magic")}
-                                   onClick1={() => this.props.onclick("way")}
-                                   onClick2={() => this.props.onclick("culture")}/>
+                    <div style={{marginLeft:30}}>
+                        <AppBarButtons onClick={() => this.props.onclick("magic")}
+                                       onClick1={() => this.props.onclick("way")}
+                                       onClick2={() => this.props.onclick("culture")}/>
+                    </div>
+
                 </Toolbar>
             </AppBar>
         );
