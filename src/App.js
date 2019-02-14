@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import "./App.css";
 import {RenderAppBar} from "./components/Header";
 import Footer from "./components/Footer";
-import {cultureDescription, magicDescription, wayDescription} from "./store";
+import {cultureDescription, magicDescription, wayDescription} from "./info";
 import {Overview} from "./components/Overview";
 import {InDepthView} from "./components/InDepthView";
 import SearchBar from "./components/SearchBar";

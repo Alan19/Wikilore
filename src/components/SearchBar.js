@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles} from '@material-ui/core/styles';
-import {cultureDescription, magicDescription, wayDescription} from "../store";
+import {cultureDescription, magicDescription, wayDescription} from "../info";
 
 const suggestions = magicDescription.concat(wayDescription).concat(cultureDescription);
 

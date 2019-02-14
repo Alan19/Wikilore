@@ -3,7 +3,7 @@ import MagicIcon from "../icon-classes/magic-icon";
 import WayIcon from "../icon-classes/way-icon";
 import CultureIcon from "../icon-classes/culture-icon";
 import React from "react";
-import {copyright} from '../store'
+import {copyright} from '../info'
 
 export default getFooter;
 
