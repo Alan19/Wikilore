@@ -1,13 +1,15 @@
 import React, {Component} from "react";
 import "./App.css";
-import {RenderAppBar} from "./components/Header";
+import RenderAppBar from "./components/Header";
 import Footer from "./components/Footer";
 import {cultureDescription, magicDescription, wayDescription} from "./info";
 import {Overview} from "./components/Overview";
 import {InDepthView} from "./components/InDepthView";
-import SearchBar from "./components/SearchBar";
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import theme from './MUIThemeProvider'
 
-function HistoryObject(currentState){
+
+function HistoryObject(currentState) {
     this.currentState = currentState;
 }
 
@@ -45,7 +47,7 @@ class App extends Component {
     displayInDepthView(effect) {
         console.log("Changing screens!");
         console.log(effect);
-        this.setState({topic: effect, inDepth: true, currentView:null})
+        this.setState({topic: effect, inDepth: true, currentView: null})
     }
 
     render() {
@@ -53,15 +55,18 @@ class App extends Component {
         console.log(this.stack);
         window.scrollTo(0, 0);
         return (
-            <div className="App">
-                <RenderAppBar changeview={this.displayInDepthView} onclick={this.changeView} back={this.back} backable={this.stack.length > 1}/>
-                <div style={{"width": "70%", margin: 'auto', padding: 20}}>
-                    {this.state.inDepth && <InDepthView skillObject={this.state.topic}/>}
-                    {!this.state.inDepth &&
-                    <Overview learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}
+            <MuiThemeProvider theme={theme}>
+                <div className="App">
+                    <RenderAppBar changeview={this.displayInDepthView} onclick={this.changeView} back={this.back}
+                                  backable={this.stack.length > 1}/>
+                    <div style={{"width": "70%", margin: 'auto', padding: 20}}>
+                        {this.state.inDepth && <InDepthView skillObject={this.state.topic}/>}
+                        {!this.state.inDepth &&
+                        <Overview learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}
+                    </div>
+                    <Footer/>
                 </div>
-                <Footer/>
-            </div>
+            </MuiThemeProvider>
         );
     }
 }

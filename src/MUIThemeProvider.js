@@ -1,15 +1,12 @@
+import React from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-export const theme = createMuiTheme({
+const theme = createMuiTheme({
     palette: {
-        primary: {
-            main: '#1e88e5',
-        },
-        secondary: {
-            main: '#ffd54f',
-        },
+        primary: { main: '#1e88e5' }, // Purple and green play nicely together.
+        secondary: { main: '#ffd54f' }, // This is just green.A700 as hex.
     },
-    status: {
-        danger: 'orange',
-    },
+    typography: { useNextVariants: true },
 });
+
+export default theme;

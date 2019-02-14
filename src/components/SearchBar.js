@@ -24,12 +24,14 @@ function renderInputComponent(inputProps) {
         <TextField
             fullWidth
             InputProps={{
+
                 inputRef: node => {
                     ref(node);
                     inputRef(node);
                 },
                 classes: {
                     input: classes.input,
+                    focused: classes.cssFocused,
                 },
                 disableUnderline:true,
                 startAdornment: (
@@ -100,7 +102,11 @@ const styles = theme => ({
     divider: {
         height: theme.spacing.unit * 2,
     },
-
+    cssFocused: {
+        width: 400,
+        borderRadius:4,
+        backgroundColor: 'rgba(255, 255, 255, 0.2)'
+    }
 });
 
 class SearchBar extends React.Component {

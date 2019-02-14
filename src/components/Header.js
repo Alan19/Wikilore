@@ -3,7 +3,7 @@ import {
     Icon,
     IconButton,
     Toolbar, Tooltip,
-    Typography
+    Typography, withStyles
 } from "@material-ui/core";
 import React, {Component} from "react";
 import MagicIcon from "../icon-classes/magic-icon";
@@ -11,6 +11,11 @@ import WayIcon from "../icon-classes/way-icon";
 import CultureIcon from "../icon-classes/culture-icon";
 import * as PropTypes from "prop-types";
 import SearchBar from './SearchBar'
+import themeObj from "../MUIThemeProvider";
+
+const styles = {
+
+};
 
 class AppBarButtons extends Component {
     render() {
@@ -62,7 +67,7 @@ export class RenderAppBar extends Component {
             showBackButton = 'hidden'
         }
         return (
-            <AppBar position="sticky">
+            <AppBar position="sticky" color={"primary"}>
                 <Toolbar>
                         <IconButton style={{visibility: showBackButton}} color="inherit" aria-label="Menu"
                                     onClick={() => this.props.back()}>
@@ -84,3 +89,5 @@ export class RenderAppBar extends Component {
         );
     }
 }
+
+export default withStyles(styles)(RenderAppBar);
