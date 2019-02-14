@@ -5,8 +5,10 @@ import Footer from "./components/Footer";
 import {cultureDescription, magicDescription, wayDescription} from "./info";
 import {Overview} from "./components/Overview";
 import {InDepthView} from "./components/InDepthView";
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import theme from './MUIThemeProvider'
+import {MuiThemeProvider} from '@material-ui/core/styles';
+import {createTheme} from './ThemeProvider'
+import {CssBaseline} from "@material-ui/core";
+import {blue, lightBlue, yellow} from "@material-ui/core/colors";
 
 
 function HistoryObject(currentState) {
@@ -20,11 +22,13 @@ class App extends Component {
         super(props);
         this.state = {
             currentView: magicDescription,
-            inDepth: false
+            inDepth: false,
+            theme: createTheme(blue, yellow, 'light')
         };
         this.changeView = this.changeView.bind(this);
         this.displayInDepthView = this.displayInDepthView.bind(this);
         this.back = this.back.bind(this);
+        this.switchTheme = this.switchTheme.bind(this);
     }
 
     back() {
@@ -50,16 +54,32 @@ class App extends Component {
         this.setState({topic: effect, inDepth: true, currentView: null})
     }
 
+    switchTheme() {
+        console.log('Switching themes!');
+        if (this.state.theme.palette.type === 'light'){
+            this.setState({
+                theme:createTheme(blue, yellow, 'dark')
+            })
+        }
+        else {
+            this.setState({
+                theme:createTheme(blue, yellow, 'light')
+            })
+        }
+    }
+
     render() {
         this.stack.push(new HistoryObject(this.state));
         console.log(this.stack);
         window.scrollTo(0, 0);
         return (
-            <MuiThemeProvider theme={theme}>
+            <React.Fragment>
+            <MuiThemeProvider theme={this.state.theme}>
+                <CssBaseline/>
                 <div className="App">
-                    <RenderAppBar changeview={this.displayInDepthView} onclick={this.changeView} back={this.back}
+                    <RenderAppBar switchTheme={this.switchTheme} changeview={this.displayInDepthView} onclick={this.changeView} back={this.back}
                                   backable={this.stack.length > 1}/>
-                    <div style={{"width": "70%", margin: 'auto', padding: 20}}>
+                    <div color={'primary'} style={{"width": "70%", margin: 'auto', padding: 20}}>
                         {this.state.inDepth && <InDepthView skillObject={this.state.topic}/>}
                         {!this.state.inDepth &&
                         <Overview learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}
@@ -67,6 +87,7 @@ class App extends Component {
                     <Footer/>
                 </div>
             </MuiThemeProvider>
+            </React.Fragment>
         );
     }
 }

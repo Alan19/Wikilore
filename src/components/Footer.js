@@ -17,11 +17,7 @@ const bottomNav = <BottomNavigation
     <BottomNavigationAction icon={<CultureIcon/>} label="Culture"/>
 </BottomNavigation>;
 
-const copyrightText = (<Typography variant={"caption"} style={{
-    textAlign: 'center',
-    paddingRight: 10,
-    backgroundColor: "white"
-}}>{copyright}</Typography>);
+const copyrightText = (<Typography variant={"caption"} style={{textAlign: 'center', paddingRight: 10,}}>{copyright}</Typography>);
 
 
 function getFooter(props) {
@@ -30,12 +26,13 @@ function getFooter(props) {
             <Slide direction={'up'} in={true}>
                 <div style={{position: "sticky", bottom: "0"}}>
                     {bottomNav}
-                    <div style={{position: 'relative', marginLeft: 10}}>{copyrightText}</div>
+                    <div style={{position: 'relative', marginLeft: 10, background:'rgba(0,0,0,1)'}}>{copyrightText}</div>
                 </div>
             </Slide>
         );
     } else {
         return <div style={{position: 'fixed', bottom: 0, right: 0}}>{copyrightText}</div>;
+
     }
 
 }

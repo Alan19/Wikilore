@@ -36,7 +36,7 @@ export class SkillCard extends Component {
                 </CardContent>
                 <CardActions disableActionSpacing>
                     <div className={"left"} style={{flexGrow: 1}}>
-                        <Button size="small" onClick={() => this.props.learnMore(this.props.skill)}>Learn
+                        <Button size="small" color={"primary"} onClick={() => this.props.learnMore(this.props.skill)}>Learn
                             More</Button>
                     </div>
                     <IconButton><Icon>favorite</Icon></IconButton>
