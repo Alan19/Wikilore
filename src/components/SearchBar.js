@@ -28,7 +28,7 @@ function renderInputComponent(inputProps) {
           inputRef(node);
         },
         classes: {
-            root: classes.inputRoot,
+          root: classes.inputRoot,
           input: classes.input,
           focused: classes.cssFocused
         },
@@ -69,9 +69,7 @@ function getSuggestionValue(suggestion) {
 }
 
 const styles = theme => ({
-    inputRoot:{
-
-    },
+  inputRoot: {},
   positionStart: {
     color: "#FFFFFF"
   },
@@ -150,7 +148,7 @@ class SearchBar extends React.Component {
 
     return (
       <MenuItem
-          onKeyPress={(event) => console.log("You pressed a key!")}
+        onKeyPress={event => console.log("You pressed a key!")}
         onClick={() => this.props.changeview(suggestion)}
         selected={isHighlighted}
         component="div"
