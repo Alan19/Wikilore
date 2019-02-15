@@ -11,6 +11,7 @@ import {
   Typography
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
+import {yellow} from "@material-ui/core/colors";
 
 function SkillTitle(props) {
   return (
@@ -42,13 +43,65 @@ export class SkillCard extends Component {
               Learn More
             </Button>
           </div>
-          <IconButton>
-            <Icon>favorite</Icon>
+          <IconButton onClick={() => this.addToCheatSheet(this.props.skill)}>
+            <Icon color={'secondary'}>star</Icon>
           </IconButton>
         </CardActions>
       </Card>
     );
   }
+
+    checkFavorited(skill) {
+        if (localStorage.getItem('favorites') === null){
+            return 'inherit'
+        }
+        else{
+            if (JSON.parse(localStorage.getItem('favorites')).include(skill)){
+                return 'secondary'
+            }
+            else {
+                return 'inherit'
+            }
+        }
+    }
+
+    inArray(item, arrayToCheck){
+        for (var i = 0; i < arrayToCheck.length; i++){
+            if (item.name === arrayToCheck[i].name){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    addToCheatSheet(skill) {
+      if (localStorage.hasOwnProperty('favorites')){
+          let favoriteArray = JSON.parse(localStorage.getItem('favorites'));
+          if (!this.inArray(skill, favoriteArray)){
+              favoriteArray.push(skill);
+              localStorage.setItem('favorites', JSON.stringify(favoriteArray));
+          }
+          else {
+              this.removeItemFromArray(skill, favoriteArray);
+              localStorage.setItem('favorites', JSON.stringify(favoriteArray));
+          }
+
+      }
+        else {
+            let favoriteArray = [skill];
+            localStorage.setItem('favorites', JSON.stringify(favoriteArray));
+      }
+    }
+
+    removeItemFromArray(skill, favoriteArray) {
+       for (let i = 0; i < favoriteArray.length; i++){
+           if (skill.name === favoriteArray[i].name) {
+               favoriteArray.splice(i, 1);
+               return true;
+           }
+       }
+       return false;
+    }
 }
 
 export class Overview extends React.Component {
