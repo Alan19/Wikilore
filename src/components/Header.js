@@ -160,20 +160,6 @@ DrawerButton.propTypes = {
 };
 
 export class RenderAppBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
-  }
-
-  toggleDrawer = () => {
-    if (!this.state.open) {
-      this.setState({ open: true });
-    } else {
-      this.setState({ open: false });
-    }
-  };
 
   render() {
     const { classes } = this.props;
@@ -182,7 +168,7 @@ export class RenderAppBar extends Component {
           <AppBar position="sticky" className={classes.appBar} color={"primary"}>
               <Toolbar>
                   {this.props.backable && <BackButton classes={classes} onClick={() => this.props.back()}/>}
-                  {!this.props.backable && <DrawerButton onClick={this.toggleDrawer} classes={classes} open={this.state.open}/>}
+                  {!this.props.backable && <DrawerButton onClick={this.props.toggleDrawer} classes={classes} open={this.props.open}/>}
                   <Typography
                       variant="headline"
                       color="inherit"
@@ -199,7 +185,7 @@ export class RenderAppBar extends Component {
           </AppBar>
           <SkillDrawer
               classes={classes}
-              open={this.state.open}
+              open={this.props.open}
               callbackfn={section => {
                   return this.generateDrawerEntries(section);
               }}

@@ -22,7 +22,8 @@ class App extends Component {
     this.state = {
       currentView: magicDescription,
       inDepth: false,
-      theme: createTheme(blue, yellow, "light")
+      theme: createTheme(blue, yellow, "light"),
+        open: false
     };
     this.changeView = this.changeView.bind(this);
     this.displayInDepthView = this.displayInDepthView.bind(this);
@@ -34,7 +35,18 @@ class App extends Component {
     this.stack.pop();
     let stateObject = this.stack.pop();
     this.setState(stateObject.currentState);
+    this.setState({
+      open: false
+    })
   }
+
+  toggleDrawer = () => {
+    if (!this.state.open) {
+      this.setState({ open: true });
+    } else {
+      this.setState({ open: false });
+    }
+  };
 
   changeView(overviewType) {
     if (overviewType !== this.state.currentView) {
@@ -49,7 +61,7 @@ class App extends Component {
   displayInDepthView(effect) {
     console.log("Changing screens!");
     console.log(effect);
-    this.setState({ topic: effect, inDepth: true, currentView: null });
+    this.setState({ topic: effect, inDepth: true, currentView: null, open:false });
   }
 
   switchTheme() {
@@ -75,6 +87,8 @@ class App extends Component {
           <CssBaseline />
           <div className="App">
             <RenderAppBar
+                toggleDrawer={this.toggleDrawer}
+                open={this.state.open}
               switchTheme={this.switchTheme}
               changeview={this.displayInDepthView}
               onclick={this.changeView}
