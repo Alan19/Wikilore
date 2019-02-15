@@ -19,7 +19,8 @@
     "react-snapshot": "^1.3.0",
     "react-themeable": "^1.1.0",
     "styled-components": "^4.1.3",
-    "typeface-roboto": "0.0.54"
+    "typeface-roboto": "0.0.54",
+    "classnames": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

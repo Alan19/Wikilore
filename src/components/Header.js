@@ -1,54 +1,79 @@
 import {
     AppBar,
+    Drawer,
     Icon,
     IconButton,
-    Toolbar, Tooltip,
-    Typography, withStyles
+    List,
+    ListItem,
+    Toolbar,
+    Tooltip,
+    Typography,
+    withStyles
 } from "@material-ui/core";
+import classNames from "classnames";
 import React, {Component} from "react";
-import MagicIcon from "../icon-classes/magic-icon";
-import WayIcon from "../icon-classes/way-icon";
-import CultureIcon from "../icon-classes/culture-icon";
 import * as PropTypes from "prop-types";
-import SearchBar from './SearchBar'
+import SearchBar from "./SearchBar";
+import {info} from "../info";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
-const styles = {};
+const drawerWidth = 240;
+
+const styles = theme => ({
+    root: {
+        display: "flex"
+    },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0
+    },
+    drawerPaper: {
+        width: drawerWidth
+    },
+    content: {
+        flexGrow: 1,
+        padding: theme.spacing.unit * 3
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerClose: {
+        transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen
+        }),
+        overflowX: "hidden",
+        width: theme.spacing.unit * 7 + 1,
+        [theme.breakpoints.up("sm")]: {
+            width: theme.spacing.unit * 9 + 1
+        }
+    },
+    drawerOpen: {
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+});
 
 class AppBarButtons extends Component {
     render() {
-        return <div>
-            <Tooltip title={'Toggle Light/Dark Theme'}>
-                <IconButton onClick={this.props.switchTheme} color={'inherit'}
-                            label={'Switch Light/Dark Theme'}><Icon>highlight</Icon></IconButton>
-            </Tooltip>
-            <Tooltip title={"Magic"}>
-                <IconButton
-                    onClick={this.props.onClick}
-                    color={"inherit"}
-                    label="Magic"
-                >
-                    <MagicIcon/>
-                </IconButton>
-            </Tooltip>
-            <Tooltip title={"Ways"}>
-                <IconButton
-                    onClick={this.props.onClick1}
-                    color={"inherit"}
-                    label="Way"
-                >
-                    <WayIcon/>
-                </IconButton>
-            </Tooltip>
-            <Tooltip title={"Culture"}>
-                <IconButton
-                    onClick={this.props.onClick2}
-                    color={"inherit"}
-                    label="Culture"
-                >
-                    <CultureIcon/>
-                </IconButton>
-            </Tooltip>
-        </div>;
+        return (
+            <React.Fragment>
+                <Tooltip title={"Toggle Light/Dark Theme"}>
+                    <IconButton
+                        onClick={this.props.switchTheme}
+                        color={"inherit"}
+                        label={"Switch Light/Dark Theme"}
+                    >
+                        <Icon>highlight</Icon>
+                    </IconButton>
+                </Tooltip>
+            </React.Fragment>
+        );
     }
 }
 
@@ -58,37 +83,93 @@ AppBarButtons.propTypes = {
     onClick2: PropTypes.func
 };
 
+class SkillDrawer extends Component {
+    render() {
+        return <Drawer
+            variant="permanent"
+            className={classNames(this.props.classes.drawer, {
+                [this.props.classes.drawerOpen]: this.props.open,
+                [this.props.classes.drawerClose]: !this.props.open
+            })}
+            classes={{
+                paper: classNames({
+                    [this.props.classes.drawerOpen]: this.props.open,
+                    [this.props.classes.drawerClose]: !this.props.open
+                })
+            }}
+            open={this.props.open}
+        >
+            <div className={this.props.classes.toolbar}/>
+            <List>
+                {info.map(this.props.callbackfn)}
+            </List>
+        </Drawer>;
+    }
+}
+
+SkillDrawer.propTypes = {
+    classes: PropTypes.any,
+    open: PropTypes.bool,
+    callbackfn: PropTypes.func
+};
+
 export class RenderAppBar extends Component {
+    state = {
+        open: false
+    };
 
     render() {
+        const {classes} = this.props;
         let showBackButton;
         if (this.props.backable) {
-            showBackButton = 'visible'
+            showBackButton = "visible";
         } else {
-            showBackButton = 'hidden'
+            showBackButton = "hidden";
         }
         return (
-            <AppBar position="sticky" color={"primary"}>
-                <Toolbar>
-                    <IconButton style={{visibility: showBackButton}} color="inherit" aria-label="Menu"
-                                onClick={() => this.props.back()}>
-                        <Icon>arrow_back</Icon>
-                    </IconButton>
-                    <Typography variant="headline" color="inherit" style={{flexGrow: 1}}>
-                        Cheat Sheet
-                    </Typography>
-                    <SearchBar changeview={this.props.changeview}/>
+            <React.Fragment>
+                <AppBar position="sticky" className={classes.appBar} color={"primary"}>
+                    <Toolbar>
+                        <IconButton
+                            style={{visibility: showBackButton}}
+                            color="inherit"
+                            aria-label="Menu"
+                            onClick={() => this.props.back()}
+                        >
+                            <Icon>arrow_back</Icon>
+                        </IconButton>
+                        <Typography
+                            variant="headline"
+                            color="inherit"
+                            style={{flexGrow: 1}}
+                        >
+                            Cheat Sheet
+                        </Typography>
+                        <SearchBar changeview={this.props.changeview}/>
 
-                    <div style={{marginLeft: 30}}>
-                        <AppBarButtons
-                            switchTheme={() => this.props.switchTheme()}
-                            onClick={() => this.props.onclick("magic")}
-                            onClick1={() => this.props.onclick("way")}
-                            onClick2={() => this.props.onclick("culture")}/>
-                    </div>
+                        <div style={{marginLeft: 30}}>
+                            <AppBarButtons switchTheme={() => this.props.switchTheme()}/>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                <SkillDrawer classes={classes} open={this.state.open} callbackfn={section => {
+                    return this.generateDrawerEntries(section);
+                }}/>
+            </React.Fragment>
+        );
+    }
 
-                </Toolbar>
-            </AppBar>
+    generateDrawerEntries(section) {
+        const SectionIcon = section.icon;
+        return (
+            <Tooltip title={section.name} placement={"right"}>
+                <ListItem onClick={() => this.props.onclick(section.infoObj)} button key={section.name}>
+                    <ListItemIcon>
+                        <SectionIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={section.name}/>
+                </ListItem>
+            </Tooltip>
         );
     }
 }

@@ -2,13 +2,13 @@ import React, {Component} from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
 import Footer from "./components/Footer";
-import {cultureDescription, magicDescription, wayDescription} from "./info";
+import {magicDescription} from "./info";
 import {Overview} from "./components/Overview";
 import {InDepthView} from "./components/InDepthView";
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import {createTheme} from './ThemeProvider'
 import {CssBaseline} from "@material-ui/core";
-import {blue, lightBlue, yellow} from "@material-ui/core/colors";
+import {blue, yellow} from "@material-ui/core/colors";
 
 
 function HistoryObject(currentState) {
@@ -37,13 +37,12 @@ class App extends Component {
         this.setState(stateObject.currentState);
     }
 
-    changeView(viewName) {
-        if (viewName === "magic" && this.state.currentView !== magicDescription) {
-            this.setState({currentView: magicDescription, inDepth: false});
-        } else if (viewName === "way" && this.state.currentView !== wayDescription) {
-            this.setState({currentView: wayDescription, inDepth: false});
-        } else if (viewName === "culture" && this.state.currentView !== cultureDescription) {
-            this.setState({currentView: cultureDescription, inDepth: false});
+    changeView(overviewType) {
+        if (overviewType !== this.state.currentView) {
+            this.setState({
+                currentView: overviewType,
+                inDepth: false
+            })
         }
         this.forceUpdate();
     }
@@ -79,7 +78,7 @@ class App extends Component {
                 <div className="App">
                     <RenderAppBar switchTheme={this.switchTheme} changeview={this.displayInDepthView} onclick={this.changeView} back={this.back}
                                   backable={this.stack.length > 1}/>
-                    <div color={'primary'} style={{"width": "70%", margin: 'auto', padding: 20}}>
+                    <div color={'primary'} style={{"width": "80%", margin: 'auto', padding: 20}}>
                         {this.state.inDepth && <InDepthView skillObject={this.state.topic}/>}
                         {!this.state.inDepth &&
                         <Overview learnMore={this.displayInDepthView} currentView={this.state.currentView}/>}

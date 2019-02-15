@@ -1,7 +1,7 @@
 import {BottomNavigation, BottomNavigationAction, Slide, Typography} from "@material-ui/core";
-import MagicIcon from "../icon-classes/magic-icon";
-import WayIcon from "../icon-classes/way-icon";
-import CultureIcon from "../icon-classes/culture-icon";
+import MagicIcon from "../icon-classes/magicIcon";
+import WayIcon from "../icon-classes/wayIcon";
+import CultureIcon from "../icon-classes/cultureIcon";
 import React from "react";
 import {copyright} from '../info'
 

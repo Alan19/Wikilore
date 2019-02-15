@@ -7,7 +7,6 @@ import {
     CardHeader,
     Grow, Icon,
     IconButton,
-    Slide,
     Typography
 } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid'

@@ -1,204 +1,218 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import deburr from 'lodash/deburr';
-import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import {withStyles} from '@material-ui/core/styles';
-import {cultureDescription, magicDescription, wayDescription} from "../info";
+import React from "react";
+import PropTypes from "prop-types";
+import deburr from "lodash/deburr";
+import Autosuggest from "react-autosuggest";
+import match from "autosuggest-highlight/match";
+import parse from "autosuggest-highlight/parse";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import MenuItem from "@material-ui/core/MenuItem";
+import { withStyles } from "@material-ui/core/styles";
+import { cultureDescription, magicDescription, wayDescription } from "../info";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import {Icon} from "@material-ui/core";
+import { Icon } from "@material-ui/core";
 
-const suggestions = magicDescription.concat(wayDescription).concat(cultureDescription);
+const suggestions = magicDescription
+  .concat(wayDescription)
+  .concat(cultureDescription);
 
 function renderInputComponent(inputProps) {
-    const {
-        classes, inputRef = () => {
-        }, ref, ...other
-    } = inputProps;
+  const { classes, inputRef = () => {}, ref, ...other } = inputProps;
 
-    return (
-        <TextField
-            fullWidth
-            InputProps={{
-
-                inputRef: node => {
-                    ref(node);
-                    inputRef(node);
-                },
-                classes: {
-                    input: classes.input,
-                    focused: classes.cssFocused,
-                },
-                disableUnderline:true,
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <Icon color={"primary"}>search</Icon>
-                    </InputAdornment>
-                ),
-            }}
-            {...other}
-        />
-    );
+  return (
+    <TextField
+      fullWidth
+      InputProps={{
+        inputRef: node => {
+          ref(node);
+          inputRef(node);
+        },
+        classes: {
+            root: classes.inputRoot,
+          input: classes.input,
+          focused: classes.cssFocused
+        },
+        disableUnderline: true,
+        startAdornment: (
+          <InputAdornment position="start">
+            <Icon color={"primary"}>search</Icon>
+          </InputAdornment>
+        )
+      }}
+      {...other}
+    />
+  );
 }
 
 function getSuggestions(value) {
-    const inputValue = deburr(value.trim()).toLowerCase();
-    const inputLength = inputValue.length;
-    let count = 0;
+  const inputValue = deburr(value.trim()).toLowerCase();
+  const inputLength = inputValue.length;
+  let count = 0;
 
-    return inputLength === 0
-        ? []
-        : suggestions.filter(suggestion => {
-            const keep =
-                count < 5 && suggestion.name.slice(0, inputLength).toLowerCase() === inputValue;
+  return inputLength === 0
+    ? []
+    : suggestions.filter(suggestion => {
+        const keep =
+          count < 5 &&
+          suggestion.name.slice(0, inputLength).toLowerCase() === inputValue;
 
-            if (keep) {
-                count += 1;
-            }
+        if (keep) {
+          count += 1;
+        }
 
-            return keep;
-        });
+        return keep;
+      });
 }
 
 function getSuggestionValue(suggestion) {
-    return suggestion.name;
+  return suggestion.name;
 }
 
 const styles = theme => ({
-    positionStart:{
-        color:'#FFFFFF'
+    inputRoot:{
+
     },
-    root: {
-        width: 400,
-        backgroundColor: 'rgba(255, 255, 255, 0.15)',
-        borderRadius:4
-    },
-    input:{
-        color:'#FFFFFF',
-    },
-    container: {
-        position: 'relative',
-    },
-    suggestionsContainerOpen: {
-        position: 'absolute',
-        zIndex: 1,
-        marginTop: theme.spacing.unit,
-        left: 0,
-        right: 0,
-        backgroundColor: '#fff',
-    },
-    suggestion: {
-        display: 'block',
-    },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: 'none',
-    },
-    divider: {
-        height: theme.spacing.unit * 2,
-    },
-    cssFocused: {
-        width: 400,
-        borderRadius:4,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)'
+  positionStart: {
+    color: "#FFFFFF"
+  },
+  root: {
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    borderRadius: 4
+  },
+  input: {
+    color: "#FFFFFF",
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: 120,
+      "&:focus": {
+        width: 200
+      }
     }
+  },
+  container: {
+    position: "relative"
+  },
+  suggestionsContainerOpen: {
+    position: "absolute",
+    zIndex: 1,
+    marginTop: theme.spacing.unit,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff"
+  },
+  suggestion: {
+    display: "block"
+  },
+  suggestionsList: {
+    margin: 0,
+    padding: 0,
+    listStyleType: "none"
+  },
+  divider: {
+    height: theme.spacing.unit * 2
+  },
+  cssFocused: {
+    borderRadius: 4,
+    backgroundColor: "rgba(255, 255, 255, 0.2)"
+  }
 });
 
 class SearchBar extends React.Component {
-    state = {
-        single: '',
-        popper: '',
-        suggestions: [],
+  state = {
+    single: "",
+    popper: "",
+    suggestions: []
+  };
+
+  handleSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: getSuggestions(value)
+    });
+  };
+
+  handleSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
+  handleChange = name => (event, { newValue }) => {
+    this.setState({
+      [name]: newValue
+    });
+  };
+
+  renderSuggestion = (suggestion, { query, isHighlighted }) => {
+    const matches = match(suggestion.name, query);
+    const parts = parse(suggestion.name, matches);
+    console.log(suggestion);
+
+    return (
+      <MenuItem
+          onKeyPress={(event) => console.log("You pressed a key!")}
+        onClick={() => this.props.changeview(suggestion)}
+        selected={isHighlighted}
+        component="div"
+      >
+        <div>
+          {parts.map((part, index) =>
+            part.highlight ? (
+              <span key={String(index)} style={{ fontWeight: 500 }}>
+                {part.text}
+              </span>
+            ) : (
+              <strong key={String(index)} style={{ fontWeight: 300 }}>
+                {part.text}
+              </strong>
+            )
+          )}
+        </div>
+      </MenuItem>
+    );
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    const autosuggestProps = {
+      renderInputComponent,
+      suggestions: this.state.suggestions,
+      onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
+      onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
+      getSuggestionValue
     };
 
-    handleSuggestionsFetchRequested = ({value}) => {
-        this.setState({
-            suggestions: getSuggestions(value),
-        });
-    };
-
-    handleSuggestionsClearRequested = () => {
-        this.setState({
-            suggestions: [],
-        });
-    };
-
-    handleChange = name => (event, {newValue}) => {
-        this.setState({
-            [name]: newValue,
-        });
-    };
-
-    renderSuggestion = (suggestion, {query, isHighlighted}) => {
-        const matches = match(suggestion.name, query);
-        const parts = parse(suggestion.name, matches);
-        console.log(suggestion);
-
-        return (
-            <MenuItem onClick={() => this.props.changeview(suggestion)} selected={isHighlighted} component="div">
-                <div>
-                    {parts.map((part, index) =>
-                            part.highlight ? (
-                                <span key={String(index)} style={{fontWeight: 500}}>
-              {part.text}
-            </span>
-                            ) : (
-                                <strong key={String(index)} style={{fontWeight: 300}}>
-                                    {part.text}
-                                </strong>
-                            ),
-                    )}
-                </div>
-            </MenuItem>
-        );
-    };
-
-    render() {
-        const {classes} = this.props;
-
-        const autosuggestProps = {
-            renderInputComponent,
-            suggestions: this.state.suggestions,
-            onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
-            onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
-            getSuggestionValue
-        };
-
-        return (
-            <div className={classes.root}>
-                <Autosuggest
-                    renderSuggestion={this.renderSuggestion}
-                    {...autosuggestProps}
-                    inputProps={{
-                        classes,
-                        placeholder: 'Search a skill',
-                        value: this.state.single,
-                        onChange: this.handleChange('single'),
-                    }}
-                    theme={{
-                        container: classes.container,
-                        suggestionsContainerOpen: classes.suggestionsContainerOpen,
-                        suggestionsList: classes.suggestionsList,
-                        suggestion: classes.suggestion,
-                    }}
-                    renderSuggestionsContainer={options => (
-                        <Paper {...options.containerProps} square>
-                            {options.children}
-                        </Paper>
-                    )}
-                />
-            </div>
-        );
-    }
+    return (
+      <div className={classes.root}>
+        <Autosuggest
+          renderSuggestion={this.renderSuggestion}
+          {...autosuggestProps}
+          inputProps={{
+            classes,
+            placeholder: "Search a skill",
+            value: this.state.single,
+            onChange: this.handleChange("single")
+          }}
+          theme={{
+            container: classes.container,
+            suggestionsContainerOpen: classes.suggestionsContainerOpen,
+            suggestionsList: classes.suggestionsList,
+            suggestion: classes.suggestion
+          }}
+          renderSuggestionsContainer={options => (
+            <Paper {...options.containerProps} square>
+              {options.children}
+            </Paper>
+          )}
+        />
+      </div>
+    );
+  }
 }
 
 SearchBar.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(SearchBar);
