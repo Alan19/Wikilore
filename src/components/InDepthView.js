@@ -1,11 +1,7 @@
 import React from "react";
-import { Grow, Slide, Typography } from "@material-ui/core";
+import { Grow, Typography } from "@material-ui/core";
 
 export class InDepthView extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const skill = this.props.skillObject.detailedDescription;
     const icon = this.props.skillObject.icon;

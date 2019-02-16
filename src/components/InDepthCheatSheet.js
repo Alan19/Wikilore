@@ -1,6 +1,5 @@
 import React from "react";
 import { InDepthView } from "./InDepthView";
-import {allSkills} from "../info";
 
 export class InDepthCheatSheet extends React.Component {
   render() {
