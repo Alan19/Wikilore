@@ -17,6 +17,7 @@ import SearchBar from "./SearchBar";
 import { info } from "../info";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import CheatSheetIcon from "../icon-classes/cheatSheetIcon";
 
 const drawerWidth = 240;
 
@@ -105,7 +106,21 @@ class SkillDrawer extends Component {
         open={this.props.open}
       >
         <div className={this.props.classes.toolbar} />
-        <List>{info.map(this.props.callbackfn)}</List>
+        <List>
+            {info.map(this.props.callbackfn)}
+            <Tooltip title={'Cheat Sheet'} placement={"right"}>
+                <ListItem
+                    onClick={() => this.props.cheatSheet()}
+                    button
+                    key={'Cheat Sheet'}
+                >
+                    <ListItemIcon>
+                        <CheatSheetIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Cheat Sheet'} />
+                </ListItem>
+            </Tooltip>
+        </List>
       </Drawer>
     );
   }
@@ -184,6 +199,7 @@ export class RenderAppBar extends Component {
               </Toolbar>
           </AppBar>
           <SkillDrawer
+              cheatSheet={this.props.cheatSheet}
               classes={classes}
               open={this.props.open}
               callbackfn={section => {

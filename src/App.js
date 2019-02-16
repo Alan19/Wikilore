@@ -23,13 +23,25 @@ class App extends Component {
       currentView: magicDescription,
       inDepth: false,
       theme: createTheme(blue, yellow, "light"),
-        open: false
+        open: false,
+      cheatSheet: false
     };
     this.changeView = this.changeView.bind(this);
     this.displayInDepthView = this.displayInDepthView.bind(this);
     this.back = this.back.bind(this);
     this.switchTheme = this.switchTheme.bind(this);
+    this.switchToCheatSheet = this.switchToCheatSheet.bind(this);
+    this.updateCheatSheet = this.updateCheatSheet.bind(this);
   }
+
+  updateCheatSheet(){
+    if (this.state.cheatSheet) {
+      this.setState({
+        currentView: JSON.parse(localStorage.getItem('favorites')),
+        inDepth: false
+      });
+    }
+  };
 
   back() {
     this.stack.pop();
@@ -55,7 +67,20 @@ class App extends Component {
         inDepth: false
       });
     }
+    this.setState({
+      cheatSheet: false
+    });
     this.forceUpdate();
+  }
+
+  switchToCheatSheet(){
+    if (!this.state.cheatSheet) {
+      this.setState({
+        cheatSheet:true,
+        currentView: JSON.parse(localStorage.getItem('favorites')),
+        inDepth: false
+      });
+    }
   }
 
   displayInDepthView(effect) {
@@ -94,6 +119,7 @@ class App extends Component {
               onclick={this.changeView}
               back={this.back}
               backable={this.state.inDepth}
+                cheatSheet={this.switchToCheatSheet}
             />
             <div
               color={"primary"}
@@ -106,6 +132,7 @@ class App extends Component {
                 <Overview
                   learnMore={this.displayInDepthView}
                   currentView={this.state.currentView}
+                  updateCheatSheet={this.updateCheatSheet}
                 />
               )}
             </div>

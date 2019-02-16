@@ -11,7 +11,6 @@ import {
   Typography
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import {yellow} from "@material-ui/core/colors";
 
 function SkillTitle(props) {
   return (
@@ -24,6 +23,13 @@ function SkillTitle(props) {
 }
 
 export class SkillCard extends Component {
+    constructor(props){
+        super(props);
+        this.setState({
+            savedSkills: JSON.stringify(localStorage.getItem('favorites'))
+        })
+    }
+
   render() {
     return (
       <Card>
@@ -43,8 +49,8 @@ export class SkillCard extends Component {
               Learn More
             </Button>
           </div>
-          <IconButton onClick={() => this.addToCheatSheet(this.props.skill)}>
-            <Icon color={'secondary'}>star</Icon>
+          <IconButton onClick={() => this.addToCheatSheet(this.props.skill, this.props.updateCheatSheet)}>
+            <Icon color={this.checkFavorited(this.props.skill)}>star</Icon>
           </IconButton>
         </CardActions>
       </Card>
@@ -52,11 +58,12 @@ export class SkillCard extends Component {
   }
 
     checkFavorited(skill) {
+
         if (localStorage.getItem('favorites') === null){
             return 'inherit'
         }
         else{
-            if (JSON.parse(localStorage.getItem('favorites')).include(skill)){
+            if (this.inArray(skill, JSON.parse(localStorage.getItem('favorites')))){
                 return 'secondary'
             }
             else {
@@ -74,23 +81,33 @@ export class SkillCard extends Component {
         return false;
     }
 
-    addToCheatSheet(skill) {
+    addToCheatSheet(skill, cheatSheetMethod) {
       if (localStorage.hasOwnProperty('favorites')){
           let favoriteArray = JSON.parse(localStorage.getItem('favorites'));
           if (!this.inArray(skill, favoriteArray)){
               favoriteArray.push(skill);
               localStorage.setItem('favorites', JSON.stringify(favoriteArray));
+              this.setState({
+                  savedSkills: favoriteArray
+              })
           }
           else {
               this.removeItemFromArray(skill, favoriteArray);
               localStorage.setItem('favorites', JSON.stringify(favoriteArray));
+              this.setState({
+                  savedSkills: favoriteArray
+              })
           }
 
       }
         else {
             let favoriteArray = [skill];
             localStorage.setItem('favorites', JSON.stringify(favoriteArray));
+          this.setState({
+              savedSkills: favoriteArray
+          })
       }
+        cheatSheetMethod();
     }
 
     removeItemFromArray(skill, favoriteArray) {
@@ -105,13 +122,15 @@ export class SkillCard extends Component {
 }
 
 export class Overview extends React.Component {
+
   render() {
+      console.log(this.props.currentView);
     return (
       <Grow in={true} mountOnEnter unmountOnExit>
         <Grid container justify="flex-start" alignItems={"stretch"}>
           {this.props.currentView.map(skill => (
             <Grid key={skill.id} item sm={4} style={{ padding: 20 }}>
-              <SkillCard learnMore={this.props.learnMore} skill={skill} />
+              <SkillCard updateCheatSheet={this.props.updateCheatSheet} learnMore={this.props.learnMore} skill={skill} />
             </Grid>
           ))}
         </Grid>
