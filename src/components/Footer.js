@@ -4,9 +4,9 @@ import {
   Slide,
   Typography
 } from "@material-ui/core";
-import MagicIcon from "../icon-classes/magicIcon";
-import WayIcon from "../icon-classes/wayIcon";
-import CultureIcon from "../icon-classes/cultureIcon";
+import MagicIcon from "../iconClasses/MagicIcon";
+import WayIcon from "../iconClasses/WayIcon";
+import CultureIcon from "../iconClasses/CultureIcon";
 import React from "react";
 import { copyright } from "../info";
 
@@ -29,7 +29,7 @@ const copyrightText = (
   </Typography>
 );
 
-function getFooter(props) {
+function getFooter() {
   if (window.innerWidth <= 500) {
     return (
       <Slide direction={"up"} in={true}>

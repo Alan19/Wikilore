@@ -55,7 +55,7 @@ class App extends Component {
    * Returns an array of favorited objects/skills
    * @returns {Array} All of the skill objects that you have favorited
    */
-  getSkillObjects(){
+  getSkillObjects = () => {
       let skills = getFavoriteSkills();
       let skillObjects = [];
       console.log(allSkills);
@@ -65,7 +65,7 @@ class App extends Component {
           }
       }
       return skillObjects;
-  }
+  };
 
   /**
    * Re-renders the cheat sheet when the cheat sheet is being modified
@@ -160,7 +160,7 @@ class App extends Component {
       currentView: null,
       open: false,
       cheatSheetInDepth: true,
-      cheatSheet: false
+      cheatSheet: false,
     })
   }
 
@@ -195,7 +195,7 @@ class App extends Component {
               changeview={this.displayInDepthView}
               onclick={this.changeView}
               back={this.back}
-              backable={this.state.inDepth}
+              backable={this.state.inDepth || this.state.cheatSheetInDepth}
               cheatSheet={this.switchToCheatSheet}
               cheatSheetInDepth={this.displayInDepthCheatSheet}
             />

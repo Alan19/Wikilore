@@ -87,7 +87,6 @@ export class SkillCard extends Component {
 }
 
 export class Overview extends React.Component {
-
     render() {
         return (
             <Grow in={true} mountOnEnter unmountOnExit>

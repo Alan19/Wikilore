@@ -17,7 +17,8 @@ import SearchBar from "./SearchBar";
 import { info } from "../info";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import CheatSheetIcon from "../icon-classes/cheatSheetIcon";
+import CheatSheetIcon from "../iconClasses/CheatSheetIcon";
+import ExpandedCheatSheetIcon from "../iconClasses/ExpandedCheatSheetIcon";
 
 const drawerWidth = 240;
 
@@ -120,16 +121,16 @@ class SkillDrawer extends Component {
                     <ListItemText primary={'Cheat Sheet'} />
                 </ListItem>
             </Tooltip>
-            <Tooltip title={'Cheat Sheet+'} placement={"right"}>
+            <Tooltip title={'Expanded Cheat Sheet'} placement={"right"}>
                 <ListItem
                     onClick={() => this.props.cheatSheetInDepth()}
                     button
-                    key={'Cheat Sheet+'}
+                    key={'Expanded Cheat Sheet'}
                 >
                     <ListItemIcon>
-                        <CheatSheetIcon />
+                        <ExpandedCheatSheetIcon />
                     </ListItemIcon>
-                    <ListItemText primary={'Cheat Sheet+'} />
+                    <ListItemText primary={'Expanded Cheat Sheet'} />
                 </ListItem>
             </Tooltip>
         </List>
