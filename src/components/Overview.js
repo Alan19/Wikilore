@@ -23,13 +23,6 @@ function SkillTitle(props) {
 }
 
 export class SkillCard extends Component {
-    constructor(props) {
-        super(props);
-        this.setState({
-            savedSkills: JSON.stringify(localStorage.getItem('favorites'))
-        })
-    }
-
     render() {
         return (
             <Card>
@@ -57,8 +50,7 @@ export class SkillCard extends Component {
         );
     }
 
-    checkFavorited(skill) {
-
+    checkFavorited = skill => {
         if (localStorage.getItem('favorites') === null) {
             return 'inherit'
         } else {
@@ -68,7 +60,7 @@ export class SkillCard extends Component {
                 return 'inherit'
             }
         }
-    }
+    };
 
     /**
      * Method for adding item to cheat sheet
@@ -81,24 +73,16 @@ export class SkillCard extends Component {
             if (!favoriteArray.includes(skill.name)) {
                 favoriteArray.push(skill.name);
                 localStorage.setItem('favorites', JSON.stringify(favoriteArray));
-                this.setState({
-                    savedSkills: favoriteArray
-                })
             } else {
                 favoriteArray = favoriteArray.filter((name) => skill.name !== name);
                 localStorage.setItem('favorites', JSON.stringify(favoriteArray));
-                this.setState({
-                    savedSkills: favoriteArray
-                })
             }
         } else {
             let favoriteArray = [skill.name];
             localStorage.setItem('favorites', JSON.stringify(favoriteArray));
-            this.setState({
-                savedSkills: favoriteArray
-            })
         }
         cheatSheetMethod();
+        this.forceUpdate();
     }
 }
 
