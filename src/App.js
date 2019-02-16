@@ -24,6 +24,15 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    /**
+     * States:
+     * currentView: The view the overview should display (magic, culture, etc.)
+     * inDepth: Whether the program should display in depth information
+     * theme: Dark/light mode
+     * cheatSheet: Whether the cheat sheet overview should be displayed
+     * cheatSheetInDepth: Whether the cheat sheet in depth page should be displayed
+     * @type {{cheatSheet: boolean, currentView: *[], theme, cheatSheetInDepth: boolean, open: boolean, inDepth: boolean}}
+     */
     this.state = {
       currentView: magicDescription,
       inDepth: false,
@@ -41,7 +50,11 @@ class App extends Component {
     this.displayInDepthCheatSheet = this.displayInDepthCheatSheet.bind(this);
     this.getSkillObjects = this.getSkillObjects.bind(this);
   }
-  
+
+  /**
+   * Returns an array of favorited objects/skills
+   * @returns {Array} All of the skill objects that you have favorited
+   */
   getSkillObjects(){
       let skills = getFavoriteSkills();
       let skillObjects = [];
@@ -54,15 +67,20 @@ class App extends Component {
       return skillObjects;
   }
 
+  /**
+   * Re-renders the cheat sheet when the cheat sheet is being modified
+   */
   updateCheatSheet() {
     if (this.state.cheatSheet) {
       this.setState({
         currentView: this.getSkillObjects(),
-        inDepth: false
       });
     }
   }
 
+  /**
+   * Go back to the previous state
+   */
   back() {
     this.stack.pop();
     let stateObject = this.stack.pop();
@@ -72,6 +90,9 @@ class App extends Component {
     });
   }
 
+  /**
+   * Toggles the drawer
+   */
   toggleDrawer = () => {
     if (!this.state.open) {
       this.setState({ open: true });
@@ -80,6 +101,10 @@ class App extends Component {
     }
   };
 
+  /**
+   * Change the information the overview should display
+   * @param overviewType The object containing the information that should be displayed
+   */
   changeView(overviewType) {
     if (overviewType !== this.state.currentView) {
       this.setState({
@@ -94,6 +119,9 @@ class App extends Component {
     this.forceUpdate();
   }
 
+  /**
+   * Have the overview display the cheat sheet
+   */
   switchToCheatSheet() {
       console.log("Switching to cheat sheet");
     if (!this.state.cheatSheet) {
@@ -107,6 +135,10 @@ class App extends Component {
     this.forceUpdate();
   }
 
+  /**
+   * Displays in depth information about a skill
+   * @param effect The skill that is being displayed
+   */
   displayInDepthView(effect) {
     console.log(effect);
     this.setState({
@@ -118,16 +150,23 @@ class App extends Component {
     });
   }
 
+  /**
+   * Sets the state for an in depth cheat sheet
+   */
   displayInDepthCheatSheet(){
     this.setState({
       topic:null,
       inDepth: false,
       currentView: null,
       open: false,
-      cheatSheetInDepth: true
+      cheatSheetInDepth: true,
+      cheatSheet: false
     })
   }
 
+  /**
+   * Switch between light and dark theme
+   */
   switchTheme() {
     if (this.state.theme.palette.type === "light") {
       this.setState({
