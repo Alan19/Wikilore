@@ -124,12 +124,11 @@ export class SkillCard extends Component {
 export class Overview extends React.Component {
 
   render() {
-      console.log(this.props.currentView);
     return (
       <Grow in={true} mountOnEnter unmountOnExit>
         <Grid container justify="flex-start" alignItems={"stretch"}>
           {this.props.currentView.map(skill => (
-            <Grid key={skill.id} item sm={4} style={{ padding: 20 }}>
+            <Grid item sm={4} style={{ padding: 20 }}>
               <SkillCard updateCheatSheet={this.props.updateCheatSheet} learnMore={this.props.learnMore} skill={skill} />
             </Grid>
           ))}

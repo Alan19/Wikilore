@@ -9,9 +9,14 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
 import { CssBaseline } from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
+import {InDepthCheatSheet} from "./components/InDepthCheatSheet";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
+}
+
+function getFavoriteSkills() {
+  return JSON.parse(localStorage.getItem("favorites"));
 }
 
 class App extends Component {
@@ -23,8 +28,9 @@ class App extends Component {
       currentView: magicDescription,
       inDepth: false,
       theme: createTheme(blue, yellow, "light"),
-        open: false,
-      cheatSheet: false
+      open: false,
+      cheatSheet: false,
+      cheatSheetInDepth: false
     };
     this.changeView = this.changeView.bind(this);
     this.displayInDepthView = this.displayInDepthView.bind(this);
@@ -32,16 +38,17 @@ class App extends Component {
     this.switchTheme = this.switchTheme.bind(this);
     this.switchToCheatSheet = this.switchToCheatSheet.bind(this);
     this.updateCheatSheet = this.updateCheatSheet.bind(this);
+    this.displayInDepthCheatSheet = this.displayInDepthCheatSheet.bind(this);
   }
 
-  updateCheatSheet(){
+  updateCheatSheet() {
     if (this.state.cheatSheet) {
       this.setState({
-        currentView: JSON.parse(localStorage.getItem('favorites')),
+        currentView: JSON.parse(localStorage.getItem("favorites")),
         inDepth: false
       });
     }
-  };
+  }
 
   back() {
     this.stack.pop();
@@ -49,7 +56,7 @@ class App extends Component {
     this.setState(stateObject.currentState);
     this.setState({
       open: false
-    })
+    });
   }
 
   toggleDrawer = () => {
@@ -68,29 +75,46 @@ class App extends Component {
       });
     }
     this.setState({
-      cheatSheet: false
+      cheatSheet: false,
+      cheatSheetInDepth: false
     });
     this.forceUpdate();
   }
 
-  switchToCheatSheet(){
+  switchToCheatSheet() {
     if (!this.state.cheatSheet) {
       this.setState({
-        cheatSheet:true,
-        currentView: JSON.parse(localStorage.getItem('favorites')),
-        inDepth: false
+        cheatSheet: true,
+        currentView: getFavoriteSkills(),
+        inDepth: false,
+        cheatSheetInDepth: false
       });
     }
+    this.forceUpdate();
   }
 
   displayInDepthView(effect) {
-    console.log("Changing screens!");
     console.log(effect);
-    this.setState({ topic: effect, inDepth: true, currentView: null, open:false });
+    this.setState({
+      topic: effect,
+      inDepth: true,
+      currentView: null,
+      open: false,
+      cheatSheetInDepth: false
+    });
+  }
+
+  displayInDepthCheatSheet(){
+    this.setState({
+      topic:null,
+      inDepth: false,
+      currentView: null,
+      open: false,
+      cheatSheetInDepth: true
+    })
   }
 
   switchTheme() {
-    console.log("Switching themes!");
     if (this.state.theme.palette.type === "light") {
       this.setState({
         theme: createTheme(blue, yellow, "dark")
@@ -104,7 +128,6 @@ class App extends Component {
 
   render() {
     this.stack.push(new HistoryObject(this.state));
-    console.log(this.stack);
     window.scrollTo(0, 0);
     return (
       <React.Fragment>
@@ -112,29 +135,31 @@ class App extends Component {
           <CssBaseline />
           <div className="App">
             <RenderAppBar
-                toggleDrawer={this.toggleDrawer}
-                open={this.state.open}
+              toggleDrawer={this.toggleDrawer}
+              open={this.state.open}
               switchTheme={this.switchTheme}
               changeview={this.displayInDepthView}
               onclick={this.changeView}
               back={this.back}
               backable={this.state.inDepth}
-                cheatSheet={this.switchToCheatSheet}
+              cheatSheet={this.switchToCheatSheet}
+              cheatSheetInDepth={this.displayInDepthCheatSheet}
             />
             <div
               color={"primary"}
-              style={{ width: "80%", margin: "auto", padding: 20 }}
+              style={{ width: "70%", margin: "auto", padding: 20 }}
             >
               {this.state.inDepth && (
                 <InDepthView skillObject={this.state.topic} />
               )}
-              {!this.state.inDepth && (
+              {!this.state.inDepth && this.state.currentView != null && (
                 <Overview
                   learnMore={this.displayInDepthView}
                   currentView={this.state.currentView}
                   updateCheatSheet={this.updateCheatSheet}
                 />
               )}
+              {this.state.cheatSheetInDepth && <InDepthCheatSheet skillList={getFavoriteSkills()} />}
             </div>
             <Footer />
           </div>

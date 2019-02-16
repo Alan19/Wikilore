@@ -19,22 +19,22 @@ export class InDepthView extends React.Component {
             {skill.blurb}
           </Typography>
           {skill.sections.map(section => (
-            <div>
+            <React.Fragment>
               <Typography variant={"subtitle1"}>{section.title}</Typography>
               <Typography variant={"body1"} paragraph={true}>
                 {section.text}
               </Typography>
-            </div>
+            </React.Fragment>
           ))}
           <hr />
           <Typography variant={"subtitle2"}>{skill.skillTypes}</Typography>
           {skill.effects.map(section => (
-            <div>
+            <React.Fragment>
               <Typography variant={"subtitle1"}>{section.title}</Typography>
               <Typography variant={"body1"} paragraph={true}>
                 {section.text}
               </Typography>
-            </div>
+            </React.Fragment>
           ))}
         </div>
       </Grow>

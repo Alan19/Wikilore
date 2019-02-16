@@ -144,11 +144,9 @@ class SearchBar extends React.Component {
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     const matches = match(suggestion.name, query);
     const parts = parse(suggestion.name, matches);
-    console.log(suggestion);
 
     return (
       <MenuItem
-        onKeyPress={event => console.log("You pressed a key!")}
         onClick={() => this.props.changeview(suggestion)}
         selected={isHighlighted}
         component="div"

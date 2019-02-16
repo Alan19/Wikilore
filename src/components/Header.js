@@ -120,6 +120,18 @@ class SkillDrawer extends Component {
                     <ListItemText primary={'Cheat Sheet'} />
                 </ListItem>
             </Tooltip>
+            <Tooltip title={'Cheat Sheet+'} placement={"right"}>
+                <ListItem
+                    onClick={() => this.props.cheatSheetInDepth()}
+                    button
+                    key={'Cheat Sheet+'}
+                >
+                    <ListItemIcon>
+                        <CheatSheetIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Cheat Sheet+'} />
+                </ListItem>
+            </Tooltip>
         </List>
       </Drawer>
     );
@@ -185,7 +197,7 @@ export class RenderAppBar extends Component {
                   {this.props.backable && <BackButton classes={classes} onClick={() => this.props.back()}/>}
                   {!this.props.backable && <DrawerButton onClick={this.props.toggleDrawer} classes={classes} open={this.props.open}/>}
                   <Typography
-                      variant="headline"
+                      variant='h5'
                       color="inherit"
                       style={{flexGrow: 1}}
                   >
@@ -200,6 +212,7 @@ export class RenderAppBar extends Component {
           </AppBar>
           <SkillDrawer
               cheatSheet={this.props.cheatSheet}
+              cheatSheetInDepth={this.props.cheatSheetInDepth}
               classes={classes}
               open={this.props.open}
               callbackfn={section => {
