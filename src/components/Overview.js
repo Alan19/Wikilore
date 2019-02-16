@@ -63,7 +63,7 @@ export class SkillCard extends Component {
             return 'inherit'
         }
         else{
-            if (this.inArray(skill, JSON.parse(localStorage.getItem('favorites')))){
+            if (JSON.parse(localStorage.getItem('favorites')).includes(skill.name)){
                 return 'secondary'
             }
             else {
@@ -81,18 +81,23 @@ export class SkillCard extends Component {
         return false;
     }
 
+    /**
+     * Method for adding item to cheat sheet
+     * @param skill The skill that is to be added to the cheat sheet
+     * @param cheatSheetMethod The method reference to update the cheat sheet
+     */
     addToCheatSheet(skill, cheatSheetMethod) {
       if (localStorage.hasOwnProperty('favorites')){
           let favoriteArray = JSON.parse(localStorage.getItem('favorites'));
-          if (!this.inArray(skill, favoriteArray)){
-              favoriteArray.push(skill);
+          if (!favoriteArray.includes(skill.name)){
+              favoriteArray.push(skill.name);
               localStorage.setItem('favorites', JSON.stringify(favoriteArray));
               this.setState({
                   savedSkills: favoriteArray
               })
           }
           else {
-              this.removeItemFromArray(skill, favoriteArray);
+              this.removeItemFromArray(skill.name, favoriteArray);
               localStorage.setItem('favorites', JSON.stringify(favoriteArray));
               this.setState({
                   savedSkills: favoriteArray
@@ -101,7 +106,7 @@ export class SkillCard extends Component {
 
       }
         else {
-            let favoriteArray = [skill];
+            let favoriteArray = [skill.name];
             localStorage.setItem('favorites', JSON.stringify(favoriteArray));
           this.setState({
               savedSkills: favoriteArray

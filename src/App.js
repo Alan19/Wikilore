@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
 import Footer from "./components/Footer";
-import { magicDescription } from "./info";
+import {allSkills, magicDescription} from "./info";
 import { Overview } from "./components/Overview";
 import { InDepthView } from "./components/InDepthView";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -39,12 +39,25 @@ class App extends Component {
     this.switchToCheatSheet = this.switchToCheatSheet.bind(this);
     this.updateCheatSheet = this.updateCheatSheet.bind(this);
     this.displayInDepthCheatSheet = this.displayInDepthCheatSheet.bind(this);
+    this.getSkillObjects = this.getSkillObjects.bind(this);
+  }
+  
+  getSkillObjects(){
+      let skills = getFavoriteSkills();
+      let skillObjects = [];
+      console.log(allSkills);
+      for (let i = 0; i < allSkills.length; i++){
+          if (skills.includes(allSkills[i].name)) {
+              skillObjects.push(allSkills[i]);
+          }
+      }
+      return skillObjects;
   }
 
   updateCheatSheet() {
     if (this.state.cheatSheet) {
       this.setState({
-        currentView: JSON.parse(localStorage.getItem("favorites")),
+        currentView: this.getSkillObjects(),
         inDepth: false
       });
     }
@@ -82,10 +95,11 @@ class App extends Component {
   }
 
   switchToCheatSheet() {
+      console.log("Switching to cheat sheet");
     if (!this.state.cheatSheet) {
       this.setState({
         cheatSheet: true,
-        currentView: getFavoriteSkills(),
+        currentView: this.getSkillObjects(),
         inDepth: false,
         cheatSheetInDepth: false
       });
@@ -127,6 +141,7 @@ class App extends Component {
   }
 
   render() {
+      console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     window.scrollTo(0, 0);
     return (
@@ -159,7 +174,7 @@ class App extends Component {
                   updateCheatSheet={this.updateCheatSheet}
                 />
               )}
-              {this.state.cheatSheetInDepth && <InDepthCheatSheet skillList={getFavoriteSkills()} />}
+              {this.state.cheatSheetInDepth && <InDepthCheatSheet skillList={this.getSkillObjects()} />}
             </div>
             <Footer />
           </div>
