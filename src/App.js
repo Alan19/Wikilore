@@ -239,7 +239,7 @@ class App extends Component {
               )}
             </div>
 
-            <Typography style={{textAlign: 'right'}} variant={"overline"}>{copyright}</Typography>
+            <Typography style={{textAlign: 'right', padding:10}} variant={"overline"}>{copyright}</Typography>
           </div>
         </MuiThemeProvider>
       </React.Fragment>

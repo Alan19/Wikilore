@@ -71,18 +71,6 @@ const styles = theme => ({
 });
 
 class AppBarButtons extends Component {
-  state = {
-    open: false
-  };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   render() {
     return (
       <React.Fragment>
@@ -95,28 +83,6 @@ class AppBarButtons extends Component {
             <Icon>highlight</Icon>
           </IconButton>
         </Tooltip>
-        <Tooltip title={"Copyright"}>
-          <IconButton
-            color={"inherit"}
-            label={"Copyright"}
-            onClick={() => this.handleClickOpen()}
-          >
-            <Icon>copyright</Icon>
-          </IconButton>
-        </Tooltip>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Copyright</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {copyright}
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
       </React.Fragment>
     );
   }
