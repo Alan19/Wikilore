@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
-import { allSkills, magicDescription } from "./info";
+import {allSkills, copyright, magicDescription} from "./info";
 import { Overview } from "./components/Overview";
 import { InDepthView } from "./components/InDepthView";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
-import { CssBaseline } from "@material-ui/core";
+import {CssBaseline, Divider, Typography} from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
 
@@ -204,7 +204,10 @@ class App extends Component {
       <React.Fragment>
         <MuiThemeProvider theme={this.state.theme}>
           <CssBaseline />
-          <div className="App">
+          <div style={{display: 'flex',
+            minHeight: '100vh',
+            flexDirection: 'column'}}>
+          <div className="App" />
             <RenderAppBar
               toggleDrawer={this.toggleDrawer}
               open={this.state.open}
@@ -219,7 +222,7 @@ class App extends Component {
             />
             <div
               color={"primary"}
-              style={{ width: "70%", margin: "auto", padding: 20 }}
+              style={{ width: "70%", margin: "auto", padding: 20, flex:1 }}
             >
               {this.state.inDepth && (
                 <InDepthView skillObject={this.state.topic} />
@@ -235,6 +238,8 @@ class App extends Component {
                 <InDepthSkillList skillList={this.state.skillList} />
               )}
             </div>
+
+            <Typography style={{textAlign: 'right'}} variant={"overline"}>{copyright}</Typography>
           </div>
         </MuiThemeProvider>
       </React.Fragment>
