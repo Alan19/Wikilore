@@ -23,7 +23,7 @@ export class InDepthView extends React.Component {
             </React.Fragment>
           ))}
           <Divider variant={'middle'} light/>
-          <Typography paragraph style={{paddingTop:10}} variant={"h5"}>{skill.skillTypes}</Typography>
+          <Typography paragraph style={{paddingTop:16}} variant={"h5"}>{skill.skillTypes}</Typography>
           {skill.effects.map(section => (
             <React.Fragment>
               <Typography variant={"subtitle1"}>{section.title}</Typography>
