@@ -1,5 +1,6 @@
 import {
-  AppBar, Divider,
+  AppBar,
+  Divider,
   Drawer,
   Icon,
   IconButton,
@@ -14,11 +15,15 @@ import classNames from "classnames";
 import React, { Component } from "react";
 import * as PropTypes from "prop-types";
 import SearchBar from "./SearchBar";
-import { info } from "../info";
+import { copyright, info } from "../info";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CheatSheetIcon from "../iconClasses/CheatSheetIcon";
 import ExpandedCheatSheetIcon from "../iconClasses/ExpandedCheatSheetIcon";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 const drawerWidth = 240;
 
@@ -66,6 +71,18 @@ const styles = theme => ({
 });
 
 class AppBarButtons extends Component {
+  state = {
+    open: false
+  };
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -78,6 +95,28 @@ class AppBarButtons extends Component {
             <Icon>highlight</Icon>
           </IconButton>
         </Tooltip>
+        <Tooltip title={"Copyright"}>
+          <IconButton
+            color={"inherit"}
+            label={"Copyright"}
+            onClick={() => this.handleClickOpen()}
+          >
+            <Icon>copyright</Icon>
+          </IconButton>
+        </Tooltip>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Copyright</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {copyright}
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
       </React.Fragment>
     );
   }
@@ -91,80 +130,90 @@ AppBarButtons.propTypes = {
 
 class DrawerTab extends Component {
   render() {
-    return <React.Fragment>
-      <Tooltip title={"Your Favorites"} placement={"right"}>
-      <ListItem
-          onClick={this.props.onClick}
-          button
-      >
-        <ListItemIcon>
-          <CheatSheetIcon/>
-        </ListItemIcon>
-        <ListItemText primaryTypographyProps={{noWrap: true}} primary={"Your Favorites"}/>
-      </ListItem>
-    </Tooltip>
-      <Tooltip title={"Cheat Sheet"} placement={"right"}>
-        <ListItem
+    return (
+      <React.Fragment>
+        <Tooltip title={"Your Favorites"} placement={"right"}>
+          <ListItem onClick={this.props.onClick} button>
+            <ListItemIcon>
+              <CheatSheetIcon />
+            </ListItemIcon>
+            <ListItemText
+              primaryTypographyProps={{ noWrap: true }}
+              primary={"Your Favorites"}
+            />
+          </ListItem>
+        </Tooltip>
+        <Tooltip title={"Cheat Sheet"} placement={"right"}>
+          <ListItem
             onClick={() => this.props.cheatSheetInDepth()}
             button
             key={"Cheat Sheet"}
-        >
-          <ListItemIcon>
-            <ExpandedCheatSheetIcon/>
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{noWrap: true}} primary={"Cheat Sheet"}/>
-        </ListItem>
-      </Tooltip>
-    </React.Fragment>;
+          >
+            <ListItemIcon>
+              <ExpandedCheatSheetIcon />
+            </ListItemIcon>
+            <ListItemText
+              primaryTypographyProps={{ noWrap: true }}
+              primary={"Cheat Sheet"}
+            />
+          </ListItem>
+        </Tooltip>
+      </React.Fragment>
+    );
   }
 }
 
-DrawerTab.propTypes = {onClick: PropTypes.func};
+DrawerTab.propTypes = { onClick: PropTypes.func };
 
 class SkillDrawer extends Component {
   render() {
     return (
       <Drawer
-          variant="permanent"
-          className={classNames(this.props.classes.drawer, {
+        variant="permanent"
+        className={classNames(this.props.classes.drawer, {
+          [this.props.classes.drawerOpen]: this.props.open,
+          [this.props.classes.drawerClose]: !this.props.open
+        })}
+        classes={{
+          paper: classNames({
             [this.props.classes.drawerOpen]: this.props.open,
             [this.props.classes.drawerClose]: !this.props.open
-          })}
-          classes={{
-            paper: classNames({
-              [this.props.classes.drawerOpen]: this.props.open,
-              [this.props.classes.drawerClose]: !this.props.open
-            })
-          }}
-          open={this.props.open}
+          })
+        }}
+        open={this.props.open}
       >
-        <div className={this.props.classes.toolbar}/>
+        <div className={this.props.classes.toolbar} />
         <List>
           {info.map(this.props.callbackfn)}
-          <Divider/>
-          {info.map((skill) => this.generateListEntries(skill))}
-          <Divider/>
-          <DrawerTab cheatSheetInDepth={this.props.cheatSheetInDepth} onClick={() => this.props.cheatSheet()} key={"Cheat Sheet"}/>
-
-
+          <Divider />
+          {info.map(skill => this.generateListEntries(skill))}
+          <Divider />
+          <DrawerTab
+            cheatSheetInDepth={this.props.cheatSheetInDepth}
+            onClick={() => this.props.cheatSheet()}
+            key={"Cheat Sheet"}
+          />
         </List>
       </Drawer>
     );
   }
 
-  generateListEntries(section){
-    return <Tooltip title={section.name + " List"} placement={"right"}>
-      <ListItem
+  generateListEntries(section) {
+    return (
+      <Tooltip title={section.name + " List"} placement={"right"}>
+        <ListItem
           onClick={() => this.props.renderCategory(section.infoObj)}
           button
           key={section.name + " List"}
-      >
-        <ListItemIcon>
-          {section.listIcon}
-        </ListItemIcon>
-        <ListItemText primaryTypographyProps={{noWrap: true}} primary={section.name + " List"} />
-      </ListItem>
-    </Tooltip>
+        >
+          <ListItemIcon>{section.listIcon}</ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ noWrap: true }}
+            primary={section.name + " List"}
+          />
+        </ListItem>
+      </Tooltip>
+    );
   }
 }
 
@@ -273,18 +322,13 @@ export class RenderAppBar extends Component {
             button
             key={section.name}
           >
-            <ListItemIcon>
-              {section.icon}
-            </ListItemIcon>
+            <ListItemIcon>{section.icon}</ListItemIcon>
             <ListItemText primary={section.name} />
           </ListItem>
         </Tooltip>
-
       </React.Fragment>
     );
   }
-
-
 }
 
 export default withStyles(styles)(RenderAppBar);
