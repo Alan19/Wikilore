@@ -1,5 +1,5 @@
 import React from "react";
-import { Grow, Typography } from "@material-ui/core";
+import {Divider, Grow, Typography} from "@material-ui/core";
 
 export class InDepthView extends React.Component {
   render() {
@@ -22,8 +22,8 @@ export class InDepthView extends React.Component {
               </Typography>
             </React.Fragment>
           ))}
-          <hr />
-          <Typography variant={"subtitle2"}>{skill.skillTypes}</Typography>
+          <Divider variant={'middle'} light/>
+          <Typography paragraph style={{paddingTop:10}} variant={"h5"}>{skill.skillTypes}</Typography>
           {skill.effects.map(section => (
             <React.Fragment>
               <Typography variant={"subtitle1"}>{section.title}</Typography>
