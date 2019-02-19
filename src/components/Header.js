@@ -15,15 +15,11 @@ import classNames from "classnames";
 import React, { Component } from "react";
 import * as PropTypes from "prop-types";
 import SearchBar from "./SearchBar";
-import { copyright, info } from "../info";
+import { info } from "../info";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CheatSheetIcon from "../iconClasses/CheatSheetIcon";
 import ExpandedCheatSheetIcon from "../iconClasses/ExpandedCheatSheetIcon";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 
 const drawerWidth = 240;
 
