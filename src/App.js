@@ -40,6 +40,8 @@ class App extends Component {
       cheatSheet: false,
       cheatSheetInDepth: false
     };
+
+    this.toggleBool=false;
     this.changeView = this.changeView.bind(this);
     this.displayInDepthView = this.displayInDepthView.bind(this);
     this.back = this.back.bind(this);
@@ -197,6 +199,7 @@ class App extends Component {
   }
 
   render() {
+    this.toggleBool ? this.toggleBool = false : this.toggleBool = true;
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     window.scrollTo(0, 0);
@@ -225,17 +228,18 @@ class App extends Component {
               style={{ width: "70%", margin: "auto", padding: 20, flex:1 }}
             >
               {this.state.inDepth && (
-                <InDepthView skillObject={this.state.topic} />
+                <InDepthView toggleBool={this.toggleBool} skillObject={this.state.topic} />
               )}
               {!this.state.inDepth && this.state.currentView != null && (
                 <Overview
                   learnMore={this.displayInDepthView}
                   currentView={this.state.currentView}
                   updateCheatSheet={this.updateCheatSheet}
+                  toggleBool={this.toggleBool}
                 />
               )}
               {this.state.cheatSheetInDepth && (
-                <InDepthSkillList skillList={this.state.skillList} />
+                <InDepthSkillList toggleBool={this.toggleBool} skillList={this.state.skillList} />
               )}
             </div>
 

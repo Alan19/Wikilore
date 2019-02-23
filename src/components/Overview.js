@@ -96,7 +96,7 @@ export class SkillCard extends Component {
 export class Overview extends React.Component {
   render() {
     return (
-      <Grow in={true} mountOnEnter unmountOnExit>
+      <Grow in={true}>
         <Grid container justify="flex-start" alignItems={"stretch"}>
           {this.props.currentView.map(skill => (
             <Grid item sm={4} style={{ padding: 20 }}>
