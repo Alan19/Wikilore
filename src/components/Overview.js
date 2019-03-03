@@ -30,7 +30,7 @@ export class SkillCard extends Component {
         <CardContent
           style={{ height: 175, textOverflow: "ellipsis", overflow: "hidden" }}
         >
-          <Typography variant={"body1"}>{this.props.skill.text}</Typography>
+          <Typography  variant={"body1"}>{this.props.skill.text}</Typography>
         </CardContent>
         <CardActions disableActionSpacing>
           <div className={"left"} style={{ flexGrow: 1 }}>

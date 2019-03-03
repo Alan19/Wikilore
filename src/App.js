@@ -6,10 +6,9 @@ import { Overview } from "./components/Overview";
 import { InDepthView } from "./components/InDepthView";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
-import {CssBaseline, Divider, Grow, Typography} from "@material-ui/core";
+import {CssBaseline, Typography} from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
-import Grid from "@material-ui/core/Grid";
 import * as PropTypes from "prop-types";
 
 function HistoryObject(currentState) {
@@ -279,7 +278,7 @@ class App extends Component {
             minHeight: '100vh',
             flexDirection: 'column'
           }}>
-            <React.Fragment className="App"/>
+            <div className="App"/>
             <RenderAppBar
                 toggleDrawer={this.toggleDrawer}
                 open={this.state.open}

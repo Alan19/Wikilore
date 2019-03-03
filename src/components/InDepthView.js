@@ -1,5 +1,5 @@
 import React from "react";
-import {Divider, Grow, Typography} from "@material-ui/core";
+import { Divider, Grow, Typography } from "@material-ui/core";
 
 export class InDepthView extends React.Component {
   render() {
@@ -7,7 +7,7 @@ export class InDepthView extends React.Component {
     const icon = this.props.skillObject.icon;
     return (
       <Grow in={true}>
-        <div style={{margin:'auto', width:'70%'}}>
+        <div style={{ margin: "auto", width: "70%" }}>
           <Typography variant={"h3"}>
             {skill.title} <img src={icon} height={40} alt={skill.title} />
           </Typography>
@@ -17,17 +17,19 @@ export class InDepthView extends React.Component {
           {skill.sections.map(section => (
             <React.Fragment>
               <Typography variant={"subtitle1"}>{section.title}</Typography>
-              <Typography variant={"body1"} paragraph={true}>
+              <Typography variant={"body1"} paragraph={true} component={"span"}>
                 {section.text}
               </Typography>
             </React.Fragment>
           ))}
-          <Divider variant={'middle'} light/>
-          <Typography paragraph style={{paddingTop:16}} variant={"h5"}>{skill.purchasableSkillType}</Typography>
+          <Divider variant={"middle"} light />
+          <Typography paragraph style={{ paddingTop: 16 }} variant={"h5"}>
+            {skill.purchasableSkillType}
+          </Typography>
           {skill.effects.map(section => (
             <React.Fragment>
               <Typography variant={"subtitle1"}>{section.title}</Typography>
-              <Typography variant={"body1"} paragraph={true}>
+              <Typography variant={"body1"} paragraph={true} component={"span"}>
                 {section.text}
               </Typography>
             </React.Fragment>
