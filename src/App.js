@@ -6,9 +6,11 @@ import { Overview } from "./components/Overview";
 import { InDepthView } from "./components/InDepthView";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
-import {CssBaseline, Divider, Typography} from "@material-ui/core";
+import {CssBaseline, Divider, Grow, Typography} from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
+import Grid from "@material-ui/core/Grid";
+import * as PropTypes from "prop-types";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -17,6 +19,48 @@ function HistoryObject(currentState) {
 function getFavoriteSkills() {
   return JSON.parse(localStorage.getItem("favorites"));
 }
+
+class MainContent extends Component {
+  render() {
+    return <div
+          color={"primary"}
+          style={{
+            padding: this.props.theme.spacing.unit * 3,
+            flex: 1,
+            marginLeft: this.props.theme.spacing.unit * 7 + 1
+          }}
+      >
+        {this.props.inDepth && (
+           <InDepthView toggleBool={this.props.toggleBool} skillObject={this.props.skillObject}/>
+        )}
+        {!this.props.inDepth && this.props.currentView != null && (
+            <Overview
+                theme={this.props.theme}
+                learnMore={this.props.learnMore}
+                currentView={this.props.currentView}
+                updateCheatSheet={this.props.updateCheatSheet}
+                toggleBool={this.props.toggleBool}
+            />
+        )}
+        {this.props.cheatSheetInDepth && (
+            <InDepthSkillList toggleBool={this.props.toggleBool} skillList={this.props.skillList}/>
+        )}
+      </div>
+    ;
+  }
+}
+
+MainContent.propTypes = {
+  theme: PropTypes.any,
+  inDepth: PropTypes.bool,
+  toggleBool: PropTypes.bool,
+  skillObject: PropTypes.any,
+  currentView: PropTypes.any,
+  learnMore: PropTypes.func,
+  updateCheatSheet: PropTypes.func,
+  cheatSheetInDepth: PropTypes.bool,
+  skillList: PropTypes.any
+};
 
 class App extends Component {
   stack = [];
@@ -81,15 +125,33 @@ class App extends Component {
   }
 
   /**
-   * Go back to the previous state
+   * Go back to the previous state, close side bar, and keep light/dark mode the same
    */
   back() {
+    let lightMode = this.state.theme.palette.type === "light";
     this.stack.pop();
     let stateObject = this.stack.pop();
     this.setState(stateObject.currentState);
     this.setState({
       open: false
     });
+    this.setLightOrDarkMode(lightMode);
+  }
+
+  /**
+   * Sets the mode: true for light mode, false for dark mode
+   * @param lightMode The boolean for whether light mode is on or off
+   */
+  setLightOrDarkMode(lightMode) {
+    if (lightMode) {
+      this.setState({
+        theme: createTheme(blue, yellow, "light")
+      });
+    } else {
+      this.setState({
+        theme: createTheme(blue, yellow, "dark")
+      });
+    }
   }
 
   /**
@@ -108,6 +170,7 @@ class App extends Component {
    * @param overviewType The object containing the information that should be displayed
    */
   changeView(overviewType) {
+    window.scrollTo(0, 0);
     if (overviewType !== this.state.currentView) {
       this.setState({
         currentView: overviewType,
@@ -125,6 +188,7 @@ class App extends Component {
    * Have the overview display the cheat sheet
    */
   switchToCheatSheet() {
+    window.scrollTo(0, 0);
     console.log("Switching to cheat sheet");
     if (!this.state.cheatSheet) {
       this.setState({
@@ -142,6 +206,7 @@ class App extends Component {
    * @param effect The skill that is being displayed
    */
   displayInDepthView(effect) {
+    window.scrollTo(0, 0);
     console.log(effect);
     this.setState({
       topic: effect,
@@ -156,6 +221,7 @@ class App extends Component {
    * Sets the state for an in depth cheat sheet
    */
   displayInDepthCheatSheet() {
+    window.scrollTo(0, 0);
     this.setState({
       topic: null,
       inDepth: false,
@@ -172,6 +238,7 @@ class App extends Component {
    * @param skillCategory The category to display all skills of
    */
   displayCategory(skillCategory){
+    window.scrollTo(0, 0);
     this.setState({
       topic: null,
       inDepth: false,
@@ -196,55 +263,44 @@ class App extends Component {
         theme: createTheme(blue, yellow, "light")
       });
     }
+    this.stack.pop();
   }
 
   render() {
     this.toggleBool ? this.toggleBool = false : this.toggleBool = true;
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
-    window.scrollTo(0, 0);
     return (
       <React.Fragment>
         <MuiThemeProvider theme={this.state.theme}>
-          <CssBaseline />
-          <div style={{display: 'flex',
+          <CssBaseline/>
+          <div style={{
+            display: 'flex',
             minHeight: '100vh',
-            flexDirection: 'column'}}>
-          <div className="App" />
+            flexDirection: 'column'
+          }}>
+            <React.Fragment className="App"/>
             <RenderAppBar
-              toggleDrawer={this.toggleDrawer}
-              open={this.state.open}
-              switchTheme={this.switchTheme}
-              changeview={this.displayInDepthView}
-              onclick={this.changeView}
-              back={this.back}
-              backable={this.state.inDepth || this.state.cheatSheetInDepth}
-              cheatSheet={this.switchToCheatSheet}
-              cheatSheetInDepth={this.displayInDepthCheatSheet}
-              renderCategory={this.displayCategory}
+                toggleDrawer={this.toggleDrawer}
+                open={this.state.open}
+                switchTheme={this.switchTheme}
+                changeview={this.displayInDepthView}
+                onclick={this.changeView}
+                back={this.back}
+                backable={this.state.inDepth || this.state.cheatSheetInDepth}
+                cheatSheet={this.switchToCheatSheet}
+                cheatSheetInDepth={this.displayInDepthCheatSheet}
+                renderCategory={this.displayCategory}
             />
-            <div
-              color={"primary"}
-              style={{ width: "70%", margin: "auto", padding: 20, flex:1 }}
-            >
-              {this.state.inDepth && (
-                <InDepthView toggleBool={this.toggleBool} skillObject={this.state.topic} />
-              )}
-              {!this.state.inDepth && this.state.currentView != null && (
-                <Overview
-                  learnMore={this.displayInDepthView}
-                  currentView={this.state.currentView}
-                  updateCheatSheet={this.updateCheatSheet}
-                  toggleBool={this.toggleBool}
-                />
-              )}
-              {this.state.cheatSheetInDepth && (
-                <InDepthSkillList toggleBool={this.toggleBool} skillList={this.state.skillList} />
-              )}
-            </div>
+            <MainContent theme={this.state.theme} inDepth={this.state.inDepth} toggleBool={this.toggleBool}
+                         skillObject={this.state.topic} currentView={this.state.currentView}
+                         learnMore={this.displayInDepthView} updateCheatSheet={this.updateCheatSheet}
+                         cheatSheetInDepth={this.state.cheatSheetInDepth} skillList={this.state.skillList}/>
+
 
             <Typography style={{textAlign: 'right', paddingRight: 5}} variant={"overline"}>{copyright}</Typography>
           </div>
+
         </MuiThemeProvider>
       </React.Fragment>
     );

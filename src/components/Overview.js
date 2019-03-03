@@ -99,7 +99,7 @@ export class Overview extends React.Component {
       <Grow in={true}>
         <Grid container justify="flex-start" alignItems={"stretch"}>
           {this.props.currentView.map(skill => (
-            <Grid item sm={4} style={{ padding: 20 }}>
+            <Grid item sm={3} style={{ padding: 20 }}>
               <SkillCard
                 updateCheatSheet={this.props.updateCheatSheet}
                 learnMore={this.props.learnMore}

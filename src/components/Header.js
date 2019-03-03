@@ -36,8 +36,8 @@ const styles = theme => ({
         zIndex: theme.zIndex.drawer + 1
     },
     drawer: {
-        width: drawerWidth,
-        flexShrink: 0
+            width: drawerWidth,
+            flexShrink: 0,
     },
     drawerPaper: {
         width: drawerWidth
@@ -46,7 +46,9 @@ const styles = theme => ({
         flexGrow: 1,
         padding: theme.spacing.unit * 3
     },
-    toolbar: theme.mixins.toolbar,
+    toolbar: {
+        ...theme.mixins.toolbar
+    },
     drawerClose: {
         transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.sharp,
@@ -343,4 +345,4 @@ export class RenderAppBar extends Component {
     }
 }
 
-export default withStyles(styles)(RenderAppBar);
+export default withStyles(styles, {withTheme: true})(RenderAppBar);

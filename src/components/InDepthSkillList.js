@@ -1,5 +1,6 @@
 import React from "react";
 import {InDepthView} from "./InDepthView";
+import {Grow} from "@material-ui/core";
 
 export class InDepthSkillList extends React.Component {
     render() {
@@ -23,6 +24,8 @@ export class InDepthSkillList extends React.Component {
             }
 
         }
-        return skillListComponents;
+        return (
+            skillListComponents
+        );
     }
 }
