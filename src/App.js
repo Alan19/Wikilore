@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
-import {allSkills, copyright, magicDescription} from "./info";
+import { allSkills, copyright, magicDescription } from "./info";
 import { Overview } from "./components/Overview";
 import { InDepthView } from "./components/InDepthView";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
-import {CssBaseline, Typography} from "@material-ui/core";
+import { CssBaseline, Typography } from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
+import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -19,34 +20,44 @@ function getFavoriteSkills() {
   return JSON.parse(localStorage.getItem("favorites"));
 }
 
-class MainContent extends Component {
-  render() {
-    return <div
-          color={"primary"}
-          style={{
-            padding: this.props.theme.spacing.unit * 3,
-            flex: 1,
-            marginLeft: this.props.theme.spacing.unit * 7 + 1
-          }}
-      >
-        {this.props.inDepth && (
-           <InDepthView toggleBool={this.props.toggleBool} skillObject={this.props.skillObject}/>
-        )}
-        {!this.props.inDepth && this.props.currentView != null && (
-            <Overview
-                theme={this.props.theme}
-                learnMore={this.props.learnMore}
-                currentView={this.props.currentView}
-                updateCheatSheet={this.props.updateCheatSheet}
-                toggleBool={this.props.toggleBool}
-            />
-        )}
-        {this.props.cheatSheetInDepth && (
-            <InDepthSkillList toggleBool={this.props.toggleBool} skillList={this.props.skillList}/>
-        )}
-      </div>
-    ;
-  }
+function MainContent(props) {
+  const isDesktop = unstable_useMediaQuery("(min-width:600px)");
+  return (
+    <div
+      color={"primary"}
+      style={{
+        padding: props.theme.spacing.unit * 3,
+        flex: 1,
+        marginLeft: isDesktop
+          ? props.theme.spacing.unit * 9 + 1
+          : props.theme.spacing.unit * 7 + 1
+      }}
+    >
+      {props.inDepth && (
+        <InDepthView
+          isDesktop={isDesktop}
+          toggleBool={props.toggleBool}
+          skillObject={props.skillObject}
+        />
+      )}
+      {!props.inDepth && props.currentView != null && (
+        <Overview
+          theme={props.theme}
+          learnMore={props.learnMore}
+          currentView={props.currentView}
+          updateCheatSheet={props.updateCheatSheet}
+          toggleBool={props.toggleBool}
+          isDesktop={isDesktop}
+        />
+      )}
+      {props.cheatSheetInDepth && (
+        <InDepthSkillList
+          toggleBool={props.toggleBool}
+          skillList={props.skillList}
+        />
+      )}
+    </div>
+  );
 }
 
 MainContent.propTypes = {
@@ -84,7 +95,7 @@ class App extends Component {
       cheatSheetInDepth: false
     };
 
-    this.toggleBool=false;
+    this.toggleBool = false;
     this.changeView = this.changeView.bind(this);
     this.displayInDepthView = this.displayInDepthView.bind(this);
     this.back = this.back.bind(this);
@@ -236,7 +247,7 @@ class App extends Component {
    * Sets the state to display a list of all skills in a section
    * @param skillCategory The category to display all skills of
    */
-  displayCategory(skillCategory){
+  displayCategory(skillCategory) {
     window.scrollTo(0, 0);
     this.setState({
       topic: null,
@@ -266,40 +277,52 @@ class App extends Component {
   }
 
   render() {
-    this.toggleBool ? this.toggleBool = false : this.toggleBool = true;
+    this.toggleBool ? (this.toggleBool = false) : (this.toggleBool = true);
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
       <React.Fragment>
         <MuiThemeProvider theme={this.state.theme}>
-          <CssBaseline/>
-          <div style={{
-            display: 'flex',
-            minHeight: '100vh',
-            flexDirection: 'column'
-          }}>
-            <div className="App"/>
+          <CssBaseline />
+          <div
+            style={{
+              display: "flex",
+              minHeight: "100vh",
+              flexDirection: "column"
+            }}
+          >
+            <div className="App" />
             <RenderAppBar
-                toggleDrawer={this.toggleDrawer}
-                open={this.state.open}
-                switchTheme={this.switchTheme}
-                changeview={this.displayInDepthView}
-                onclick={this.changeView}
-                back={this.back}
-                backable={this.state.inDepth || this.state.cheatSheetInDepth}
-                cheatSheet={this.switchToCheatSheet}
-                cheatSheetInDepth={this.displayInDepthCheatSheet}
-                renderCategory={this.displayCategory}
+              toggleDrawer={this.toggleDrawer}
+              open={this.state.open}
+              switchTheme={this.switchTheme}
+              changeview={this.displayInDepthView}
+              onclick={this.changeView}
+              back={this.back}
+              backable={this.state.inDepth || this.state.cheatSheetInDepth}
+              cheatSheet={this.switchToCheatSheet}
+              cheatSheetInDepth={this.displayInDepthCheatSheet}
+              renderCategory={this.displayCategory}
             />
-            <MainContent theme={this.state.theme} inDepth={this.state.inDepth} toggleBool={this.toggleBool}
-                         skillObject={this.state.topic} currentView={this.state.currentView}
-                         learnMore={this.displayInDepthView} updateCheatSheet={this.updateCheatSheet}
-                         cheatSheetInDepth={this.state.cheatSheetInDepth} skillList={this.state.skillList}/>
+            <MainContent
+              theme={this.state.theme}
+              inDepth={this.state.inDepth}
+              toggleBool={this.toggleBool}
+              skillObject={this.state.topic}
+              currentView={this.state.currentView}
+              learnMore={this.displayInDepthView}
+              updateCheatSheet={this.updateCheatSheet}
+              cheatSheetInDepth={this.state.cheatSheetInDepth}
+              skillList={this.state.skillList}
+            />
 
-
-            <Typography style={{textAlign: 'right', paddingRight: 5}} variant={"overline"}>{copyright}</Typography>
+            <Typography
+              style={{ textAlign: "right", paddingRight: 5 }}
+              variant={"overline"}
+            >
+              {copyright}
+            </Typography>
           </div>
-
         </MuiThemeProvider>
       </React.Fragment>
     );

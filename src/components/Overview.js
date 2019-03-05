@@ -30,7 +30,7 @@ export class SkillCard extends Component {
         <CardContent
           style={{ height: 175, textOverflow: "ellipsis", overflow: "hidden" }}
         >
-          <Typography  variant={"body1"}>{this.props.skill.text}</Typography>
+          <Typography variant={"body1"}>{this.props.skill.text}</Typography>
         </CardContent>
         <CardActions disableActionSpacing>
           <div className={"left"} style={{ flexGrow: 1 }}>
@@ -97,9 +97,15 @@ export class Overview extends React.Component {
   render() {
     return (
       <Grow in={true}>
-        <Grid container justify="flex-start" alignItems={"stretch"}>
+        <Grid
+          container
+          spacing={this.props.theme.spacing.unit * 3}
+          justify="flex-start"
+          alignItems={"stretch"}
+          style={{width: this.props.isDesktop ? '70%' : '100%', margin: 'auto'}}
+        >
           {this.props.currentView.map(skill => (
-            <Grid item sm={3} style={{ padding: 20 }}>
+            <Grid item sm={4}>
               <SkillCard
                 updateCheatSheet={this.props.updateCheatSheet}
                 learnMore={this.props.learnMore}
