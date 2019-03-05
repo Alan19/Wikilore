@@ -7,8 +7,8 @@ export class InDepthView extends React.Component {
     const icon = this.props.skillObject.icon;
     return (
       <Grow in={true}>
-        <div style={{ margin: "auto", width: "70%" }}>
-          <Typography variant={"h3"}>
+        <div style={{ margin: "auto", width: "70%"  }}>
+          <Typography variant={"h3"} style={{overflow:'auto', overflowY: 'hidden'}}>
             {skill.title} <img src={icon} height={40} alt={skill.title} />
           </Typography>
           <Typography variant={"subtitle2"} paragraph={true}>
