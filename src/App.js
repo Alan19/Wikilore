@@ -54,6 +54,7 @@ function MainContent(props) {
         <InDepthSkillList
           toggleBool={props.toggleBool}
           skillList={props.skillList}
+          isDesktop={isDesktop}
         />
       )}
     </div>
@@ -191,7 +192,6 @@ class App extends Component {
       cheatSheet: false,
       cheatSheetInDepth: false
     });
-    this.forceUpdate();
   }
 
   /**

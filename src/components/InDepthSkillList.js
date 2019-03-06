@@ -10,7 +10,10 @@ export class InDepthSkillList extends React.Component {
       if (i < skillList.length - 1) {
         skillListComponents.push(
           <React.Fragment>
-            <InDepthView skillObject={skillList[i]} />
+            <InDepthView
+              skillObject={skillList[i]}
+              isDesktop={this.props.isDesktop}
+            />
             <hr />
           </React.Fragment>
         );

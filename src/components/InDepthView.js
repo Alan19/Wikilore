@@ -16,6 +16,7 @@ export class InDepthView extends Component {
           <Typography
             variant={"h3"}
             style={{ overflow: "auto", overflowY: "hidden" }}
+            component={"span"}
           >
             {skill.title} <img src={icon} height={40} alt={skill.title} />
           </Typography>
