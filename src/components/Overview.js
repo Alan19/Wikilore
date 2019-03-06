@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Avatar,
   Button,
   Card,
   CardActions,
@@ -7,7 +8,7 @@ import {
   CardHeader,
   Grow,
   Icon,
-  IconButton,
+  IconButton, List, ListItem, ListItemAvatar, ListItemIcon, ListItemSecondaryAction, ListItemText, Paper,
   Typography
 } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -100,6 +101,34 @@ export class SkillCard extends Component {
 }
 
 export class Overview extends React.Component {
+  addToCheatSheet(skill, cheatSheetMethod) {
+    if (localStorage.hasOwnProperty("favorites")) {
+      let favoriteArray = JSON.parse(localStorage.getItem("favorites"));
+      if (!favoriteArray.includes(skill.name)) {
+        favoriteArray.push(skill.name);
+        localStorage.setItem("favorites", JSON.stringify(favoriteArray));
+      } else {
+        favoriteArray = favoriteArray.filter(name => skill.name !== name);
+        localStorage.setItem("favorites", JSON.stringify(favoriteArray));
+      }
+    } else {
+      let favoriteArray = [skill.name];
+      localStorage.setItem("favorites", JSON.stringify(favoriteArray));
+    }
+    cheatSheetMethod();
+    this.forceUpdate();
+  };
+  checkFavorited = skill => {
+    if (localStorage.getItem("favorites") === null) {
+      return "inherit";
+    } else {
+      if (JSON.parse(localStorage.getItem("favorites")).includes(skill.name)) {
+        return "secondary";
+      } else {
+        return "inherit";
+      }
+    }
+  };
   render() {
     return (
       <Grow in={true}>
@@ -114,14 +143,34 @@ export class Overview extends React.Component {
           }}
         >
           {this.props.currentView.map(skill => (
-            <Grid item sm={4}>
+            this.props.isDesktop ? <Grid item sm={4}>
               <SkillCard
                 updateCheatSheet={this.props.updateCheatSheet}
                 learnMore={this.props.learnMore}
                 skill={skill}
                 isDesktop={this.props.isDesktop}
               />
-            </Grid>
+            </Grid> :
+                <List style={{width: '100%',
+                  maxWidth: 360,
+                  backgroundColor: this.props.theme.palette.background.paper}} component={"nav"}>
+                  <ListItem onClick={() => this.props.learnMore(skill)}>
+                    <ListItemIcon><Avatar src={skill.icon}/></ListItemIcon>
+                    <ListItemText primary={skill.name} secondary={<Typography noWrap>{skill.text}</Typography>} />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                          onClick={() =>
+                              this.addToCheatSheet(
+                                  skill,
+                                  this.props.updateCheatSheet
+                              )
+                          }
+                      >
+                        <Icon color={this.checkFavorited(skill)}>star</Icon>
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
           ))}
         </Grid>
       </Grow>
