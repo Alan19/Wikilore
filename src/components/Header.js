@@ -292,7 +292,7 @@ DrawerButton.propTypes = {
   open: PropTypes.any
 };
 
-export class RenderAppBar extends Component {
+export class NavBar extends Component {
   render() {
     const { classes } = this.props;
     return (
@@ -355,4 +355,4 @@ export class RenderAppBar extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(RenderAppBar);
+export default withStyles(styles, { withTheme: true })(NavBar);

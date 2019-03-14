@@ -3,7 +3,6 @@ import "./App.css";
 import RenderAppBar from "./components/Header";
 import { allSkills, copyright, magicDescription } from "./info";
 import { Overview } from "./components/Overview";
-import { InDepthView } from "./components/InDepthView";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
 import { CssBaseline, Typography } from "@material-ui/core";
@@ -11,6 +10,7 @@ import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
+import InDepthView from "./components/InDepthView";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -38,6 +38,7 @@ function MainContent(props) {
           isDesktop={isDesktop}
           toggleBool={props.toggleBool}
           skillObject={props.skillObject}
+          theme={props.theme}
         />
       )}
       {!props.inDepth && props.currentView != null && (

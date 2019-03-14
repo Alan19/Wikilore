@@ -1,107 +1,8 @@
-import React, { Component } from "react";
-import {
-  Avatar,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Grow,
-  Icon,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  Typography
-} from "@material-ui/core";
+import React from "react";
+import {Grow} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import * as PropTypes from "prop-types";
-
-function SkillTitle(props) {
-  return (
-    <span>
-      {props.skill.name}
-      &nbsp;
-      <img src={props.skill.icon} height={20} alt={props.skill.name} />{" "}
-    </span>
-  );
-}
-
-export class SkillCard extends Component {
-  render() {
-    return (
-      <Card>
-        <CardHeader title={<SkillTitle skill={this.props.skill} />} />
-        {this.props.isDesktop && (
-          <CardContent
-            style={{
-              height: 175,
-              textOverflow: "ellipsis",
-              overflow: "hidden"
-            }}
-          >
-            <Typography variant={"body1"}>{this.props.skill.text}</Typography>
-          </CardContent>
-        )}
-        <CardActions disableActionSpacing>
-          <div className={"left"} style={{ flexGrow: 1 }}>
-            <Button
-              size="small"
-              color={"primary"}
-              onClick={() => this.props.learnMore(this.props.skill)}
-            >
-              Learn More
-            </Button>
-          </div>
-          <IconButton onClick={this.props.addToCheatSheet}>
-            <Icon color={Overview.checkFavorited(this.props.skill)}>star</Icon>
-          </IconButton>
-        </CardActions>
-      </Card>
-    );
-  }
-}
-
-class MobileSkillList extends Component {
-  render() {
-    return (
-      <List
-        style={{
-          width: "100%",
-          maxWidth: 360,
-          backgroundColor: this.props.theme.palette.background.paper
-        }}
-        component={"nav"}
-      >
-        <ListItem onClick={this.props.onClick}>
-          <ListItemIcon>
-            <Avatar src={this.props.skill.icon} />
-          </ListItemIcon>
-          <ListItemText
-            primary={this.props.skill.name}
-            secondary={<Typography noWrap>{this.props.skill.text}</Typography>}
-          />
-          <ListItemSecondaryAction>
-            <IconButton onClick={this.props.addToCheatSheet}>
-              <Icon color={Overview.checkFavorited(this.props.skill)}>
-                star
-              </Icon>
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
-    );
-  }
-}
-
-MobileSkillList.propTypes = {
-  theme: PropTypes.any,
-  onClick: PropTypes.func,
-  skill: PropTypes.any,
-  addToCheatSheet: PropTypes.func
-};
+import {SkillCard} from "./SkillCard";
+import {MobileSkillList} from "./MobileSkillList";
 
 export class Overview extends React.Component {
   static checkFavorited(skill) {
@@ -163,10 +64,10 @@ export class Overview extends React.Component {
               </Grid>
             ) : (
               <MobileSkillList
-                  theme={this.props.theme}
-                  onClick={() => this.props.learnMore(skill)}
-                  skill={skill}
-                  addToCheatSheet={() =>
+                theme={this.props.theme}
+                onClick={() => this.props.learnMore(skill)}
+                skill={skill}
+                addToCheatSheet={() =>
                   this.addToCheatSheet(skill, this.props.updateCheatSheet)
                 }
               />

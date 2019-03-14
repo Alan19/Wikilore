@@ -51,15 +51,20 @@ function getSuggestions(value) {
 
   return inputLength === 0
     ? []
-    : suggestions.filter(suggestion => {
+    : //Filter results based on skill name matching or section name matching
+      suggestions.filter(suggestion => {
         const keep =
           count < 5 &&
-          suggestion.name.slice(0, inputLength).toLowerCase() === inputValue;
-
+          (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
+              (inputLength > 2 && ((suggestion.detailedDescription.sections
+                .map(field => field.title.toLowerCase().slice(0, inputLength))
+                .includes(inputValue) ||
+              suggestion.detailedDescription.effects
+                .map(field => field.title.slice(0, inputLength).toLowerCase())
+                .includes(inputValue)))));
         if (keep) {
           count += 1;
         }
-
         return keep;
       });
 }
