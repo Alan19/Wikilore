@@ -11,6 +11,7 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -23,42 +24,42 @@ function getFavoriteSkills() {
 function MainContent(props) {
   const isDesktop = unstable_useMediaQuery("(min-width:600px)");
   return (
-    <div
-      color={"primary"}
-      style={{
-        padding: props.theme.spacing.unit * 3,
-        flex: 1,
-        marginLeft: isDesktop
-          ? props.theme.spacing.unit * 9 + 1
-          : props.theme.spacing.unit * 7 + 1
-      }}
-    >
-      {props.inDepth && (
-        <InDepthView
-          isDesktop={isDesktop}
-          toggleBool={props.toggleBool}
-          skillObject={props.skillObject}
-          theme={props.theme}
-        />
-      )}
-      {!props.inDepth && props.currentView != null && (
-        <Overview
-          theme={props.theme}
-          learnMore={props.learnMore}
-          currentView={props.currentView}
-          updateCheatSheet={props.updateCheatSheet}
-          toggleBool={props.toggleBool}
-          isDesktop={isDesktop}
-        />
-      )}
-      {props.cheatSheetInDepth && (
-        <InDepthSkillList
-          toggleBool={props.toggleBool}
-          skillList={props.skillList}
-          isDesktop={isDesktop}
-        />
-      )}
-    </div>
+      <div
+          color={"primary"}
+          style={{
+            padding: props.theme.spacing.unit * 3,
+            flex: 1,
+            marginLeft: isDesktop
+                ? props.theme.spacing.unit * 9 + 1
+                : props.theme.spacing.unit * 7 + 1
+          }}
+      >
+        {props.inDepth && (
+            <InDepthView
+                isDesktop={isDesktop}
+                toggleBool={props.toggleBool}
+                skillObject={props.skillObject}
+                theme={props.theme}
+            />
+        )}
+        {!props.inDepth && props.currentView != null && (
+            <Overview
+                theme={props.theme}
+                learnMore={props.learnMore}
+                currentView={props.currentView}
+                updateCheatSheet={props.updateCheatSheet}
+                toggleBool={props.toggleBool}
+                isDesktop={isDesktop}
+            />
+        )}
+        {props.cheatSheetInDepth && (
+            <InDepthSkillList
+                toggleBool={props.toggleBool}
+                skillList={props.skillList}
+                isDesktop={isDesktop}
+            />
+        )}
+      </div>
   );
 }
 
@@ -282,7 +283,7 @@ class App extends Component {
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
-      <React.Fragment>
+      <Router>
         <MuiThemeProvider theme={this.state.theme}>
           <CssBaseline />
           <div
@@ -325,7 +326,7 @@ class App extends Component {
             </Typography>
           </div>
         </MuiThemeProvider>
-      </React.Fragment>
+      </Router>
     );
   }
 }
