@@ -1,6 +1,6 @@
 RuleBook
 ======
-**Software Name** is a webapp for generating a wiki-like webpage for whatever you like! It was originally meant for consolidating information about a tabletop game, but can be used for things like blogs.
+**RuleBook** is a webapp for generating a wiki-like webpage for whatever you like! It was originally meant for consolidating information about a tabletop game, but can be used for things like blogs.
 
 #### Screenshots
 Coming Soon!
@@ -24,9 +24,7 @@ to distribute the app to others or ``` $ npm start``` to test.
 * see [LICENSE](https://github.com/username/sw-name/blob/master/LICENSE.md) file
 
 ## Version 
-* Version 1.
+* Version 1.2.0
 
 ## How-to use this code
 * see [INSTRUCTIONS](https://github.com/username/sw-name/blob/master/INSTRUCTIONS.md) file
-
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=username&url=https://github.com/username/sw-name&title=sw-name&language=&tags=github&category=software) 
