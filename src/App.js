@@ -23,26 +23,44 @@ function getFavoriteSkills() {
 
 function MainContent(props) {
   const isDesktop = unstable_useMediaQuery("(min-width:600px)");
-  return (
-      <div
-          color={"primary"}
-          style={{
-            padding: props.theme.spacing.unit * 3,
-            flex: 1,
-            marginLeft: isDesktop
-                ? props.theme.spacing.unit * 9 + 1
-                : props.theme.spacing.unit * 7 + 1
-          }}
-      >
-        {props.inDepth && (
-            <InDepthView
-                isDesktop={isDesktop}
-                toggleBool={props.toggleBool}
-                skillObject={props.skillObject}
-                theme={props.theme}
-            />
-        )}
-        {!props.inDepth && props.currentView != null && (
+  return <div
+      color={"primary"}
+      style={{
+        padding: props.theme.spacing.unit * 3,
+        flex: 1,
+        marginLeft: isDesktop
+            ? props.theme.spacing.unit * 9 + 1
+            : props.theme.spacing.unit * 7 + 1
+      }}
+  >
+    {/*{props.inDepth && (*/}
+    {/*<InDepthView*/}
+    {/*isDesktop={isDesktop}*/}
+    {/*toggleBool={props.toggleBool}*/}
+    {/*skillObject={props.skillObject}*/}
+    {/*theme={props.theme}*/}
+    {/*/>*/}
+    {/*)}*/}
+    {/*{!props.inDepth && props.currentView != null && (*/}
+    {/*<Overview*/}
+    {/*theme={props.theme}*/}
+    {/*learnMore={props.learnMore}*/}
+    {/*currentView={props.currentView}*/}
+    {/*updateCheatSheet={props.updateCheatSheet}*/}
+    {/*toggleBool={props.toggleBool}*/}
+    {/*isDesktop={isDesktop}*/}
+    {/*/>*/}
+    {/*)}*/}
+    {/*{props.cheatSheetInDepth && (*/}
+    {/*<InDepthSkillList*/}
+    {/*toggleBool={props.toggleBool}*/}
+    {/*skillList={props.skillList}*/}
+    {/*isDesktop={isDesktop}*/}
+    {/*/>*/}
+    {/*)}*/}
+    <Route
+        path={"/overview"}
+        render={routeProps => (
             <Overview
                 theme={props.theme}
                 learnMore={props.learnMore}
@@ -52,15 +70,24 @@ function MainContent(props) {
                 isDesktop={isDesktop}
             />
         )}
-        {props.cheatSheetInDepth && (
-            <InDepthSkillList
-                toggleBool={props.toggleBool}
-                skillList={props.skillList}
-                isDesktop={isDesktop}
-            />
-        )}
-      </div>
-  );
+    />
+    <Route path={"/indepth"}
+      render={routeProps => {
+        console.log(routeProps.location.state);
+        return <InDepthView
+            isDesktop={isDesktop}
+            skillObject={findSkill(routeProps.location.state.topic)}
+            theme={props.theme}
+        />;
+      }
+
+      }
+    />
+  </div>;
+}
+
+function findSkill(id){
+  return allSkills.filter(skill => skill.id === id)[0];
 }
 
 MainContent.propTypes = {
@@ -98,7 +125,6 @@ class App extends Component {
       cheatSheetInDepth: false
     };
 
-    this.toggleBool = false;
     this.changeView = this.changeView.bind(this);
     this.displayInDepthView = this.displayInDepthView.bind(this);
     this.back = this.back.bind(this);
@@ -283,48 +309,50 @@ class App extends Component {
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
+      <Router>
         <MuiThemeProvider theme={this.state.theme}>
           <CssBaseline />
           <div
-              style={{
-                display: "flex",
-                minHeight: "100vh",
-                flexDirection: "column"
-              }}
+            style={{
+              display: "flex",
+              minHeight: "100vh",
+              flexDirection: "column"
+            }}
           >
             <div className="App" />
             <RenderAppBar
-                toggleDrawer={this.toggleDrawer}
-                open={this.state.open}
-                switchTheme={this.switchTheme}
-                changeview={this.displayInDepthView}
-                onclick={this.changeView}
-                back={this.back}
-                backable={this.state.inDepth || this.state.cheatSheetInDepth}
-                cheatSheet={this.switchToCheatSheet}
-                cheatSheetInDepth={this.displayInDepthCheatSheet}
-                renderCategory={this.displayCategory}
+              toggleDrawer={this.toggleDrawer}
+              open={this.state.open}
+              switchTheme={this.switchTheme}
+              changeview={this.displayInDepthView}
+              onclick={this.changeView}
+              back={this.back}
+              backable={this.state.inDepth || this.state.cheatSheetInDepth}
+              cheatSheet={this.switchToCheatSheet}
+              cheatSheetInDepth={this.displayInDepthCheatSheet}
+              renderCategory={this.displayCategory}
             />
             <MainContent
-                theme={this.state.theme}
-                inDepth={this.state.inDepth}
-                toggleBool={this.toggleBool}
-                skillObject={this.state.topic}
-                currentView={this.state.currentView}
-                learnMore={this.displayInDepthView}
-                updateCheatSheet={this.updateCheatSheet}
-                cheatSheetInDepth={this.state.cheatSheetInDepth}
-                skillList={this.state.skillList}
+              theme={this.state.theme}
+              inDepth={this.state.inDepth}
+              toggleBool={this.toggleBool}
+              skillObject={this.state.topic}
+              currentView={this.state.currentView}
+              learnMore={this.displayInDepthView}
+              updateCheatSheet={this.updateCheatSheet}
+              cheatSheetInDepth={this.state.cheatSheetInDepth}
+              skillList={this.state.skillList}
             />
 
             <Typography
-                style={{ textAlign: "right", paddingRight: 5 }}
-                variant={"overline"}
+              style={{ textAlign: "right", paddingRight: 5 }}
+              variant={"overline"}
             >
               {copyright}
             </Typography>
           </div>
         </MuiThemeProvider>
+      </Router>
     );
   }
 }

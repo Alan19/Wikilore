@@ -10,6 +10,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { Overview } from "./Overview";
+import { Link } from "react-router-dom";
 
 function SkillTitle(props) {
   return (
@@ -34,7 +35,12 @@ export class SkillCard extends Component {
               overflow: "hidden"
             }}
           >
-            <Typography style={{textOverflow: "ellipsis", overflow: 'hidden'}} variant={"body1"}>{this.props.skill.text}</Typography>
+            <Typography
+              style={{ textOverflow: "ellipsis", overflow: "hidden" }}
+              variant={"body1"}
+            >
+              {this.props.skill.text}
+            </Typography>
           </CardContent>
         )}
         <CardActions disableActionSpacing>
@@ -42,9 +48,18 @@ export class SkillCard extends Component {
             <Button
               size="small"
               color={"primary"}
-              onClick={() => this.props.learnMore(this.props.skill)}
+              // onClick={() => this.props.learnMore(this.props.skill)}
             >
-              Learn More
+              <Link
+                to={{
+                  pathname:
+                    "/indepth/" +
+                    this.props.skill.name.toLowerCase().replace(/\s/g, ""),
+                  state: { topic: this.props.skill.id }
+                }}
+              >
+                Learn More
+              </Link>
             </Button>
           </div>
           <IconButton onClick={this.props.addToCheatSheet}>
