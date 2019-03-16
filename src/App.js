@@ -283,50 +283,48 @@ class App extends Component {
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
-      <Router>
         <MuiThemeProvider theme={this.state.theme}>
           <CssBaseline />
           <div
-            style={{
-              display: "flex",
-              minHeight: "100vh",
-              flexDirection: "column"
-            }}
+              style={{
+                display: "flex",
+                minHeight: "100vh",
+                flexDirection: "column"
+              }}
           >
             <div className="App" />
             <RenderAppBar
-              toggleDrawer={this.toggleDrawer}
-              open={this.state.open}
-              switchTheme={this.switchTheme}
-              changeview={this.displayInDepthView}
-              onclick={this.changeView}
-              back={this.back}
-              backable={this.state.inDepth || this.state.cheatSheetInDepth}
-              cheatSheet={this.switchToCheatSheet}
-              cheatSheetInDepth={this.displayInDepthCheatSheet}
-              renderCategory={this.displayCategory}
+                toggleDrawer={this.toggleDrawer}
+                open={this.state.open}
+                switchTheme={this.switchTheme}
+                changeview={this.displayInDepthView}
+                onclick={this.changeView}
+                back={this.back}
+                backable={this.state.inDepth || this.state.cheatSheetInDepth}
+                cheatSheet={this.switchToCheatSheet}
+                cheatSheetInDepth={this.displayInDepthCheatSheet}
+                renderCategory={this.displayCategory}
             />
             <MainContent
-              theme={this.state.theme}
-              inDepth={this.state.inDepth}
-              toggleBool={this.toggleBool}
-              skillObject={this.state.topic}
-              currentView={this.state.currentView}
-              learnMore={this.displayInDepthView}
-              updateCheatSheet={this.updateCheatSheet}
-              cheatSheetInDepth={this.state.cheatSheetInDepth}
-              skillList={this.state.skillList}
+                theme={this.state.theme}
+                inDepth={this.state.inDepth}
+                toggleBool={this.toggleBool}
+                skillObject={this.state.topic}
+                currentView={this.state.currentView}
+                learnMore={this.displayInDepthView}
+                updateCheatSheet={this.updateCheatSheet}
+                cheatSheetInDepth={this.state.cheatSheetInDepth}
+                skillList={this.state.skillList}
             />
 
             <Typography
-              style={{ textAlign: "right", paddingRight: 5 }}
-              variant={"overline"}
+                style={{ textAlign: "right", paddingRight: 5 }}
+                variant={"overline"}
             >
               {copyright}
             </Typography>
           </div>
         </MuiThemeProvider>
-      </Router>
     );
   }
 }
