@@ -45,22 +45,22 @@ export class SkillCard extends Component {
         )}
         <CardActions disableActionSpacing>
           <div className={"left"} style={{ flexGrow: 1 }}>
-            <Button
-              size="small"
-              color={"primary"}
-              // onClick={() => this.props.learnMore(this.props.skill)}
+            <Link
+              to={{
+                pathname: `/indepth/${this.props.skill.name
+                  .toLowerCase()
+                  .replace(/\s/g, "")}`,
+                state: { topic: this.props.skill.id }
+              }}
             >
-              <Link
-                to={{
-                  pathname:
-                    "/indepth/" +
-                    this.props.skill.name.toLowerCase().replace(/\s/g, ""),
-                  state: { topic: this.props.skill.id }
-                }}
+              <Button
+                size="small"
+                color={"primary"}
+                // onClick={() => this.props.learnMore(this.props.skill)}
               >
                 Learn More
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
           <IconButton onClick={this.props.addToCheatSheet}>
             <Icon color={Overview.checkFavorited(this.props.skill)}>star</Icon>

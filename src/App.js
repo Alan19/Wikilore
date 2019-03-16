@@ -5,6 +5,7 @@ import {
   allSkills,
   copyright,
   defaultCategory,
+  info,
   magicDescription
 } from "./info";
 import { Overview } from "./components/Overview";
@@ -16,7 +17,12 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -28,6 +34,7 @@ function getFavoriteSkills() {
 
 function MainContent(props) {
   const isDesktop = unstable_useMediaQuery("(min-width:600px)");
+  console.log(props.getSkillsFromCheatSheet);
   return (
     <div
       color={"primary"}
@@ -64,36 +71,105 @@ function MainContent(props) {
       {/*isDesktop={isDesktop}*/}
       {/*/>*/}
       {/*)}*/}
-      <Route exact path={''} render={() => <Redirect to="/overview" /> } />
+      {/*<Route*/}
+      {/*path={""}*/}
+      {/*render={routeProps => (*/}
+      {/*<Redirect*/}
+      {/*to={{*/}
+      {/*pathname: `/overview/${info[0].name}`,*/}
+      {/*state: { displayedSection: 0 }*/}
+      {/*}}*/}
+      {/*/>*/}
+      {/*)}*/}
+      {/*/>*/}
       <Route
-          exact
         path={"/overview"}
         render={routeProps => (
           <Overview
             theme={props.theme}
             learnMore={props.learnMore}
-            currentView={props.currentView}
+            currentView={findSection(
+              routeProps.location.state.displayedSection
+            )}
             updateCheatSheet={props.updateCheatSheet}
-            toggleBool={props.toggleBool}
             isDesktop={isDesktop}
           />
         )}
       />
       <Route
         path={"/indepth"}
+        render={routeProps => (
+          <InDepthView
+            isDesktop={isDesktop}
+            skillObject={findSkill(routeProps.location.state.topic)}
+            theme={props.theme}
+          />
+        )}
+      />
+      <Route
+        path={"/indepthlist"}
+        render={routeProps => (
+          <InDepthSkillList
+            isDesktop={isDesktop}
+            skillList={findSection(routeProps.location.state.displayedList)}
+            theme={props.theme}
+          />
+        )}
+      />
+      <Route
+        path={"/favorites"}
         render={routeProps => {
-          console.log(routeProps.location.state);
           return (
-            <InDepthView
+            <Overview
+              theme={props.theme}
+              learnMore={props.learnMore}
+              currentView={props.getSkillsFromCheatSheet}
+              updateCheatSheet={props.updateCheatSheet}
               isDesktop={isDesktop}
-              skillObject={findSkill(routeProps.location.state.topic)}
+            />
+          );
+        }}
+      />
+      <Route
+        path={"/cheatsheet"}
+        render={routeProps => {
+          return (
+            <InDepthSkillList
+              isDesktop={isDesktop}
+              skillList={props.getSkillsFromCheatSheet}
               theme={props.theme}
             />
           );
         }}
       />
+      <Route
+        path={"/index"}
+        render={routeProps => (
+          <Overview
+            theme={props.theme}
+            learnMore={props.learnMore}
+            currentView={allSkills}
+            updateCheatSheet={props.updateCheatSheet}
+            isDesktop={isDesktop}
+          />
+        )}
+      />
+      <Route
+          path={"/glossary"}
+          render={routeProps => (
+              <InDepthSkillList
+                  isDesktop={isDesktop}
+                  skillList={allSkills}
+                  theme={props.theme}
+              />
+          )}
+      />
     </div>
   );
+}
+
+function findSection(id) {
+  return info[id].infoObj;
 }
 
 function findSkill(id) {
@@ -103,7 +179,6 @@ function findSkill(id) {
 MainContent.propTypes = {
   theme: PropTypes.any,
   inDepth: PropTypes.bool,
-  toggleBool: PropTypes.bool,
   skillObject: PropTypes.any,
   currentView: PropTypes.any,
   learnMore: PropTypes.func,
@@ -142,7 +217,6 @@ class App extends Component {
     this.switchToCheatSheet = this.switchToCheatSheet.bind(this);
     this.updateCheatSheet = this.updateCheatSheet.bind(this);
     this.displayInDepthCheatSheet = this.displayInDepthCheatSheet.bind(this);
-    this.getSkillObjects = this.getSkillObjects.bind(this);
     this.displayCategory = this.displayCategory.bind(this);
   }
 
@@ -315,8 +389,7 @@ class App extends Component {
   }
 
   render() {
-    this.toggleBool ? (this.toggleBool = false) : (this.toggleBool = true);
-    console.log(allSkills);
+    // console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
       <Router>
@@ -345,13 +418,13 @@ class App extends Component {
             <MainContent
               theme={this.state.theme}
               inDepth={this.state.inDepth}
-              toggleBool={this.toggleBool}
               skillObject={this.state.topic}
               currentView={this.state.currentView}
               learnMore={this.displayInDepthView}
               updateCheatSheet={this.updateCheatSheet}
               cheatSheetInDepth={this.state.cheatSheetInDepth}
               skillList={this.state.skillList}
+              getSkillsFromCheatSheet={this.getSkillObjects()}
             />
 
             <Typography

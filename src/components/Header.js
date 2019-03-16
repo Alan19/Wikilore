@@ -21,6 +21,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import CheatSheetIcon from "../iconClasses/CheatSheetIcon";
 import ExpandedCheatSheetIcon from "../iconClasses/ExpandedCheatSheetIcon";
 import GameIconWrapper from "../iconClasses/GameIconWrapper";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -98,30 +99,38 @@ class CheatSheetItems extends Component {
     return (
       <React.Fragment>
         <Tooltip title={"Your Favorites"} placement={"right"}>
-          <ListItem onClick={this.props.onClick} button>
-            <ListItemIcon>
-              <CheatSheetIcon />
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{ noWrap: true }}
-              primary={"Your Favorites"}
-            />
-          </ListItem>
+          <Link
+            to={{
+              pathname: `/favorites`
+            }}
+          >
+            <ListItem onClick={this.props.onClick} button>
+              <ListItemIcon>
+                <CheatSheetIcon />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ noWrap: true }}
+                primary={"Your Favorites"}
+              />
+            </ListItem>
+          </Link>
         </Tooltip>
         <Tooltip title={"Cheat Sheet"} placement={"right"}>
-          <ListItem
-            onClick={() => this.props.cheatSheetInDepth()}
-            button
-            key={"Cheat Sheet"}
-          >
-            <ListItemIcon>
-              <ExpandedCheatSheetIcon />
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{ noWrap: true }}
-              primary={"Cheat Sheet"}
-            />
-          </ListItem>
+          <Link to={"/cheatsheet"}>
+            <ListItem
+              onClick={() => this.props.cheatSheetInDepth()}
+              button
+              key={"Cheat Sheet"}
+            >
+              <ListItemIcon>
+                <ExpandedCheatSheetIcon />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{ noWrap: true }}
+                primary={"Cheat Sheet"}
+              />
+            </ListItem>
+          </Link>
         </Tooltip>
       </React.Fragment>
     );
@@ -142,10 +151,12 @@ class Index extends Component {
   render() {
     return (
       <Tooltip title={"Index"} placement={"right"}>
-        <ListItem onClick={this.props.onClick} button>
-          <ListItemIcon>{indexIcon}</ListItemIcon>
-          <ListItemText primary={"Index"} />
-        </ListItem>
+        <Link to={"/index"}>
+          <ListItem button>
+            <ListItemIcon>{indexIcon}</ListItemIcon>
+            <ListItemText primary={"Index"} />
+          </ListItem>
+        </Link>
       </Tooltip>
     );
   }
@@ -165,13 +176,15 @@ class Glossary extends Component {
   render() {
     return (
       <Tooltip title={"Glossary"} placement={"right"}>
-        <ListItem onClick={this.props.onClick} button>
-          <ListItemIcon>{indexListIcon}</ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ noWrap: true }}
-            primary={"Glossary"}
-          />
-        </ListItem>
+        <Link to={"/glossary"}>
+          <ListItem button>
+            <ListItemIcon>{indexListIcon}</ListItemIcon>
+            <ListItemText
+              primaryTypographyProps={{ noWrap: true }}
+              primary={"Glossary"}
+            />
+          </ListItem>
+        </Link>
       </Tooltip>
     );
   }
@@ -226,17 +239,26 @@ class SkillDrawer extends Component {
   generateListEntries(section) {
     return (
       <Tooltip title={section.name + " List"} placement={"right"}>
-        <ListItem
-          onClick={() => this.props.renderCategory(section.infoObj)}
-          button
-          key={section.name + " List"}
+        <Link
+          to={{
+            pathname: `/indepthlist/${section.name
+              .toLowerCase()
+              .replace(/\s/g, "")}`,
+            state: { displayedList: section.id }
+          }}
         >
-          <ListItemIcon>{section.listIcon}</ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ noWrap: true }}
-            primary={section.name + " List"}
-          />
-        </ListItem>
+          <ListItem
+            // onClick={() => this.props.renderCategory(section.infoObj)}
+            button
+            key={section.name + " List"}
+          >
+            <ListItemIcon>{section.listIcon}</ListItemIcon>
+            <ListItemText
+              primaryTypographyProps={{ noWrap: true }}
+              primary={section.name + " List"}
+            />
+          </ListItem>
+        </Link>
       </Tooltip>
     );
   }
@@ -342,14 +364,21 @@ export class NavBar extends Component {
   generateDrawerEntries(section) {
     return (
       <Tooltip title={section.name} placement={"right"}>
-        <ListItem
-          onClick={() => this.props.onclick(section.infoObj)}
-          button
-          key={section.name}
+        <Link
+          to={{
+            pathname: "/overview/" + section.name.toLowerCase(),
+            state: { displayedSection: section.id }
+          }}
         >
-          <ListItemIcon>{section.icon}</ListItemIcon>
-          <ListItemText primary={section.name} />
-        </ListItem>
+          <ListItem
+            // onClick={() => this.props.onclick(section.infoObj)}
+            button
+            key={section.name}
+          >
+            <ListItemIcon>{section.icon}</ListItemIcon>
+            <ListItemText primary={section.name} />
+          </ListItem>
+        </Link>
       </Tooltip>
     );
   }

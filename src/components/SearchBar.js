@@ -157,7 +157,7 @@ class SearchBar extends React.Component {
       <Link
         to={{
           pathname:
-            "/indepth/" + suggestion.name.toLowerCase().replace(/\s/g, ""),
+            `/indepth/${suggestion.name.toLowerCase().replace(/\s/g, "")}`,
           state: { topic: suggestion.id }
         }}
       >
