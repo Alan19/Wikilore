@@ -5,8 +5,7 @@ import {
   allSkills,
   copyright,
   defaultCategory,
-  info,
-  magicDescription
+  info
 } from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -23,6 +22,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -46,42 +46,6 @@ function MainContent(props) {
           : props.theme.spacing.unit * 7 + 1
       }}
     >
-      {/*{props.inDepth && (*/}
-      {/*<InDepthView*/}
-      {/*isDesktop={isDesktop}*/}
-      {/*toggleBool={props.toggleBool}*/}
-      {/*skillObject={props.skillObject}*/}
-      {/*theme={props.theme}*/}
-      {/*/>*/}
-      {/*)}*/}
-      {/*{!props.inDepth && props.currentView != null && (*/}
-      {/*<Overview*/}
-      {/*theme={props.theme}*/}
-      {/*learnMore={props.learnMore}*/}
-      {/*currentView={props.currentView}*/}
-      {/*updateCheatSheet={props.updateCheatSheet}*/}
-      {/*toggleBool={props.toggleBool}*/}
-      {/*isDesktop={isDesktop}*/}
-      {/*/>*/}
-      {/*)}*/}
-      {/*{props.cheatSheetInDepth && (*/}
-      {/*<InDepthSkillList*/}
-      {/*toggleBool={props.toggleBool}*/}
-      {/*skillList={props.skillList}*/}
-      {/*isDesktop={isDesktop}*/}
-      {/*/>*/}
-      {/*)}*/}
-      {/*<Route*/}
-      {/*path={""}*/}
-      {/*render={routeProps => (*/}
-      {/*<Redirect*/}
-      {/*to={{*/}
-      {/*pathname: `/overview/${info[0].name}`,*/}
-      {/*state: { displayedSection: 0 }*/}
-      {/*}}*/}
-      {/*/>*/}
-      {/*)}*/}
-      {/*/>*/}
       <Route
         path={"/overview"}
         render={routeProps => (
@@ -393,6 +357,7 @@ class App extends Component {
     this.stack.push(new HistoryObject(this.state));
     return (
       <Router>
+        <ScrollToTop>
         <MuiThemeProvider theme={this.state.theme}>
           <CssBaseline />
           <div
@@ -435,6 +400,7 @@ class App extends Component {
             </Typography>
           </div>
         </MuiThemeProvider>
+        </ScrollToTop>
       </Router>
     );
   }
