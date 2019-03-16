@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
-import { allSkills, copyright, magicDescription } from "./info";
+import {
+  allSkills,
+  copyright,
+  defaultCategory,
+  magicDescription
+} from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -11,7 +16,7 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -23,70 +28,75 @@ function getFavoriteSkills() {
 
 function MainContent(props) {
   const isDesktop = unstable_useMediaQuery("(min-width:600px)");
-  return <div
+  return (
+    <div
       color={"primary"}
       style={{
         padding: props.theme.spacing.unit * 3,
         flex: 1,
         marginLeft: isDesktop
-            ? props.theme.spacing.unit * 9 + 1
-            : props.theme.spacing.unit * 7 + 1
+          ? props.theme.spacing.unit * 9 + 1
+          : props.theme.spacing.unit * 7 + 1
       }}
-  >
-    {/*{props.inDepth && (*/}
-    {/*<InDepthView*/}
-    {/*isDesktop={isDesktop}*/}
-    {/*toggleBool={props.toggleBool}*/}
-    {/*skillObject={props.skillObject}*/}
-    {/*theme={props.theme}*/}
-    {/*/>*/}
-    {/*)}*/}
-    {/*{!props.inDepth && props.currentView != null && (*/}
-    {/*<Overview*/}
-    {/*theme={props.theme}*/}
-    {/*learnMore={props.learnMore}*/}
-    {/*currentView={props.currentView}*/}
-    {/*updateCheatSheet={props.updateCheatSheet}*/}
-    {/*toggleBool={props.toggleBool}*/}
-    {/*isDesktop={isDesktop}*/}
-    {/*/>*/}
-    {/*)}*/}
-    {/*{props.cheatSheetInDepth && (*/}
-    {/*<InDepthSkillList*/}
-    {/*toggleBool={props.toggleBool}*/}
-    {/*skillList={props.skillList}*/}
-    {/*isDesktop={isDesktop}*/}
-    {/*/>*/}
-    {/*)}*/}
-    <Route
+    >
+      {/*{props.inDepth && (*/}
+      {/*<InDepthView*/}
+      {/*isDesktop={isDesktop}*/}
+      {/*toggleBool={props.toggleBool}*/}
+      {/*skillObject={props.skillObject}*/}
+      {/*theme={props.theme}*/}
+      {/*/>*/}
+      {/*)}*/}
+      {/*{!props.inDepth && props.currentView != null && (*/}
+      {/*<Overview*/}
+      {/*theme={props.theme}*/}
+      {/*learnMore={props.learnMore}*/}
+      {/*currentView={props.currentView}*/}
+      {/*updateCheatSheet={props.updateCheatSheet}*/}
+      {/*toggleBool={props.toggleBool}*/}
+      {/*isDesktop={isDesktop}*/}
+      {/*/>*/}
+      {/*)}*/}
+      {/*{props.cheatSheetInDepth && (*/}
+      {/*<InDepthSkillList*/}
+      {/*toggleBool={props.toggleBool}*/}
+      {/*skillList={props.skillList}*/}
+      {/*isDesktop={isDesktop}*/}
+      {/*/>*/}
+      {/*)}*/}
+      <Route exact path={''} render={() => <Redirect to="/overview" /> } />
+      <Route
+          exact
         path={"/overview"}
         render={routeProps => (
-            <Overview
-                theme={props.theme}
-                learnMore={props.learnMore}
-                currentView={props.currentView}
-                updateCheatSheet={props.updateCheatSheet}
-                toggleBool={props.toggleBool}
-                isDesktop={isDesktop}
-            />
-        )}
-    />
-    <Route path={"/indepth"}
-      render={routeProps => {
-        console.log(routeProps.location.state);
-        return <InDepthView
-            isDesktop={isDesktop}
-            skillObject={findSkill(routeProps.location.state.topic)}
+          <Overview
             theme={props.theme}
-        />;
-      }
-
-      }
-    />
-  </div>;
+            learnMore={props.learnMore}
+            currentView={props.currentView}
+            updateCheatSheet={props.updateCheatSheet}
+            toggleBool={props.toggleBool}
+            isDesktop={isDesktop}
+          />
+        )}
+      />
+      <Route
+        path={"/indepth"}
+        render={routeProps => {
+          console.log(routeProps.location.state);
+          return (
+            <InDepthView
+              isDesktop={isDesktop}
+              skillObject={findSkill(routeProps.location.state.topic)}
+              theme={props.theme}
+            />
+          );
+        }}
+      />
+    </div>
+  );
 }
 
-function findSkill(id){
+function findSkill(id) {
   return allSkills.filter(skill => skill.id === id)[0];
 }
 
@@ -117,7 +127,7 @@ class App extends Component {
      * @type {{cheatSheet: boolean, currentView: *[], theme, cheatSheetInDepth: boolean, open: boolean, inDepth: boolean}}
      */
     this.state = {
-      currentView: magicDescription,
+      currentView: defaultCategory,
       inDepth: false,
       theme: createTheme(blue, yellow, "light"),
       open: false,

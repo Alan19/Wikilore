@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { cultureDescription, magicDescription, wayDescription } from "../info";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Icon } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const suggestions = magicDescription
   .concat(wayDescription)
@@ -56,12 +57,13 @@ function getSuggestions(value) {
         const keep =
           count < 5 &&
           (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
-              (inputLength > 2 && ((suggestion.detailedDescription.sections
+            (inputLength > 2 &&
+              (suggestion.detailedDescription.sections
                 .map(field => field.title.toLowerCase().slice(0, inputLength))
                 .includes(inputValue) ||
-              suggestion.detailedDescription.effects
-                .map(field => field.title.slice(0, inputLength).toLowerCase())
-                .includes(inputValue)))));
+                suggestion.detailedDescription.effects
+                  .map(field => field.title.slice(0, inputLength).toLowerCase())
+                  .includes(inputValue))));
         if (keep) {
           count += 1;
         }
@@ -149,27 +151,36 @@ class SearchBar extends React.Component {
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     const matches = match(suggestion.name, query);
     const parts = parse(suggestion.name, matches);
+    console.log(suggestion);
 
     return (
-      <MenuItem
-        onClick={() => this.props.changeview(suggestion)}
-        selected={isHighlighted}
-        component="div"
+      <Link
+        to={{
+          pathname:
+            "/indepth/" + suggestion.name.toLowerCase().replace(/\s/g, ""),
+          state: { topic: suggestion.id }
+        }}
       >
-        <div>
-          {parts.map((part, index) =>
-            part.highlight ? (
-              <span key={String(index)} style={{ fontWeight: 500 }}>
-                {part.text}
-              </span>
-            ) : (
-              <strong key={String(index)} style={{ fontWeight: 300 }}>
-                {part.text}
-              </strong>
-            )
-          )}
-        </div>
-      </MenuItem>
+        <MenuItem
+          // onClick={() => this.props.changeview(suggestion)}
+          selected={isHighlighted}
+          component="div"
+        >
+          <div>
+            {parts.map((part, index) =>
+              part.highlight ? (
+                <span key={String(index)} style={{ fontWeight: 500 }}>
+                  {part.text}
+                </span>
+              ) : (
+                <strong key={String(index)} style={{ fontWeight: 300 }}>
+                  {part.text}
+                </strong>
+              )
+            )}
+          </div>
+        </MenuItem>
+      </Link>
     );
   };
 
