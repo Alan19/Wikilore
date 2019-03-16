@@ -18,13 +18,10 @@ to distribute the app to others or ``` $ npm start``` to test.
 * [Contributors](https://github.com/username/sw-name/graphs/contributors)
 
 ### Third party libraries
-* see [LIBRARIES](https://github.com/username/sw-name/blob/master/LIBRARIES.md) files
+* see [LIBRARIES](https://github.com/Alan19/vigilant-adventure/blob/router/libraries.md) files
 
 ## License 
-* see [LICENSE](https://github.com/username/sw-name/blob/master/LICENSE.md) file
+* see [LICENSE](https://github.com/Alan19/vigilant-adventure/blob/master/LICENSE) file
 
 ## Version 
 * Version 1.2.0
-
-## How-to use this code
-* see [INSTRUCTIONS](https://github.com/username/sw-name/blob/master/INSTRUCTIONS.md) file
