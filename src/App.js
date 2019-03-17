@@ -25,7 +25,9 @@ function HistoryObject(currentState) {
 }
 
 function getFavoriteSkills() {
-  return JSON.parse(localStorage.getItem("favorites")) === null ? [] : JSON.parse(localStorage.getItem("favorites"));
+  return JSON.parse(localStorage.getItem("favorites")) === null
+    ? []
+    : JSON.parse(localStorage.getItem("favorites"));
 }
 
 function MainContent(props) {

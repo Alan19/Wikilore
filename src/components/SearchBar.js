@@ -10,8 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import { cultureDescription, magicDescription, wayDescription } from "../info";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import { Icon } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Icon, Typography } from "@material-ui/core";
+import { HashLink as Link } from "react-router-hash-link";
 
 const suggestions = magicDescription
   .concat(wayDescription)
@@ -49,7 +49,6 @@ function getSuggestions(value) {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
   let count = 0;
-
   return inputLength === 0
     ? []
     : //Filter results based on skill name matching or section name matching
@@ -58,9 +57,11 @@ function getSuggestions(value) {
           count < 5 &&
           (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
             (inputLength > 2 &&
+              //Check if basic effects/sections match
               (suggestion.detailedDescription.sections
                 .map(field => field.title.toLowerCase().slice(0, inputLength))
                 .includes(inputValue) ||
+                //Check if purchasable effects match
                 suggestion.detailedDescription.effects
                   .map(field => field.title.slice(0, inputLength).toLowerCase())
                   .includes(inputValue))));
@@ -156,8 +157,9 @@ class SearchBar extends React.Component {
     return (
       <Link
         to={{
-          pathname:
-            `/indepth/${suggestion.name.toLowerCase().replace(/\s/g, "")}`,
+          pathname: `/indepth/${suggestion.name
+            .toLowerCase()
+            .replace(/\s/g, "")}`,
           state: { topic: suggestion.id }
         }}
       >
@@ -178,11 +180,44 @@ class SearchBar extends React.Component {
                 </strong>
               )
             )}
+
+            {this.getSectionName(suggestion, query)}
           </div>
         </MenuItem>
       </Link>
     );
   };
+
+  /**
+   * Checks for which section the suggestion is pointing to
+   * @param suggestion The object that contains information about the page
+   * @param query The text in the search bar
+   * @returns {string} The fist skill name that the query matches to
+   */
+  getSectionName(suggestion, query) {
+    if (
+      query.toLowerCase() ===
+      suggestion.name.slice(0, query.length).toLowerCase()
+    ) {
+    } else {
+      return (
+        <Typography variant={"subtitle2"}>
+          {this.searchForSection(suggestion, query)}
+        </Typography>
+      );
+    }
+  }
+  searchForSection(suggestion, query) {
+    console.log(suggestion);
+    return suggestion.detailedDescription.sections
+      .concat(suggestion.detailedDescription.effects)
+      .filter(section => {
+        return (
+          section.title.slice(0, query.length).toLowerCase() ===
+          query.toLowerCase()
+        );
+      })[0].title;
+  }
 
   render() {
     const { classes } = this.props;

@@ -1,6 +1,6 @@
 {
   "name": "rulebook",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "nginxDirectory": "nginx-1.14.2",
   "dependencies": {
