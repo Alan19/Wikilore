@@ -180,8 +180,7 @@ class SearchBar extends React.Component {
                 </strong>
               )
             )}
-
-            {this.getSectionName(suggestion, query)}
+            {this.getMatchedSectionTitles(suggestion, query)}
           </div>
         </MenuItem>
       </Link>
@@ -194,29 +193,28 @@ class SearchBar extends React.Component {
    * @param query The text in the search bar
    * @returns {string} The fist skill name that the query matches to
    */
-  getSectionName(suggestion, query) {
+  getMatchedSectionTitles(suggestion, query) {
     if (
-      query.toLowerCase() ===
+      query.toLowerCase() !==
       suggestion.name.slice(0, query.length).toLowerCase()
-    ) {
-    } else {
+    )
       return (
         <Typography variant={"subtitle2"}>
           {this.searchForSection(suggestion, query)}
         </Typography>
       );
-    }
   }
   searchForSection(suggestion, query) {
     console.log(suggestion);
     return suggestion.detailedDescription.sections
       .concat(suggestion.detailedDescription.effects)
-      .filter(section => {
-        return (
+      .filter(
+        section =>
           section.title.slice(0, query.length).toLowerCase() ===
           query.toLowerCase()
-        );
-      })[0].title;
+      )
+      .map(section => section.title)
+      .join(", ");
   }
 
   render() {
