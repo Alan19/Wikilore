@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { cultureDescription, magicDescription, wayDescription } from "../info";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Icon } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 const suggestions = magicDescription
   .concat(wayDescription)
@@ -168,10 +169,42 @@ class SearchBar extends React.Component {
               </strong>
             )
           )}
+          {this.getMatchedSectionTitles(suggestion, query)}
         </div>
       </MenuItem>
     );
   };
+
+  /**
+   * Checks for which section the suggestion is pointing to
+   * @param suggestion The object that contains information about the page
+   * @param query The text in the search bar
+   * @returns {string} The fist skill name that the query matches to
+   */
+  getMatchedSectionTitles(suggestion, query) {
+    if (
+        query.toLowerCase() !==
+        suggestion.name.slice(0, query.length).toLowerCase()
+    )
+      return (
+          <Typography variant={"subtitle2"}>
+            {this.searchForSection(suggestion, query)}
+          </Typography>
+      );
+  }
+  searchForSection(suggestion, query) {
+    console.log(suggestion);
+    return suggestion.detailedDescription.sections
+        .concat(suggestion.detailedDescription.effects)
+        .filter(
+            section =>
+                section.title.slice(0, query.length).toLowerCase() ===
+                query.toLowerCase()
+        )
+        .map(section => section.title)
+        .join(", ");
+  }
+
 
   render() {
     const { classes } = this.props;
