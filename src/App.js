@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
-import {
-  allSkills,
-  copyright,
-  defaultCategory,
-  info,
-  magicDescription
-} from "./info";
+import { allSkills, copyright, defaultCategory, info } from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -21,7 +15,7 @@ import { Route, Link, Redirect, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop";
-import createBrowserHistory from "history/createBrowserHistory";
+import createHashHistory from "history/createBrowserHistory";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -58,15 +52,17 @@ function MainContent(props) {
         />
         <Route
           path={"/overview"}
-          render={() => (
-            <Overview
-              theme={props.theme}
-              learnMore={props.learnMore}
-              currentView={props.currentView}
-              updateCheatSheet={props.updateCheatSheet}
-              isDesktop={isDesktop}
-            />
-          )}
+          render={(routeProps) => {
+            return (
+                <Overview
+                    theme={props.theme}
+                    learnMore={props.learnMore}
+                    currentView={props.currentView}
+                    updateCheatSheet={props.updateCheatSheet}
+                    isDesktop={isDesktop}
+                />
+            );
+          }}
         />
         <Route
           path={"/indepth"}
@@ -350,11 +346,13 @@ class App extends Component {
     this.stack.pop();
   }
 
+  _history = createHashHistory();
+
   render() {
     // console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
-      <Router history={createBrowserHistory()}>
+      <Router history={this._history}>
         <ScrollToTop>
           <MuiThemeProvider theme={this.state.theme}>
             <CssBaseline />
@@ -388,6 +386,7 @@ class App extends Component {
                 cheatSheetInDepth={this.state.cheatSheetInDepth}
                 skillList={this.state.skillList}
                 getSkillsFromCheatSheet={this.getSkillObjects()}
+                history={this._history}
               />
 
               <Typography
