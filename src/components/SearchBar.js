@@ -159,15 +159,11 @@ class SearchBar extends React.Component {
         to={{
           pathname: `/indepth/${suggestion.name
             .toLowerCase()
-            .replace(/\s/g, "")}`,
-          state: { topic: suggestion.id }
+            .replace(/\s/g, "")}`
         }}
+        onClick={() => this.props.changeview(suggestion)}
       >
-        <MenuItem
-          // onClick={() => this.props.changeview(suggestion)}
-          selected={isHighlighted}
-          component="div"
-        >
+        <MenuItem selected={isHighlighted} component="div">
           <div>
             {parts.map((part, index) =>
               part.highlight ? (

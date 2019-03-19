@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
-import { allSkills, copyright, defaultCategory, info } from "./info";
+import {
+  allSkills,
+  copyright,
+  defaultCategory,
+  info,
+  magicDescription
+} from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -11,14 +17,11 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  Switch
-} from "react-router-dom";
+import { Route, Link, Redirect, Switch } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
+
 import ScrollToTop from "./components/ScrollToTop";
+import createBrowserHistory from "history/createBrowserHistory";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -45,15 +48,21 @@ function MainContent(props) {
       }}
     >
       <Switch>
+        {/*If on main page, redirect to first overview section*/}
+        <Redirect
+          exact
+          from={"/"}
+          to={{
+            pathname: "/overview/" + info[0].name.toLowerCase()
+          }}
+        />
         <Route
           path={"/overview"}
-          render={routeProps => (
+          render={() => (
             <Overview
               theme={props.theme}
               learnMore={props.learnMore}
-              currentView={findSection(
-                routeProps.location.state.displayedSection
-              )}
+              currentView={props.currentView}
               updateCheatSheet={props.updateCheatSheet}
               isDesktop={isDesktop}
             />
@@ -61,27 +70,27 @@ function MainContent(props) {
         />
         <Route
           path={"/indepth"}
-          render={routeProps => (
+          render={() => (
             <InDepthView
               isDesktop={isDesktop}
-              skillObject={findSkill(routeProps.location.state.topic)}
+              skillObject={props.skillObject}
               theme={props.theme}
             />
           )}
         />
         <Route
           path={"/indepthlist"}
-          render={routeProps => (
+          render={() => (
             <InDepthSkillList
               isDesktop={isDesktop}
-              skillList={findSection(routeProps.location.state.displayedList)}
+              skillList={props.skillList}
               theme={props.theme}
             />
           )}
         />
         <Route
           path={"/favorites"}
-          render={routeProps => {
+          render={() => {
             return (
               <Overview
                 theme={props.theme}
@@ -95,7 +104,7 @@ function MainContent(props) {
         />
         <Route
           path={"/cheatsheet"}
-          render={routeProps => {
+          render={() => {
             return (
               <InDepthSkillList
                 isDesktop={isDesktop}
@@ -107,7 +116,7 @@ function MainContent(props) {
         />
         <Route
           path={"/index"}
-          render={routeProps => (
+          render={() => (
             <Overview
               theme={props.theme}
               learnMore={props.learnMore}
@@ -119,7 +128,7 @@ function MainContent(props) {
         />
         <Route
           path={"/glossary"}
-          render={routeProps => (
+          render={() => (
             <InDepthSkillList
               isDesktop={isDesktop}
               skillList={allSkills}
@@ -131,15 +140,6 @@ function MainContent(props) {
     </div>
   );
 }
-
-function findSection(id) {
-  return info[id].infoObj;
-}
-
-function findSkill(id) {
-  return allSkills.filter(skill => skill.id === id)[0];
-}
-
 MainContent.propTypes = {
   theme: PropTypes.any,
   inDepth: PropTypes.bool,
@@ -166,7 +166,7 @@ class App extends Component {
      * @type {{cheatSheet: boolean, currentView: *[], theme, cheatSheetInDepth: boolean, open: boolean, inDepth: boolean}}
      */
     this.state = {
-      currentView: defaultCategory,
+      currentView: defaultCategory.infoObj,
       inDepth: false,
       theme: createTheme(blue, yellow, "light"),
       open: false,
@@ -297,7 +297,6 @@ class App extends Component {
     this.setState({
       topic: effect,
       inDepth: true,
-      currentView: null,
       open: false,
       cheatSheetInDepth: false
     });
@@ -311,7 +310,6 @@ class App extends Component {
     this.setState({
       topic: null,
       inDepth: false,
-      currentView: null,
       open: false,
       cheatSheetInDepth: true,
       cheatSheet: false,
@@ -356,7 +354,7 @@ class App extends Component {
     // console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
-      <Router>
+      <Router history={createBrowserHistory()}>
         <ScrollToTop>
           <MuiThemeProvider theme={this.state.theme}>
             <CssBaseline />

@@ -243,15 +243,11 @@ class SkillDrawer extends Component {
           to={{
             pathname: `/indepthlist/${section.name
               .toLowerCase()
-              .replace(/\s/g, "")}`,
-            state: { displayedList: section.id }
+              .replace(/\s/g, "")}`
           }}
+          onClick={() => this.props.renderCategory(section.infoObj)}
         >
-          <ListItem
-            // onClick={() => this.props.renderCategory(section.infoObj)}
-            button
-            key={section.name + " List"}
-          >
+          <ListItem button key={section.name + " List"}>
             <ListItemIcon>{section.listIcon}</ListItemIcon>
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
@@ -273,15 +269,17 @@ SkillDrawer.propTypes = {
 class BackButton extends Component {
   render() {
     return (
-      <IconButton
-        style={{ visibility: this.props.visibility }}
-        color="inherit"
-        aria-label="Menu"
-        onClick={this.props.onClick}
-        className={this.props.classes.menuButton}
-      >
-        <Icon>arrow_back</Icon>
-      </IconButton>
+      <Link to={"/overview"}>
+        <IconButton
+          style={{ visibility: this.props.visibility }}
+          color="inherit"
+          aria-label="Menu"
+          onClick={this.props.onClick}
+          className={this.props.classes.menuButton}
+        >
+          <Icon>arrow_back</Icon>
+        </IconButton>
+      </Link>
     );
   }
 }
@@ -366,15 +364,11 @@ export class NavBar extends Component {
       <Tooltip title={section.name} placement={"right"}>
         <Link
           to={{
-            pathname: "/overview/" + section.name.toLowerCase(),
-            state: { displayedSection: section.id }
+            pathname: "/overview/" + section.name.toLowerCase()
           }}
+          onClick={() => this.props.onclick(section.infoObj)}
         >
-          <ListItem
-            // onClick={() => this.props.onclick(section.infoObj)}
-            button
-            key={section.name}
-          >
+          <ListItem button key={section.name}>
             <ListItemIcon>{section.icon}</ListItemIcon>
             <ListItemText primary={section.name} />
           </ListItem>

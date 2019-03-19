@@ -13,6 +13,7 @@ const scrollWithOffset = (el, offset) => {
   const elementPosition = el.offsetTop - offset;
   window.scroll({
     top: elementPosition,
+    behavior: "smooth",
     left: 0
   });
 };
@@ -110,14 +111,14 @@ class InDepthView extends Component {
               <Grid item md={4}>
                 <Link
                   scroll={el => scrollWithOffset(el, 0)}
-                  to={"//#" + skill.title.toLowerCase().replace(/\s/g, "")}
+                  to={"#" + skill.title.toLowerCase().replace(/\s/g, "")}
                 >
                   <Typography variant={"overline"}>{skill.title}</Typography>
                 </Link>
                 {skill.sections.map(section => (
                   <Link
                     scroll={el => scrollWithOffset(el, 0)}
-                    to={"//#" + section.title.toLowerCase().replace(/\s/g, "")}
+                    to={"#" + section.title.toLowerCase().replace(/\s/g, "")}
                   >
                     <Typography variant={"subtitle1"}>
                       {section.title}
@@ -127,7 +128,7 @@ class InDepthView extends Component {
                 <Link
                   scroll={el => scrollWithOffset(el, 0)}
                   to={
-                    "//#" +
+                    "#" +
                     skill.purchasableSkillType.toLowerCase().replace(/\s/g, "")
                   }
                 >
@@ -138,7 +139,7 @@ class InDepthView extends Component {
                 {skill.effects.map(section => (
                   <Link
                     scroll={el => scrollWithOffset(el, 0)}
-                    to={"//#" + section.title.toLowerCase().replace(/\s/g, "")}
+                    to={"#" + section.title.toLowerCase().replace(/\s/g, "")}
                   >
                     <Typography variant={"subtitle1"}>
                       {section.title}

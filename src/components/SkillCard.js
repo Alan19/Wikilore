@@ -50,8 +50,8 @@ export class SkillCard extends Component {
                 pathname: `/indepth/${this.props.skill.name
                   .toLowerCase()
                   .replace(/\s/g, "")}`,
-                state: { topic: this.props.skill.id }
               }}
+              onClick={() => this.props.learnMore(this.props.skill)}
             >
               <Button
                 size="small"
