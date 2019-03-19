@@ -1,9 +1,14 @@
 :target {
-    display: block;
-    position: relative;
-    top: -64px;
+  display: block;
+  position: relative;
+  top: -64px;
 }
 
-a, u {
-    text-decoration: none;
+a,
+u {
+  text-decoration: none;
+}
+
+html {
+  scroll-behavior: smooth;
 }
