@@ -11,6 +11,7 @@ export class InDepthSkillList extends React.Component {
           <InDepthView
             skillObject={skillList[i]}
             isDesktop={this.props.isDesktop}
+            theme={this.props.theme}
           />
         );
       } else {
@@ -19,6 +20,7 @@ export class InDepthSkillList extends React.Component {
             <InDepthView
               skillObject={skillList[i]}
               isDesktop={this.props.isDesktop}
+              theme={this.props.theme}
             />
             <hr />
           </React.Fragment>

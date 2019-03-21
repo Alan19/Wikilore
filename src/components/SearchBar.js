@@ -57,12 +57,13 @@ function getSuggestions(value) {
         const keep =
           count < 5 &&
           (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
-              (inputLength > 2 && ((suggestion.detailedDescription.sections
+            (inputLength > 2 &&
+              (suggestion.detailedDescription.sections
                 .map(field => field.title.toLowerCase().slice(0, inputLength))
                 .includes(inputValue) ||
-              suggestion.detailedDescription.effects
-                .map(field => field.title.slice(0, inputLength).toLowerCase())
-                .includes(inputValue)))));
+                suggestion.detailedDescription.effects
+                  .map(field => field.title.slice(0, inputLength).toLowerCase())
+                  .includes(inputValue))));
         if (keep) {
           count += 1;
         }
@@ -153,7 +154,7 @@ class SearchBar extends React.Component {
 
     return (
       <MenuItem
-        onClick={() => this.props.changeview(suggestion)}
+        // onClick={() => this.props.changeview(suggestion)}
         selected={isHighlighted}
         component="div"
       >
@@ -183,28 +184,37 @@ class SearchBar extends React.Component {
    */
   getMatchedSectionTitles(suggestion, query) {
     if (
-        query.toLowerCase() !==
-        suggestion.name.slice(0, query.length).toLowerCase()
+      query.toLowerCase() !==
+      suggestion.name.slice(0, query.length).toLowerCase()
     )
       return (
-          <Typography variant={"subtitle2"}>
-            {this.searchForSection(suggestion, query)}
-          </Typography>
+        <Typography variant={"subtitle2"}>
+          {this.searchForSection(suggestion, query)}
+        </Typography>
       );
   }
   searchForSection(suggestion, query) {
-    console.log(suggestion);
     return suggestion.detailedDescription.sections
-        .concat(suggestion.detailedDescription.effects)
-        .filter(
-            section =>
-                section.title.slice(0, query.length).toLowerCase() ===
-                query.toLowerCase()
-        )
-        .map(section => section.title)
-        .join(", ");
+      .concat(suggestion.detailedDescription.effects)
+      .filter(
+        section =>
+          section.title.slice(0, query.length).toLowerCase() ===
+          query.toLowerCase()
+      )
+      .map(section => (
+        <span
+          onClick={() =>
+            this.props.changeview(
+              suggestion,
+              section.title.toLowerCase().replace(/\s/g, "")
+            )
+          }
+        >
+          {section.title}
+        </span>
+      ))
+      // .join(", ");
   }
-
 
   render() {
     const { classes } = this.props;
