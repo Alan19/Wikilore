@@ -210,11 +210,9 @@ class SearchBar extends React.Component {
             )
           }
           onMouseOver={event => {
-            console.log(this.props.theme.palette.primary);
             return (event.currentTarget.style.textDecoration = "underline");
           }}
           onMouseLeave={event => {
-            console.log(this.props.theme.palette.primary);
             return (event.currentTarget.style.textDecoration = "none");
           }}
         >
