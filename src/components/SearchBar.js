@@ -209,11 +209,19 @@ class SearchBar extends React.Component {
               section.title.toLowerCase().replace(/\s/g, "")
             )
           }
+          onMouseOver={event => {
+            console.log(this.props.theme.palette.primary);
+            return (event.currentTarget.style.textDecoration = "underline");
+          }}
+          onMouseLeave={event => {
+            console.log(this.props.theme.palette.primary);
+            return (event.currentTarget.style.textDecoration = "none");
+          }}
         >
           {section.title}
         </span>
       ))
-      // .join(", ");
+      .reduce((prev, curr) => [prev, ", ", curr]);
   }
 
   render() {
