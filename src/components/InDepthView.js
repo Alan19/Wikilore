@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Divider, Grow, Typography, withStyles } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import ScrollableAnchor from "react-scrollable-anchor";
-import { configureAnchors } from "react-scrollable-anchor";
 
 // Offset all anchors by -64 to account for a fixed header
 // and scroll more quickly than the default 400ms
@@ -22,7 +20,6 @@ class InDepthView extends Component {
   render() {
     const skill = this.props.skillObject.detailedDescription;
     const icon = this.props.skillObject.icon;
-    const { classes } = this.props;
     return (
       <React.Fragment>
         <Grow in={true}>
@@ -39,21 +36,15 @@ class InDepthView extends Component {
             >
               <Grid item md={2} />
               <Grid item md={6}>
-                <ScrollableAnchor
-                  id={skill.title.toLowerCase().replace(/\s/g, "")}
-                >
-                  <Typography
-                    variant={"h3"}
-                    style={{ overflow: "auto", overflowY: "hidden" }}
-                    component={"span"}
-                    className={classes.anchorTarget}
-                  >
-                    {skill.title}{" "}
-                    <img src={icon} height={40} alt={skill.title} />
-                  </Typography>
-                </ScrollableAnchor>
+                <a id={skill.title.toLowerCase().replace(/\s/g, "")} />
                 <Typography
-                  className={classes.anchorTarget}
+                  variant={"h3"}
+                  style={{ overflow: "auto", overflowY: "hidden" }}
+                  component={"span"}
+                >
+                  {skill.title} <img src={icon} height={40} alt={skill.title} />
+                </Typography>
+                <Typography
                   variant={"subtitle2"}
                   paragraph={true}
                 >
@@ -61,18 +52,13 @@ class InDepthView extends Component {
                 </Typography>
                 {skill.sections.map(section => (
                   <React.Fragment>
-                    <ScrollableAnchor
-                      id={section.title.toLowerCase().replace(/\s/g, "")}
-                    >
-                      <Typography
-                        className={classes.anchorTarget}
-                        variant={"subtitle1"}
-                      >
-                        {section.title}
-                      </Typography>
-                    </ScrollableAnchor>
+                    <a id={section.title.toLowerCase().replace(/\s/g, "")} />
                     <Typography
-                      className={classes.anchorTarget}
+                      variant={"subtitle1"}
+                    >
+                      {section.title}
+                    </Typography>
+                    <Typography
                       variant={"body1"}
                       paragraph={true}
                       component={"span"}
@@ -82,34 +68,27 @@ class InDepthView extends Component {
                   </React.Fragment>
                 ))}
                 <Divider variant={"middle"} light />
-                <ScrollableAnchor
+                <a
                   id={skill.purchasableSkillType
                     .toLowerCase()
                     .replace(/\s/g, "")}
+                />
+                <Typography
+                  paragraph
+                  style={{ paddingTop: 16 }}
+                  variant={"h5"}
                 >
-                  <Typography
-                    paragraph
-                    className={classes.anchorTarget}
-                    style={{ paddingTop: 16 }}
-                    variant={"h5"}
-                  >
-                    {skill.purchasableSkillType}
-                  </Typography>
-                </ScrollableAnchor>
+                  {skill.purchasableSkillType}
+                </Typography>
                 {skill.effects.map(section => (
                   <React.Fragment>
-                    <ScrollableAnchor
-                      id={section.title.toLowerCase().replace(/\s/g, "")}
-                    >
-                      <Typography
-                        className={classes.anchorTarget}
-                        variant={"subtitle1"}
-                      >
-                        {section.title}
-                      </Typography>
-                    </ScrollableAnchor>
+                    <a id={section.title.toLowerCase().replace(/\s/g, "")} />
                     <Typography
-                      className={classes.anchorTarget}
+                      variant={"subtitle1"}
+                    >
+                      {section.title}
+                    </Typography>
+                    <Typography
                       variant={"body1"}
                       paragraph={true}
                       component={"span"}

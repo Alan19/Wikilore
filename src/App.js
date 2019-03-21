@@ -11,7 +11,6 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-import { goToAnchor } from "react-scrollable-anchor";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -220,7 +219,7 @@ class App extends Component {
    * @param scrollTo A section that will be scrolled to when the view changes
    */
   displayInDepthView(effect, scrollTo = null) {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     console.log(effect);
     this.setState(
       {
@@ -230,7 +229,14 @@ class App extends Component {
         open: false,
         cheatSheetInDepth: false
       },
-      () => this.forceUpdate(() => goToAnchor(scrollTo))
+      () => {
+        if (scrollTo !== null) {
+          window.scrollTo(
+            0,
+            document.getElementById(`${scrollTo}`).offsetTop
+          );
+        }
+      }
     );
   }
 
@@ -238,7 +244,7 @@ class App extends Component {
    * Sets the state for an in depth cheat sheet
    */
   displayInDepthCheatSheet() {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     this.setState({
       topic: null,
       inDepth: false,
@@ -255,7 +261,7 @@ class App extends Component {
    * @param skillCategory The category to display all skills of
    */
   displayCategory(skillCategory) {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     this.setState({
       topic: null,
       inDepth: false,

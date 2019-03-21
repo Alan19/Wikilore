@@ -154,7 +154,7 @@ class SearchBar extends React.Component {
 
     return (
       <MenuItem
-        // onClick={() => this.props.changeview(suggestion)}
+        onClick={() => this.props.changeview(suggestion)}
         selected={isHighlighted}
         component="div"
       >
