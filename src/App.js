@@ -35,6 +35,7 @@ function MainContent(props) {
     >
       {props.inDepth && (
         <InDepthView
+          displayTableOfContents={true}
           isDesktop={isDesktop}
           toggleBool={props.toggleBool}
           skillObject={props.skillObject}
@@ -231,10 +232,7 @@ class App extends Component {
       },
       () => {
         if (scrollTo !== null) {
-          window.scrollTo(
-            0,
-            document.getElementById(`${scrollTo}`).offsetTop
-          );
+          window.scrollTo(0, document.getElementById(`${scrollTo}`).offsetTop);
         }
       }
     );
