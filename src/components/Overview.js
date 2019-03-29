@@ -3,6 +3,7 @@ import {Grow} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {SkillCard} from "./SkillCard";
 import {MobileSkillList} from "./MobileSkillList";
+import Fade from "@material-ui/core/Fade";
 
 export class Overview extends React.Component {
   static checkFavorited(skill) {
@@ -37,7 +38,7 @@ export class Overview extends React.Component {
 
   render() {
     return (
-      <Grow in={true}>
+      <Fade in={true}>
         <Grid
           container
           spacing={this.props.theme.spacing.unit * 3}
@@ -74,7 +75,7 @@ export class Overview extends React.Component {
             )
           )}
         </Grid>
-      </Grow>
+      </Fade>
     );
   }
 }

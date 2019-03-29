@@ -16,7 +16,7 @@ function SkillTitle(props) {
     <span>
       {props.skill.name}
       &nbsp;
-      <img src={props.skill.icon} height={20} alt={props.skill.name} />{" "}
+      <img style={{height: '1em'}} src={props.skill.icon} alt={props.skill.name} />{" "}
     </span>
   );
 }
