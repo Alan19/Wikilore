@@ -27,7 +27,7 @@ export class InDepthSkillList extends React.Component {
         </Grid>
         <Grid style={{ flexShrink: 1 }} item md={4}>
           <div
-            style={{ position: "fixed", overflowY: "auto", maxHeight: "85%" }}
+            style={{ position: this.props.isDesktop ? "fixed" : "inherit", overflowY: "auto", maxHeight: "85%" }}
           >
             {skillList.map((skill, index, array) => {
               return (
