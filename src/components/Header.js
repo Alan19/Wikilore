@@ -312,7 +312,7 @@ export class NavBar extends Component {
             <Typography variant="h5" color="inherit" style={{ flexGrow: 1 }}>
               Cheat Sheet
             </Typography>
-            <SearchBar changeview={this.props.changeview} />
+            <SearchBar changeview={this.props.changeview} theme={this.props.theme} />
 
             <div style={{ marginLeft: 30 }}>
               <AppBarButtons switchTheme={() => this.props.switchTheme()} />

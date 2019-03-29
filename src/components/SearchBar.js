@@ -120,6 +120,9 @@ const styles = theme => ({
   cssFocused: {
     borderRadius: 4,
     backgroundColor: "rgba(255, 255, 255, 0.2)"
+  },
+  paper: {
+    background: theme.palette.background.paper
   }
 });
 
@@ -251,7 +254,13 @@ class SearchBar extends React.Component {
             suggestion: classes.suggestion
           }}
           renderSuggestionsContainer={options => (
-            <Paper {...options.containerProps} square>
+            <Paper
+              {...options.containerProps}
+              style={{
+                backgroundColor: this.props.theme.palette.background.paper
+              }}
+              square
+            >
               {options.children}
             </Paper>
           )}

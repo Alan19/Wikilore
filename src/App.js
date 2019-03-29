@@ -313,6 +313,7 @@ class App extends Component {
             cheatSheet={this.switchToCheatSheet}
             cheatSheetInDepth={this.displayInDepthCheatSheet}
             renderCategory={this.displayCategory}
+            theme={this.state.theme}
           />
           <MainContent
             theme={this.state.theme}
