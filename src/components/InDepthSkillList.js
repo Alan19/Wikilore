@@ -30,7 +30,7 @@ export class InDepthSkillList extends React.Component {
             style={{
               position: this.props.isDesktop ? "fixed" : "inherit",
               overflowY: "auto",
-              maxHeight: window.innerHeight-84-this.props.theme.spacing.unit * 2,
+              maxHeight: window.innerHeight-84-this.props.theme.spacing.unit * 4,
               padding: this.props.theme.spacing.unit * 2
             }}
           >

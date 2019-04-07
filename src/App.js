@@ -233,7 +233,7 @@ class App extends Component {
       () => {
         if (scrollTo !== null) {
           window.scrollTo(0, document.getElementById(`${scrollTo}`).offsetTop - 100);
-          window.history.replaceState({}, document.title, ".");
+          // window.history.replaceState({}, document.title, ".");
         }
       }
     );
