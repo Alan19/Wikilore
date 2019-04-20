@@ -3,6 +3,12 @@ import Grid from "@material-ui/core/Grid";
 import { generateFormattedSkillText } from "./FormattedSkillText";
 import { InDepthSkillList } from "./InDepthSkillList";
 import Fade from "@material-ui/core/Fade";
+import {
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  Typography
+} from "@material-ui/core";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 // Offset all anchors by -64 to account for a fixed header
 // and scroll more quickly than the default 400ms
@@ -33,16 +39,27 @@ export default class InDepthView extends Component {
         {/*Table of Contents*/}
         {this.props.displayTableOfContents && (
           <Grid item md={4}>
-            <div
-              style={{
-                position: this.props.isDesktop ? "fixed" : "inherit",
-                overflowY: "auto",
-                maxHeight: "85%",
-                padding: this.props.theme.spacing.unit * 2
-              }}
-            >
-              {InDepthSkillList.generateTableOfContents(skill)}
-            </div>
+            {this.props.isDesktop ? (
+              <div
+                style={{
+                  position: this.props.isDesktop ? "fixed" : "inherit",
+                  overflowY: "auto",
+                  maxHeight: "85%",
+                  padding: this.props.theme.spacing.unit * 2
+                }}
+              >
+                {InDepthSkillList.generateTableOfContents(skill)}
+              </div>
+            ) : (
+              <ExpansionPanel>
+                <ExpansionPanelSummary>Contents</ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography>
+                    {InDepthSkillList.generateTableOfContents(skill)}
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )}
           </Grid>
         )}
       </Grid>

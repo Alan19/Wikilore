@@ -1,6 +1,13 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import {Collapse, Divider, Fade, Grow, Typography} from "@material-ui/core";
+import {
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Fade,
+  Typography
+} from "@material-ui/core";
 import { generateFormattedSkillText } from "./FormattedSkillText";
 
 export class InDepthSkillList extends React.Component {
@@ -26,27 +33,55 @@ export class InDepthSkillList extends React.Component {
           </Grid>
         </Fade>
         <Grid item md={4}>
-          <div
-            style={{
-              position: this.props.isDesktop ? "fixed" : "inherit",
-              overflowY: "auto",
-              maxHeight: window.innerHeight-84-this.props.theme.spacing.unit * 4,
-              padding: this.props.theme.spacing.unit * 2
-            }}
-          >
-            {skillList.map((skill, index, array) => {
-              return (
-                <React.Fragment>
-                  {InDepthSkillList.generateTableOfContents(
-                    skill.detailedDescription, skill.icon
-                  )}
-                  {index < array.length - 1 && (
-                    <Divider light style={{ width: "90%" }} />
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </div>
+          {/*  Render expansion panel if user is viewing from mobile*/}
+          {this.props.isDesktop ? (
+            <div
+              style={{
+                position: "fixed",
+                overflowY: "auto",
+                maxHeight:
+                  window.innerHeight - 84 - this.props.theme.spacing.unit * 4,
+                padding: this.props.theme.spacing.unit * 2
+              }}
+            >
+              {skillList.map((skill, index, array) => {
+                return (
+                  <React.Fragment>
+                    {InDepthSkillList.generateTableOfContents(
+                      skill.detailedDescription,
+                      skill.icon
+                    )}
+                    {index < array.length - 1 && (
+                      <Divider light style={{ width: "90%" }} />
+                    )}
+                  </React.Fragment>
+                );
+              })}{" "}
+            </div>
+          ) : (
+            <ExpansionPanel>
+              <ExpansionPanelSummary>
+                <Typography>Contents</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                  <Typography>
+                {skillList.map((skill, index, array) => {
+                  return (
+                    <React.Fragment>
+                      {InDepthSkillList.generateTableOfContents(
+                        skill.detailedDescription,
+                        skill.icon
+                      )}
+                      {index < array.length - 1 && (
+                        <Divider light style={{ width: "90%" }} />
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+                  </Typography>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          )}
         </Grid>
       </Grid>
     );
@@ -56,11 +91,18 @@ export class InDepthSkillList extends React.Component {
     return (
       <React.Fragment>
         <a href={"#" + skill.title.toLowerCase().replace(/\s/g, "")}>
-          <Typography variant={"overline"}>{skill.title} {icon !== null && <img style={{height: '1em'}} src={icon} alt={skill.title}/>} </Typography>
+          <Typography variant={"overline"}>
+            {skill.title}{" "}
+            {icon !== null && (
+              <img style={{ height: "1em" }} src={icon} alt={skill.title} />
+            )}{" "}
+          </Typography>
         </a>
         {skill.sections.map(section => (
           <a href={"#" + section.title.toLowerCase().replace(/\s/g, "")}>
-            <Typography style={{fontSize: 15}} variant={"subtitle1"}>{section.title}</Typography>
+            <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
+              {section.title}
+            </Typography>
           </a>
         ))}
         <a
@@ -74,7 +116,9 @@ export class InDepthSkillList extends React.Component {
         </a>
         {skill.effects.map(section => (
           <a href={"#" + section.title.toLowerCase().replace(/\s/g, "")}>
-            <Typography style={{fontSize: 15}} variant={"subtitle1"}>{section.title}</Typography>
+            <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
+              {section.title}
+            </Typography>
           </a>
         ))}
       </React.Fragment>
