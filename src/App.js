@@ -100,7 +100,8 @@ class App extends Component {
       currentView: views.OVERVIEW,
       viewInfo: magicDescription,
       theme: createTheme(blue, yellow, "light"),
-      open: false
+      open: false,
+      name: "Magic Overview"
     };
 
     this.toggleBool = false;
@@ -177,12 +178,14 @@ class App extends Component {
   /**
    * Change the information the overview should display
    * @param overviewType The object containing the information that should be displayed
+   * @param viewName The name of the view that will be displayed
    */
-  displayOverview = overviewType => {
+  displayOverview = (overviewType, viewName) => {
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
-      viewInfo: overviewType
+      viewInfo: overviewType,
+      name: `${viewName} ${views.OVERVIEW}`
     });
   };
 
@@ -193,7 +196,8 @@ class App extends Component {
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
-      viewInfo: this.getSkillObjects()
+      viewInfo: this.getSkillObjects(),
+      name: "Cheat Sheet"
     });
     this.forceUpdate();
   };
@@ -210,7 +214,8 @@ class App extends Component {
       {
         viewInfo: effect,
         currentView: views.INDEPTH,
-        open: false
+        open: false,
+        name: `${effect.name} ${views.INDEPTH}`
       },
       () => {
         if (scrollTo !== null) {
@@ -232,20 +237,23 @@ class App extends Component {
     this.setState({
       currentView: views.LIST,
       open: false,
-      viewInfo: this.getSkillObjects()
+      viewInfo: this.getSkillObjects(),
+      name: "Cheat Sheet"
     });
   };
 
-  /**
-   * Sets the state to display a list of all skills in a section
-   * @param skillCategory The category to display all skills of
-   */
-  displayList = skillCategory => {
+    /**
+     * Sets the state to display a list of all skills in a section
+     * @param skillCategory The category to display all skills of
+     * @param categoryName The name of the category being displayed
+     */
+  displayList = (skillCategory, categoryName) => {
     window.scrollTo(0, 0);
     this.setState({
       viewInfo: skillCategory,
       currentView: views.LIST,
       open: false,
+      name: categoryName + " " + views.LIST
     });
   };
 
@@ -291,6 +299,7 @@ class App extends Component {
               this.state.currentView === views.INDEPTH ||
               this.state.currentView === views.LIST
             }
+            name={this.state.name}
             cheatSheet={this.displayCheatSheet}
             cheatSheetInDepth={this.displayInDepthCheatSheet}
             renderCategory={this.displayList}

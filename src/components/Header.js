@@ -210,11 +210,11 @@ class SkillDrawer extends Component {
           <Divider />
           <React.Fragment>
             <Index
-              onClick={() => this.props.onclick(allSkills)}
+              onClick={() => this.props.onclick(allSkills, "All Skills")}
               key={"Index"}
             />
             <Glossary
-              onClick={() => this.props.renderCategory(allSkills)}
+              onClick={() => this.props.renderCategory(allSkills, "All Skills")}
               key={"Glossary"}
             />
           </React.Fragment>
@@ -227,7 +227,7 @@ class SkillDrawer extends Component {
     return (
       <Tooltip title={section.name + " List"} placement={"right"}>
         <ListItem
-          onClick={() => this.props.renderCategory(section.infoObj)}
+          onClick={() => this.props.renderCategory(section.infoObj, section.name)}
           button
           key={section.name + " List"}
         >
@@ -310,9 +310,12 @@ export class NavBar extends Component {
               />
             )}
             <Typography variant="h5" color="inherit" style={{ flexGrow: 1 }}>
-              Cheat Sheet
+              {this.props.name}
             </Typography>
-            <SearchBar changeview={this.props.changeview} theme={this.props.theme} />
+            <SearchBar
+              changeview={this.props.changeview}
+              theme={this.props.theme}
+            />
 
             <div style={{ marginLeft: 30 }}>
               <AppBarButtons switchTheme={() => this.props.switchTheme()} />
@@ -343,7 +346,7 @@ export class NavBar extends Component {
     return (
       <Tooltip title={section.name} placement={"right"}>
         <ListItem
-          onClick={() => this.props.onclick(section.infoObj)}
+          onClick={() => this.props.onclick(section.infoObj, section.name)}
           button
           key={section.name}
         >
