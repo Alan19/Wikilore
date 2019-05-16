@@ -33,7 +33,7 @@ function MainContent(props) {
           : props.theme.spacing.unit * 7 + 1
       }}
     >
-      {props.inDepth && (
+      {props.currentView === views.INDEPTH && (
         <InDepthView
           displayTableOfContents={true}
           isDesktop={isDesktop}
@@ -42,20 +42,20 @@ function MainContent(props) {
           theme={props.theme}
         />
       )}
-      {!props.inDepth && props.currentView != null && (
+      {props.currentView === views.OVERVIEW && (
         <Overview
           theme={props.theme}
           learnMore={props.learnMore}
-          currentView={props.currentView}
+          currentView={props.skillObject}
           updateCheatSheet={props.updateCheatSheet}
           toggleBool={props.toggleBool}
           isDesktop={isDesktop}
         />
       )}
-      {props.cheatSheetInDepth && (
+      {props.currentView === views.LIST && (
         <InDepthSkillList
           toggleBool={props.toggleBool}
-          skillList={props.skillList}
+          skillList={props.skillObject}
           isDesktop={isDesktop}
           theme={props.theme}
         />
@@ -76,6 +76,12 @@ MainContent.propTypes = {
   skillList: PropTypes.any
 };
 
+const views = {
+  OVERVIEW: "Overview",
+  INDEPTH: "",
+  LIST: "List"
+};
+
 class App extends Component {
   stack = [];
 
@@ -91,24 +97,14 @@ class App extends Component {
      * @type {{cheatSheet: boolean, currentView: *[], theme, cheatSheetInDepth: boolean, open: boolean, inDepth: boolean}}
      */
     this.state = {
-      currentView: magicDescription,
-      inDepth: false,
+      currentView: views.OVERVIEW,
+      viewInfo: magicDescription,
       theme: createTheme(blue, yellow, "light"),
       open: false,
-      cheatSheet: false,
-      cheatSheetInDepth: false
+      name: "Magic Overview"
     };
 
     this.toggleBool = false;
-    this.changeView = this.changeView.bind(this);
-    this.displayInDepthView = this.displayInDepthView.bind(this);
-    this.back = this.back.bind(this);
-    this.switchTheme = this.switchTheme.bind(this);
-    this.switchToCheatSheet = this.switchToCheatSheet.bind(this);
-    this.updateCheatSheet = this.updateCheatSheet.bind(this);
-    this.displayInDepthCheatSheet = this.displayInDepthCheatSheet.bind(this);
-    this.getSkillObjects = this.getSkillObjects.bind(this);
-    this.displayCategory = this.displayCategory.bind(this);
   }
 
   /**
@@ -130,18 +126,18 @@ class App extends Component {
   /**
    * Re-renders the cheat sheet when the cheat sheet is being modified
    */
-  updateCheatSheet() {
-    if (this.state.cheatSheet) {
+  updateCheatSheet = () => {
+    if (this.state.view === views.OVERVIEW) {
       this.setState({
-        currentView: this.getSkillObjects()
+        viewInfo: this.getSkillObjects()
       });
     }
-  }
+  };
 
   /**
    * Go back to the previous state, close side bar, and keep light/dark mode the same
    */
-  back() {
+  back = () => {
     let lightMode = this.state.theme.palette.type === "light";
     this.stack.pop();
     let stateObject = this.stack.pop();
@@ -150,13 +146,13 @@ class App extends Component {
       open: false
     });
     this.setLightOrDarkMode(lightMode);
-  }
+  };
 
   /**
    * Sets the mode: true for light mode, false for dark mode
    * @param lightMode The boolean for whether light mode is on or off
    */
-  setLightOrDarkMode(lightMode) {
+  setLightOrDarkMode = lightMode => {
     if (lightMode) {
       this.setState({
         theme: createTheme(blue, yellow, "light")
@@ -166,7 +162,7 @@ class App extends Component {
         theme: createTheme(blue, yellow, "dark")
       });
     }
-  }
+  };
 
   /**
    * Toggles the drawer
@@ -182,100 +178,89 @@ class App extends Component {
   /**
    * Change the information the overview should display
    * @param overviewType The object containing the information that should be displayed
+   * @param viewName The name of the view that will be displayed
    */
-  changeView(overviewType) {
+  displayOverview = (overviewType, viewName) => {
     window.scrollTo(0, 0);
-    if (overviewType !== this.state.currentView) {
-      this.setState({
-        currentView: overviewType,
-        inDepth: false
-      });
-    }
     this.setState({
-      cheatSheet: false,
-      cheatSheetInDepth: false
+      currentView: views.OVERVIEW,
+      viewInfo: overviewType,
+      name: `${viewName} ${views.OVERVIEW}`
     });
-  }
+  };
 
   /**
    * Have the overview display the cheat sheet
    */
-  switchToCheatSheet() {
+  displayCheatSheet = () => {
     window.scrollTo(0, 0);
-    console.log("Switching to cheat sheet");
-    if (!this.state.cheatSheet) {
-      this.setState({
-        cheatSheet: true,
-        currentView: this.getSkillObjects(),
-        inDepth: false,
-        cheatSheetInDepth: false
-      });
-    }
+    this.setState({
+      currentView: views.OVERVIEW,
+      viewInfo: this.getSkillObjects(),
+      name: "Cheat Sheet"
+    });
     this.forceUpdate();
-  }
+  };
 
   /**
    * Displays in depth information about a skill
    * @param effect The skill that is being displayed
    * @param scrollTo A section that will be scrolled to when the view changes
    */
-  displayInDepthView(effect, scrollTo = null) {
+  displayInDepthView = (effect, scrollTo = null) => {
     window.scrollTo(0, 0);
     console.log(effect);
     this.setState(
       {
-        topic: effect,
-        inDepth: true,
-        currentView: null,
+        viewInfo: effect,
+        currentView: views.INDEPTH,
         open: false,
-        cheatSheetInDepth: false
+        name: `${effect.name} ${views.INDEPTH}`
       },
       () => {
         if (scrollTo !== null) {
-          window.scrollTo(0, document.getElementById(`${scrollTo}`).offsetTop - 100);
+          window.scrollTo(
+            0,
+            document.getElementById(`${scrollTo}`).offsetTop - 100
+          );
           // window.history.replaceState({}, document.title, ".");
         }
       }
     );
-  }
+  };
 
   /**
    * Sets the state for an in depth cheat sheet
    */
-  displayInDepthCheatSheet() {
-    // window.scrollTo(0, 0);
+  displayInDepthCheatSheet = () => {
+    window.scrollTo(0, 0);
     this.setState({
-      topic: null,
-      inDepth: false,
-      currentView: null,
+      currentView: views.LIST,
       open: false,
-      cheatSheetInDepth: true,
-      cheatSheet: false,
-      skillList: this.getSkillObjects()
+      viewInfo: this.getSkillObjects(),
+      name: "Cheat Sheet"
     });
-  }
+  };
 
-  /**
-   * Sets the state to display a list of all skills in a section
-   * @param skillCategory The category to display all skills of
-   */
-  displayCategory(skillCategory) {
-    // window.scrollTo(0, 0);
+    /**
+     * Sets the state to display a list of all skills in a section
+     * @param skillCategory The category to display all skills of
+     * @param categoryName The name of the category being displayed
+     */
+  displayList = (skillCategory, categoryName) => {
+    window.scrollTo(0, 0);
     this.setState({
-      topic: null,
-      inDepth: false,
-      currentView: null,
+      viewInfo: skillCategory,
+      currentView: views.LIST,
       open: false,
-      cheatSheetInDepth: true,
-      cheatSheet: false,
-      skillList: skillCategory
+      name: categoryName + " " + views.LIST
     });
-  }
+  };
 
   /**
    * Switch between light and dark theme
    */
-  switchTheme() {
+  switchTheme = () => {
     if (this.state.theme.palette.type === "light") {
       this.setState({
         theme: createTheme(blue, yellow, "dark")
@@ -286,7 +271,7 @@ class App extends Component {
       });
     }
     this.stack.pop();
-  }
+  };
 
   render() {
     this.toggleBool ? (this.toggleBool = false) : (this.toggleBool = true);
@@ -308,24 +293,25 @@ class App extends Component {
             open={this.state.open}
             switchTheme={this.switchTheme}
             changeview={this.displayInDepthView}
-            onclick={this.changeView}
+            onclick={this.displayOverview}
             back={this.back}
-            backable={this.state.inDepth || this.state.cheatSheetInDepth}
-            cheatSheet={this.switchToCheatSheet}
+            backable={
+              this.state.currentView === views.INDEPTH ||
+              this.state.currentView === views.LIST
+            }
+            name={this.state.name}
+            cheatSheet={this.displayCheatSheet}
             cheatSheetInDepth={this.displayInDepthCheatSheet}
-            renderCategory={this.displayCategory}
+            renderCategory={this.displayList}
             theme={this.state.theme}
           />
           <MainContent
             theme={this.state.theme}
-            inDepth={this.state.inDepth}
             toggleBool={this.toggleBool}
-            skillObject={this.state.topic}
+            skillObject={this.state.viewInfo}
             currentView={this.state.currentView}
             learnMore={this.displayInDepthView}
             updateCheatSheet={this.updateCheatSheet}
-            cheatSheetInDepth={this.state.cheatSheetInDepth}
-            skillList={this.state.skillList}
           />
 
           <Typography
