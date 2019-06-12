@@ -3,7 +3,11 @@ RuleBook
 **RuleBook** is a webapp for generating a wiki-like webpage for whatever you like! It was originally meant for consolidating information about a tabletop game, but can be used for things like blogs.
 
 #### Screenshots
-Coming Soon!
+### Main Screen
+![Main Screen](https://github.com/Alan19/vigilant-adventure/blob/master/screenshots/Main%20Screen.png)
+
+### In Depth Information
+![In Depth Page](https://github.com/Alan19/vigilant-adventure/blob/master/screenshots/In%20Depth.png)
 
 ## Usage
 1. Clone this repository with ```$ git clone https://github.com/username/software-project.git```.
