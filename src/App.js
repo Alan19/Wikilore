@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
-import { allSkills, copyright, magicDescription } from "./info";
+import {allSkills, copyright, defaultCategory, magicDescription} from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -98,10 +98,10 @@ class App extends Component {
      */
     this.state = {
       currentView: views.OVERVIEW,
-      viewInfo: magicDescription,
+      viewInfo: defaultCategory.infoObj,
       theme: createTheme(blue, yellow, "light"),
       open: false,
-      name: "Magic Overview"
+      name: `${defaultCategory.name} ${views.OVERVIEW}`
     };
 
     this.toggleBool = false;

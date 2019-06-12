@@ -8,14 +8,12 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
-import { cultureDescription, magicDescription, wayDescription } from "../info";
+import {allSkills} from "../info";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Icon } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-const suggestions = magicDescription
-  .concat(wayDescription)
-  .concat(cultureDescription);
+const suggestions = allSkills;
 
 function renderInputComponent(inputProps) {
   const { classes, inputRef = () => {}, ref, ...other } = inputProps;
