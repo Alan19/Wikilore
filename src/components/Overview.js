@@ -1,5 +1,4 @@
 import React from "react";
-import {Grow} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import {SkillCard} from "./SkillCard";
 import {MobileSkillList} from "./MobileSkillList";

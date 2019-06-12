@@ -42,7 +42,7 @@ export default class InDepthView extends Component {
             {this.props.isDesktop ? (
               <div
                 style={{
-                  position: this.props.isDesktop ? "fixed" : "inherit",
+                  position: "fixed",
                   overflowY: "auto",
                   maxHeight: "85%",
                   padding: this.props.theme.spacing.unit * 2
