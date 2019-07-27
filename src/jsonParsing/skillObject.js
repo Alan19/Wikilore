@@ -1,16 +1,16 @@
-function page(obj) {
-  this.id = obj.id;
-  this.name = obj.name;
-  this.sections = obj.sections.map(section => sectionInfo(section));
-  this.icon=obj.icon;
+export function SkillObject(name, tags, iconPath, sections) {
+  this.name = name;
+  this.tags = tags;
+  this.icon = require('../resources/' + iconPath);
+  this.sections = sections.map(section => new Section(section));
 }
 
-function sectionInfo(section) {
-  this.title = section.title;
-  this.parts = section.parts.map(part => sectionPart(part));
+function Section(section) {
+  this.name = section.name;
+  this.subsections = section.subsections.map(part => new Subsection(part));
 }
 
-function sectionPart(sectionPart) {
-  this.title = sectionPart.title;
-  this.text = sectionPart.text;
+function Subsection(subsection) {
+  this.name = subsection.name;
+  this.text = subsection.text;
 }

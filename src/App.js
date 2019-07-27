@@ -11,7 +11,9 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-const catJSONS = require('./jsonParsing/jsonLocations').catJSONS;
+import {JSONTestPage} from "./components/JSONTestPage";
+import {matchCategories} from "./jsonParsing/matchEntriesAndCategories";
+const catJSONS = require('./jsonParsing/categoryJsonLocations').catJSONS;
 function HistoryObject(currentState) {
   this.currentState = currentState;
 }
@@ -84,9 +86,9 @@ const views = {
 
 class App extends Component {
   stack = [];
-
   constructor(props) {
     super(props);
+    matchCategories();
     /**
      * States:
      * currentView: The view the overview should display (magic, culture, etc.)
@@ -277,7 +279,6 @@ class App extends Component {
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
-
           <MuiThemeProvider theme={this.state.theme}>
         <CssBaseline />
         <div

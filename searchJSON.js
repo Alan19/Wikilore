@@ -2,7 +2,7 @@ const fs = require("fs");
 
 function writeCategoryFile(catFileString) {
   fs.writeFileSync(
-    "./src/jsonParsing/jsonLocations.js",
+    "./src/jsonParsing/categoryJsonLocations.js",
     catFileString,
     function(err) {
       if (err) {
