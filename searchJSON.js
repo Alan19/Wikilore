@@ -14,6 +14,20 @@ function writeCategoryFile(catFileString) {
   );
 }
 
+function writeEntryFile(entryFileContent) {
+  fs.writeFileSync(
+    "./src/jsonParsing/entryJsonLocations.js",
+    entryFileContent,
+    function(err) {
+      if (err) {
+        return console.log(err);
+      } else {
+        console.log("File saved successfully!");
+      }
+    }
+  );
+}
+
 module.exports = {
   createCategoryFile: function() {
     const catFolder = "./src/categories/";
@@ -34,5 +48,22 @@ module.exports = {
     fileContent.trim();
     console.log(fileContent);
     writeCategoryFile(fileContent);
+
+    console.log("Writing entries to file");
+    const entryFolder = "./src/entries/";
+    let entryFiles = [];
+    fs.readdirSync(entryFolder).forEach(file => {
+      entryFiles.push(file);
+    });
+
+    let entryFileContent = "export let entryJSONS = [];\n";
+    entryFiles.forEach(fileName => {
+      (entryFileContent += `entryJSONS.push(require('../entries/${fileName.replace(
+          /\.[^/.]+$/,
+          ""
+      )}'));\n`)
+    });
+
+    writeEntryFile(entryFileContent);
   }
 };
