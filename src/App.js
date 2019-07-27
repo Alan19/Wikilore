@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import RenderAppBar from "./components/Header";
-import {allSkills, copyright, defaultCategory} from "./info";
+import { allSkills, copyright, defaultCategory } from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -11,9 +11,7 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-import {JSONTestPage} from "./components/JSONTestPage";
-import {matchCategories} from "./jsonParsing/matchEntriesAndCategories";
-const catJSONS = require('./jsonParsing/categoryJsonLocations').catJSONS;
+import { entries } from "./jsonParsing/jsonProcessingUtils";
 function HistoryObject(currentState) {
   this.currentState = currentState;
 }
@@ -88,7 +86,6 @@ class App extends Component {
   stack = [];
   constructor(props) {
     super(props);
-    matchCategories();
     /**
      * States:
      * currentView: The view the overview should display (magic, culture, etc.)
@@ -100,10 +97,10 @@ class App extends Component {
      */
     this.state = {
       currentView: views.OVERVIEW,
-      viewInfo: defaultCategory.infoObj,
+      viewInfo: entries,
       theme: createTheme(blue, yellow, "light"),
       open: false,
-      name: `${defaultCategory.name} ${views.OVERVIEW}`
+      name: `All Skills ${views.OVERVIEW}`
     };
     this.toggleBool = false;
   }
@@ -243,11 +240,11 @@ class App extends Component {
     });
   };
 
-    /**
-     * Sets the state to display a list of all skills in a section
-     * @param skillCategory The category to display all skills of
-     * @param categoryName The name of the category being displayed
-     */
+  /**
+   * Sets the state to display a list of all skills in a section
+   * @param skillCategory The category to display all skills of
+   * @param categoryName The name of the category being displayed
+   */
   displayList = (skillCategory, categoryName) => {
     window.scrollTo(0, 0);
     this.setState({
@@ -279,7 +276,7 @@ class App extends Component {
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
-          <MuiThemeProvider theme={this.state.theme}>
+      <MuiThemeProvider theme={this.state.theme}>
         <CssBaseline />
         <div
           style={{
@@ -288,7 +285,7 @@ class App extends Component {
             flexDirection: "column"
           }}
         >
-            <div className="App" />
+          <div className="App" />
           <RenderAppBar
             toggleDrawer={this.toggleDrawer}
             open={this.state.open}
@@ -314,7 +311,6 @@ class App extends Component {
             learnMore={this.displayInDepthView}
             updateCheatSheet={this.updateCheatSheet}
           />
-
 
           <Typography
             style={{ textAlign: "right", paddingRight: 5 }}

@@ -1,6 +1,7 @@
-export function SkillObject(name, tags, iconPath, sections) {
+export function SkillObject(name, cardInfo, tags, iconPath, sections) {
   this.name = name;
   this.tags = tags;
+  this.cardInfo = cardInfo;
   this.icon = require('../resources/' + iconPath);
   this.sections = sections.map(section => new Section(section));
 }
