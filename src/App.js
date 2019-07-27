@@ -11,7 +11,7 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-
+const catJSONS = require('./jsonParsing/jsonLocations').catJSONS;
 function HistoryObject(currentState) {
   this.currentState = currentState;
 }
@@ -103,7 +103,6 @@ class App extends Component {
       open: false,
       name: `${defaultCategory.name} ${views.OVERVIEW}`
     };
-
     this.toggleBool = false;
   }
 
@@ -278,7 +277,8 @@ class App extends Component {
     console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
-      <MuiThemeProvider theme={this.state.theme}>
+
+          <MuiThemeProvider theme={this.state.theme}>
         <CssBaseline />
         <div
           style={{
@@ -287,7 +287,7 @@ class App extends Component {
             flexDirection: "column"
           }}
         >
-          <div className="App" />
+            <div className="App" />
           <RenderAppBar
             toggleDrawer={this.toggleDrawer}
             open={this.state.open}
@@ -313,6 +313,7 @@ class App extends Component {
             learnMore={this.displayInDepthView}
             updateCheatSheet={this.updateCheatSheet}
           />
+
 
           <Typography
             style={{ textAlign: "right", paddingRight: 5 }}

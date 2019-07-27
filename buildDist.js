@@ -5,7 +5,7 @@ const exec = require("child_process").exec;
 console.log("Starting Build...");
 
 exec("npm run build", function() {
-  zipFolder("build", pjson.name + pjson.version + ".zip", function(err) {
+  zipFolder("build", `../distributions/${pjson.name}${pjson.version}.zip`, function(err) {
     if (err) {
       console.log("oh no!", err);
     } else {
