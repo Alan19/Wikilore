@@ -34,7 +34,7 @@ export class SkillCard extends Component {
               overflow: "hidden"
             }}
           >
-            <Typography style={{textOverflow: "ellipsis", overflow: 'hidden'}} variant={"body1"}>{this.props.skill.text}</Typography>
+            <Typography style={{textOverflow: "ellipsis", overflow: 'hidden'}} variant={"body1"}>{this.props.skill.cardInfo}</Typography>
           </CardContent>
         )}
         <CardActions disableActionSpacing>

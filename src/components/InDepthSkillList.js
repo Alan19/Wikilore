@@ -90,18 +90,18 @@ export class InDepthSkillList extends React.Component {
   static generateTableOfContents(skill, icon = null) {
     return (
       <React.Fragment>
-        <a href={"#" + skill.title.toLowerCase().replace(/\s/g, "")}>
+        <a href={"#" + skill.name.toLowerCase().replace(/\s/g, "")}>
           <Typography variant={"overline"}>
-            {skill.title}{" "}
+            {skill.name}{" "}
             {icon !== null && (
-              <img style={{ height: "1em" }} src={icon} alt={skill.title} />
+              <img style={{ height: "1em" }} src={icon} alt={skill.name} />
             )}{" "}
           </Typography>
         </a>
         {skill.sections.map(section => (
-          <a href={"#" + section.title.toLowerCase().replace(/\s/g, "")}>
+          <a href={"#" + section.name.toLowerCase().replace(/\s/g, "")}>
             <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
-              {section.title}
+              {section.name}
             </Typography>
           </a>
         ))}
@@ -115,9 +115,9 @@ export class InDepthSkillList extends React.Component {
           </Typography>
         </a>
         {skill.effects.map(section => (
-          <a href={"#" + section.title.toLowerCase().replace(/\s/g, "")}>
+          <a href={"#" + section.name.toLowerCase().replace(/\s/g, "")}>
             <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
-              {section.title}
+              {section.name}
             </Typography>
           </a>
         ))}

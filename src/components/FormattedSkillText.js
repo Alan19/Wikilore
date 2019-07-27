@@ -3,16 +3,17 @@ import { Divider, Typography } from "@material-ui/core";
 
 export function generateFormattedSkillText(skill, icon) {
   function generateTitle() {
+    console.log(skill);
     return (
       <>
-        <a id={skill.title.toLowerCase().replace(/\s/g, "")} />
+        <a id={skill.name.toLowerCase().replace(/\s/g, "")} />
         <Typography
           variant={"h3"}
           style={{ overflow: "auto", overflowY: "hidden" }}
           component={"span"}
         >
-          {skill.title}{" "}
-          <img style={{ height: "1em" }} src={icon} alt={skill.title} />
+          {skill.name}{" "}
+          <img style={{ height: "1em" }} src={icon} alt={skill.name} />
         </Typography>
         <Typography variant={"subtitle2"} paragraph={true}>
           {skill.blurb}
@@ -21,38 +22,45 @@ export function generateFormattedSkillText(skill, icon) {
     );
   }
 
-  function generateSections() {
-    return (
-      <>
-        {skill.sections.map(section => (
-          <React.Fragment>
-            <a id={section.title.toLowerCase().replace(/\s/g, "")} />
-            <Typography variant={"subtitle1"}>{section.title}</Typography>
-            <Typography variant={"body1"} paragraph={true} component={"span"}>
-              {section.text}
-            </Typography>
-          </React.Fragment>
-        ))}
-      </>
-    );
-  }
-
   function generatePurchaseableSkills() {
     return (
       <>
-        <a id={skill.purchasableSkillType.toLowerCase().replace(/\s/g, "")} />
-        <Typography paragraph style={{ paddingTop: 16 }} variant={"h5"}>
-          {skill.purchasableSkillType}
-        </Typography>
-        {skill.effects.map(section => (
-          <React.Fragment>
-            <a id={section.title.toLowerCase().replace(/\s/g, "")} />
-            <Typography variant={"subtitle1"}>{section.title}</Typography>
-            <Typography variant={"body1"} paragraph={true} component={"span"}>
-              {section.text}
-            </Typography>
-          </React.Fragment>
-        ))}
+        {skill.sections.map((section, i) => {
+          return (
+            <>
+              {section.name.trim() !== "" && (
+                <>
+                  <a id={section.name.toLowerCase().replace(/\s/g, "")} />
+                  <Typography
+                    paragraph
+                    style={{ paddingTop: 16 }}
+                    variant={"h5"}
+                  >
+                    {section.name}
+                  </Typography>
+                </>
+              )}
+              {section.subsections.map(subsection => {
+                return (
+                  <React.Fragment>
+                    <a id={subsection.name.toLowerCase().replace(/\s/g, "")} />
+                    <Typography variant={"subtitle1"}>
+                      {subsection.name}
+                    </Typography>
+                    <Typography
+                      variant={"body1"}
+                      paragraph={true}
+                      component={"span"}
+                    >
+                      {subsection.text}
+                    </Typography>
+                  </React.Fragment>
+                );
+              })}
+              {i < skill.sections.length - 1 && <Divider variant={"middle"} light />}
+            </>
+          );
+        })}
       </>
     );
   }
@@ -60,8 +68,6 @@ export function generateFormattedSkillText(skill, icon) {
   return (
     <React.Fragment>
       {generateTitle()}
-      {generateSections()}
-      <Divider variant={"middle"} light />
       {generatePurchaseableSkills()}
     </React.Fragment>
   );
