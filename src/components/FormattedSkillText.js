@@ -3,7 +3,6 @@ import { Divider, Typography } from "@material-ui/core";
 
 export function generateFormattedSkillText(skill, icon) {
   function generateTitle() {
-    console.log(skill);
     return (
       <>
         <a id={skill.name.toLowerCase().replace(/\s/g, "")} />
@@ -22,7 +21,7 @@ export function generateFormattedSkillText(skill, icon) {
     );
   }
 
-  function generatePurchaseableSkills() {
+  function renderSections() {
     return (
       <>
         {skill.sections.map((section, i) => {
@@ -57,7 +56,9 @@ export function generateFormattedSkillText(skill, icon) {
                   </React.Fragment>
                 );
               })}
-              {i < skill.sections.length - 1 && <Divider variant={"middle"} light />}
+              {i < skill.sections.length - 1 && (
+                <Divider variant={"middle"} light />
+              )}
             </>
           );
         })}
@@ -68,7 +69,7 @@ export function generateFormattedSkillText(skill, icon) {
   return (
     <React.Fragment>
       {generateTitle()}
-      {generatePurchaseableSkills()}
+      {renderSections()}
     </React.Fragment>
   );
 }
