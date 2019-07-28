@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import RulebookAppBar from "./components/Header";
-import { allSkills, copyright} from "./info";
+import { allSkills, copyright } from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -16,7 +16,7 @@ function HistoryObject(currentState) {
   this.currentState = currentState;
 }
 
-function getFavoriteSkills() {
+function getFavoriteArticles() {
   return JSON.parse(localStorage.getItem("favorites"));
 }
 
@@ -110,14 +110,11 @@ class App extends Component {
    * @returns {Array} All of the skill objects that you have favorited
    */
   getSkillObjects = () => {
-    let skills = getFavoriteSkills();
+    let favorites = getFavoriteArticles();
     let skillObjects = [];
-    console.log(allSkills);
-    for (let i = 0; i < allSkills.length; i++) {
-      if (skills.includes(allSkills[i].name)) {
-        skillObjects.push(allSkills[i]);
-      }
-    }
+    entries.forEach(article => {
+      if (favorites.includes(article.name)) skillObjects.push(article);
+    });
     return skillObjects;
   };
 

@@ -21,7 +21,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import CheatSheetIcon from "../iconClasses/CheatSheetIcon";
 import ExpandedCheatSheetIcon from "../iconClasses/ExpandedCheatSheetIcon";
 import GameIconWrapper from "../iconClasses/GameIconWrapper";
-import { categories } from "../jsonParsing/jsonProcessingUtils";
+import {categories, entries} from "../jsonParsing/jsonProcessingUtils";
 
 const drawerWidth = 240;
 
@@ -211,11 +211,11 @@ class SkillDrawer extends Component {
           <Divider />
           <React.Fragment>
             <Index
-              onClick={() => this.props.onclick(allSkills, "All Skills")}
+              onClick={() => this.props.onclick(entries, "All Skills")}
               key={"Index"}
             />
             <Glossary
-              onClick={() => this.props.renderCategory(allSkills, "All Skills")}
+              onClick={() => this.props.renderCategory(entries, "All Skills")}
               key={"Glossary"}
             />
           </React.Fragment>
@@ -265,7 +265,10 @@ class SkillDrawer extends Component {
           <ListItemIcon>
             <GameIconWrapper path={category.overviewIcon} />
           </ListItemIcon>
-          <ListItemText primary={category.name} />
+          <ListItemText
+            primaryTypographyProps={{ noWrap: true }}
+            primary={category.name}
+          />
         </ListItem>
       </Tooltip>
     );
