@@ -21,6 +21,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import CheatSheetIcon from "../iconClasses/CheatSheetIcon";
 import ExpandedCheatSheetIcon from "../iconClasses/ExpandedCheatSheetIcon";
 import GameIconWrapper from "../iconClasses/GameIconWrapper";
+import { categories } from "../jsonParsing/jsonProcessingUtils";
 
 const drawerWidth = 240;
 
@@ -198,9 +199,9 @@ class SkillDrawer extends Component {
       >
         <div className={this.props.classes.toolbar} />
         <List>
-          {info.map(this.props.callbackfn)}
+          {categories.map(category => this.generateCategoryEntries(category))}
           <Divider />
-          {info.map(skill => this.generateListEntries(skill))}
+          {categories.map(category => this.generateListEntries(category))}
           <Divider />
           <CheatSheetItems
             cheatSheetInDepth={this.props.cheatSheetInDepth}
@@ -223,19 +224,48 @@ class SkillDrawer extends Component {
     );
   }
 
-  generateListEntries(section) {
+  generateListEntries(category) {
     return (
-      <Tooltip title={section.name + " List"} placement={"right"}>
+      <Tooltip title={category.name + " List"} placement={"right"}>
         <ListItem
-          onClick={() => this.props.renderCategory(section.infoObj, section.name)}
+          onClick={() =>
+            this.props.renderCategory(category.articles, category.name)
+          }
           button
-          key={section.name + " List"}
+          key={category.name + " List"}
         >
-          <ListItemIcon>{section.listIcon}</ListItemIcon>
+          <ListItemIcon>
+            <GameIconWrapper path={category.indexIcon} />
+          </ListItemIcon>
           <ListItemText
             primaryTypographyProps={{ noWrap: true }}
-            primary={section.name + " List"}
+            primary={category.name + " List"}
           />
+        </ListItem>
+      </Tooltip>
+    );
+  }
+
+  /**
+   * Generates entries in the drawer
+   * @param category The variable containing information about a category
+   * @returns {*}
+   */
+  generateCategoryEntries(category) {
+    return (
+      <Tooltip title={category.name} placement={"right"}>
+        <ListItem
+          onClick={() => {
+            console.log(category);
+            return this.props.onclick(category.articles, category.name);
+          }}
+          button
+          key={category.name}
+        >
+          <ListItemIcon>
+            <GameIconWrapper path={category.overviewIcon} />
+          </ListItemIcon>
+          <ListItemText primary={category.name} />
         </ListItem>
       </Tooltip>
     );
@@ -244,8 +274,7 @@ class SkillDrawer extends Component {
 
 SkillDrawer.propTypes = {
   classes: PropTypes.any,
-  open: PropTypes.bool,
-  callbackfn: PropTypes.func
+  open: PropTypes.bool
 };
 
 class BackButton extends Component {
@@ -329,31 +358,8 @@ export class NavBar extends Component {
           open={this.props.open}
           renderCategory={this.props.renderCategory}
           onclick={this.props.onclick}
-          callbackfn={section => {
-            return this.generateDrawerEntries(section);
-          }}
         />
       </React.Fragment>
-    );
-  }
-
-  /**
-   * Generates entries in the drawer
-   * @param section The variable containing information about a category
-   * @returns {*}
-   */
-  generateDrawerEntries(section) {
-    return (
-      <Tooltip title={section.name} placement={"right"}>
-        <ListItem
-          onClick={() => this.props.onclick(section.infoObj, section.name)}
-          button
-          key={section.name}
-        >
-          <ListItemIcon>{section.icon}</ListItemIcon>
-          <ListItemText primary={section.name} />
-        </ListItem>
-      </Tooltip>
     );
   }
 }

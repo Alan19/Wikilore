@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
-import RenderAppBar from "./components/Header";
-import { allSkills, copyright, defaultCategory } from "./info";
+import RulebookAppBar from "./components/Header";
+import { allSkills, copyright} from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -179,6 +179,8 @@ class App extends Component {
    * @param viewName The name of the view that will be displayed
    */
   displayOverview = (overviewType, viewName) => {
+    console.log("Changing overview!");
+    console.log(overviewType);
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
@@ -286,7 +288,7 @@ class App extends Component {
           }}
         >
           <div className="App" />
-          <RenderAppBar
+          <RulebookAppBar
             toggleDrawer={this.toggleDrawer}
             open={this.state.open}
             switchTheme={this.switchTheme}

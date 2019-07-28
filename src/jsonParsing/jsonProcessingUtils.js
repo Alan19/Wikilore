@@ -22,5 +22,5 @@ catJSONS.forEach(category => {
       categoryObj.articles.push(entry);
     }
   });
-  categories.push(category);
+  categories.push(categoryObj);
 });
