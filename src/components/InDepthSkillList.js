@@ -12,10 +12,11 @@ import { generateFormattedSkillText } from "./FormattedSkillText";
 
 export class InDepthSkillList extends React.Component {
   render() {
-    let skillList = this.props.skillList;
-    let skillListComponents = skillList.map((skill, index, arr) => (
+    let articles = this.props.skillList;
+    console.log(articles);
+    let skillListComponents = articles.map((article, index, arr) => (
       <React.Fragment>
-        {generateFormattedSkillText(skill.detailedDescription, skill.icon)}
+        {generateFormattedSkillText(article, article.icon)}
         {index < arr.length - 1 && <hr />}
       </React.Fragment>
     ));
@@ -44,11 +45,11 @@ export class InDepthSkillList extends React.Component {
                 padding: this.props.theme.spacing.unit * 2
               }}
             >
-              {skillList.map((skill, index, array) => {
+              {articles.map((skill, index, array) => {
                 return (
                   <React.Fragment>
                     {InDepthSkillList.generateTableOfContents(
-                      skill.detailedDescription,
+                      skill,
                       skill.icon
                     )}
                     {index < array.length - 1 && (
@@ -65,7 +66,7 @@ export class InDepthSkillList extends React.Component {
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Typography>
-                  {skillList.map((skill, index, array) => {
+                  {articles.map((skill, index, array) => {
                     return (
                       <React.Fragment>
                         {InDepthSkillList.generateTableOfContents(
@@ -108,7 +109,11 @@ export class InDepthSkillList extends React.Component {
               )}
               {section.subsections.map(subsection => {
                 return (
-                  <a href={"#" + subsection.name.toLowerCase().replace(/\s/g, "")}>
+                  <a
+                    href={
+                      "#" + subsection.name.toLowerCase().replace(/\s/g, "")
+                    }
+                  >
                     <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
                       {subsection.name}
                     </Typography>

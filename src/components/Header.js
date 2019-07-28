@@ -15,7 +15,7 @@ import classNames from "classnames";
 import React, { Component } from "react";
 import * as PropTypes from "prop-types";
 import SearchBar from "./SearchBar";
-import { allSkills, info } from "../info";
+import { allSkills } from "../info";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CheatSheetIcon from "../iconClasses/CheatSheetIcon";

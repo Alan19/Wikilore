@@ -243,7 +243,7 @@ class App extends Component {
   };
 
   /**
-   * Sets the state to display a list of all skills in a section
+   * Sets the state to display a list of all skills in a category
    * @param skillCategory The category to display all skills of
    * @param categoryName The name of the category being displayed
    */
