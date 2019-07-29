@@ -8,12 +8,12 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
-import {allSkills} from "../info";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Icon } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+import { entries } from "../jsonParsing/jsonProcessingUtils";
 
-const suggestions = allSkills;
+const suggestions = entries;
 
 function renderInputComponent(inputProps) {
   const { classes, inputRef = () => {}, ref, ...other } = inputProps;
@@ -52,16 +52,18 @@ function getSuggestions(value) {
     ? []
     : //Filter results based on skill name matching or section name matching
       suggestions.filter(suggestion => {
+        console.log(suggestion);
         const keep =
           count < 5 &&
           (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
             (inputLength > 2 &&
-              (suggestion.detailedDescription.sections
-                .map(field => field.title.toLowerCase().slice(0, inputLength))
-                .includes(inputValue) ||
-                suggestion.detailedDescription.effects
-                  .map(field => field.title.slice(0, inputLength).toLowerCase())
-                  .includes(inputValue))));
+              suggestion.sections.map(section =>
+                section.subsections
+                  .map(subsection =>
+                    subsection.name.toLowerCase().slice(0, inputLength)
+                  )
+                  .includes(inputValue)
+              )));
         if (keep) {
           count += 1;
         }
@@ -194,32 +196,43 @@ class SearchBar extends React.Component {
         </Typography>
       );
   }
+
+  /**
+   * Generate a span elements that functions as a link to another element on another article when clicked on
+   * @param suggestion The matched entry object
+   * @param query The string input in the search bar
+   * @returns {*} A span element that takes the user to another page when clicked on
+   */
   searchForSection(suggestion, query) {
-    return suggestion.detailedDescription.sections
-      .concat(suggestion.detailedDescription.effects)
-      .filter(
-        section =>
-          section.title.slice(0, query.length).toLowerCase() ===
-          query.toLowerCase()
+    let subsections = [];
+    suggestion.sections.forEach(section =>
+      section.subsections.forEach(subsection => subsections.push(subsection))
+    );
+    return subsections
+      .filter(subsection =>
+        subsection.name.slice(0, query.length).toLowerCase() ===
+        query.toLowerCase()
       )
-      .map(section => (
-        <span
-          onClick={() =>
-            this.props.changeview(
-              suggestion,
-              section.title.toLowerCase().replace(/\s/g, "")
-            )
-          }
-          onMouseOver={event => {
-            return (event.currentTarget.style.textDecoration = "underline");
-          }}
-          onMouseLeave={event => {
-            return (event.currentTarget.style.textDecoration = "none");
-          }}
-        >
-          {section.title}
-        </span>
-      ))
+      .map(section => {
+        return (
+          <span
+            onClick={() =>
+              this.props.changeview(
+                suggestion,
+                section.name.toLowerCase().replace(/\s/g, "")
+              )
+            }
+            onMouseOver={event => {
+              return (event.currentTarget.style.textDecoration = "underline");
+            }}
+            onMouseLeave={event => {
+              return (event.currentTarget.style.textDecoration = "none");
+            }}
+          >
+            {section.name}
+          </span>
+        );
+      })
       .reduce((prev, curr) => [prev, ", ", curr]);
   }
 
