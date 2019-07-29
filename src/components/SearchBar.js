@@ -43,6 +43,11 @@ function renderInputComponent(inputProps) {
   );
 }
 
+/**
+ * Get all of the articles whose name or subsection names matches the input
+ * @param value The input value in the searchbar
+ * @returns {*} An array of entry objects that matches the input value
+ */
 function getSuggestions(value) {
   const inputValue = deburr(value.trim()).toLowerCase();
   const inputLength = inputValue.length;
@@ -151,6 +156,13 @@ class SearchBar extends React.Component {
     });
   };
 
+    /**
+     * Generates menu items based on the matched items
+     * @param suggestion The entry object that gets matched with the suggestion
+     * @param query The string in the search bar to generate links to subsections on another page
+     * @param isHighlighted Is the suggestion highlighted because it is being hovered over
+     * @returns {*} A MenuItem that contains a 'link' to another article or a subsection of that article
+     */
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     const matches = match(suggestion.name, query);
     const parts = parse(suggestion.name, matches);
@@ -209,9 +221,10 @@ class SearchBar extends React.Component {
       section.subsections.forEach(subsection => subsections.push(subsection))
     );
     return subsections
-      .filter(subsection =>
-        subsection.name.slice(0, query.length).toLowerCase() ===
-        query.toLowerCase()
+      .filter(
+        subsection =>
+          subsection.name.slice(0, query.length).toLowerCase() ===
+          query.toLowerCase()
       )
       .map(section => {
         return (
