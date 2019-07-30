@@ -58,10 +58,10 @@ module.exports = {
 
     let entryFileContent = "export let entryJSONS = [];\n";
     entryFiles.forEach(fileName => {
-      entryFileContent += `entryJSONS.push(require('../entries/${fileName.replace(
+      entryFileContent += `entryJSONS.push(require("../entries/${fileName.replace(
         /\.[^/.]+$/,
         ""
-      )}'));\n`;
+      )}"));\n`;
     });
 
     writeEntryFile(entryFileContent);

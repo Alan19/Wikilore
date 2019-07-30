@@ -1,5 +1,6 @@
 import React from "react";
 import { Divider, Typography } from "@material-ui/core";
+import ReactMarkdown from "react-markdown";
 
 export function generateFormattedSkillText(skill, icon) {
   function generateTitle() {
@@ -50,8 +51,9 @@ export function generateFormattedSkillText(skill, icon) {
                       variant={"body1"}
                       paragraph={true}
                       component={"span"}
+                      dangerouslySetInnerHTML={{__html: subsection.text}}
                     >
-                      {subsection.text}
+                      {/*<ReactMarkdown className={"Typography"} source={subsection.text} />*/}
                     </Typography>
                   </React.Fragment>
                 );

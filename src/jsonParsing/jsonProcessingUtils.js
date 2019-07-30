@@ -7,7 +7,7 @@ export let categories = [];
 export let entries = [];
 entryJSONS.forEach(entry =>
   entries.push(
-    new SkillObject(entry.name, entry.cardInfo, entry.tags, entry.icon, entry.sections)
+    new SkillObject(entry.name, entry.blurb, entry.cardInfo, entry.tags, entry.icon, entry.sections)
   )
 );
 
