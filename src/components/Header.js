@@ -198,10 +198,6 @@ class SkillDrawer extends Component {
       >
         <div className={this.props.classes.toolbar} />
         <List>
-          {categories.map(category => this.generateCategoryEntries(category))}
-          <Divider />
-          {categories.map(category => this.generateListEntries(category))}
-          <Divider />
           <CheatSheetItems
             cheatSheetInDepth={this.props.cheatSheetInDepth}
             onClick={() => this.props.cheatSheet()}
@@ -217,7 +213,11 @@ class SkillDrawer extends Component {
               onClick={() => this.props.renderCategory(entries, "All Skills")}
               key={"Glossary"}
             />
+            <Divider />
           </React.Fragment>
+          {categories.map(category => this.generateCategoryEntries(category))}
+          <Divider />
+          {categories.map(category => this.generateListEntries(category))}
         </List>
       </Drawer>
     );

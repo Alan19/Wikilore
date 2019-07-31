@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import RulebookAppBar from "./components/Header";
-import { allSkills, copyright } from "./info";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -12,6 +11,7 @@ import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
 import { entries } from "./jsonParsing/jsonProcessingUtils";
+import { copyright } from "./config";
 function HistoryObject(currentState) {
   this.currentState = currentState;
 }
@@ -272,7 +272,6 @@ class App extends Component {
 
   render() {
     this.toggleBool ? (this.toggleBool = false) : (this.toggleBool = true);
-    console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
       <MuiThemeProvider theme={this.state.theme}>

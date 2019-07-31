@@ -57,18 +57,24 @@ function getSuggestions(value) {
     ? []
     : //Filter results based on skill name matching or section name matching
       suggestions.filter(suggestion => {
-        console.log(suggestion);
+        let sectionNames = [];
+        suggestion.sections.forEach(section =>
+          section.subsections.forEach(subsection =>
+            sectionNames.push(subsection.name)
+          )
+        );
         const keep =
           count < 5 &&
           (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
             (inputLength > 2 &&
-              suggestion.sections.map(section =>
-                section.subsections
-                  .map(subsection =>
-                    subsection.name.toLowerCase().slice(0, inputLength)
-                  )
-                  .includes(inputValue)
-              )));
+              //Use map to get the all subsections, and then flatten it to make it one array and then filter
+              suggestion.sections
+                .map(section => section.subsections)
+                .flat()
+                .map(subsection =>
+                  subsection.name.toLowerCase().slice(0, inputLength)
+                )
+                .includes(inputValue)));
         if (keep) {
           count += 1;
         }
@@ -156,17 +162,16 @@ class SearchBar extends React.Component {
     });
   };
 
-    /**
-     * Generates menu items based on the matched items
-     * @param suggestion The entry object that gets matched with the suggestion
-     * @param query The string in the search bar to generate links to subsections on another page
-     * @param isHighlighted Is the suggestion highlighted because it is being hovered over
-     * @returns {*} A MenuItem that contains a 'link' to another article or a subsection of that article
-     */
+  /**
+   * Generates menu items based on the matched items
+   * @param suggestion The entry object that gets matched with the suggestion
+   * @param query The string in the search bar to generate links to subsections on another page
+   * @param isHighlighted Is the suggestion highlighted because it is being hovered over
+   * @returns {*} A MenuItem that contains a 'link' to another article or a subsection of that article
+   */
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     const matches = match(suggestion.name, query);
     const parts = parse(suggestion.name, matches);
-
     return (
       <MenuItem
         onClick={() => this.props.changeview(suggestion)}
