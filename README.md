@@ -28,4 +28,4 @@ to distribute the app to others or ``` $ npm start``` to test.
 * see [LICENSE](https://github.com/Alan19/vigilant-adventure/blob/master/LICENSE) file
 
 ## Version 
-* Version 2.1.1
+* Version 2.1.2
