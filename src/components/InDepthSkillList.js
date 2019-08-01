@@ -70,7 +70,7 @@ export class InDepthSkillList extends React.Component {
                     return (
                       <React.Fragment>
                         {InDepthSkillList.generateTableOfContents(
-                          skill.detailedDescription,
+                          skill,
                           skill.icon
                         )}
                         {index < array.length - 1 && (
