@@ -1,13 +1,13 @@
 import { entryJSONS } from "./entryJsonLocations";
 import { catJSONS } from "./categoryJsonLocations";
 import { CategoryObject } from "./categoryObject";
-import { SkillObject } from "./skillObject";
+import { EntryObject } from "./entryObject";
 
 export let categories = [];
 export let entries = [];
 entryJSONS.forEach(entry =>
   entries.push(
-    new SkillObject(entry.name, entry.blurb, entry.cardInfo, entry.tags, entry.icon, entry.sections)
+    new EntryObject(entry)
   )
 );
 

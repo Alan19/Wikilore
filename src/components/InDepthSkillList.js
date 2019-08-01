@@ -68,7 +68,7 @@ export class InDepthSkillList extends React.Component {
                 <Typography>
                   {articles.map((skill, index, array) => {
                     return (
-                      <React.Fragment>
+                      <React.Fragmenst>
                         {InDepthSkillList.generateTableOfContents(
                           skill,
                           skill.icon
@@ -76,7 +76,7 @@ export class InDepthSkillList extends React.Component {
                         {index < array.length - 1 && (
                           <Divider light style={{ width: "90%" }} />
                         )}
-                      </React.Fragment>
+                      </React.Fragmenst>
                     );
                   })}
                 </Typography>

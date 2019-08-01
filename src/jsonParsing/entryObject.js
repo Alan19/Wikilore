@@ -1,15 +1,15 @@
-export function SkillObject(name, blurb, cardInfo, tags, iconPath, sections) {
-  this.name = name;
-  this.blurb = blurb;
-  this.tags = tags;
-  this.cardInfo = cardInfo;
+export function EntryObject(entryJSON) {
+  this.name = entryJSON.name;
+  this.blurb = entryJSON.blurb;
+  this.tags = entryJSON.tags;
+  this.cardInfo = entryJSON.cardInfo;
   try {
-    this.icon = require('../resources/' + iconPath);
+    this.icon = require('../resources/' + entryJSON.icon);
   }catch (e) {
     this.icon = require('../resources/uncertainty.svg')
   }
 
-  this.sections = sections.map(section => new Section(section));
+  this.sections = entryJSON.sections.map(section => new Section(section));
 }
 
 function Section(section) {
