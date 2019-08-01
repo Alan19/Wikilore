@@ -1,9 +1,8 @@
 import React from "react";
 import { Divider, Typography } from "@material-ui/core";
-import ReactMarkdown from "react-markdown";
 
-export function generateFormattedSkillText(skill, icon) {
-  const generateTitle = () => (
+function generateTitle(skill, icon) {
+  return (
     <>
       <a id={skill.name.toLowerCase().replace(/\s/g, "")} />
       <Typography
@@ -19,8 +18,10 @@ export function generateFormattedSkillText(skill, icon) {
       </Typography>
     </>
   );
+}
 
-  const renderSections = () => (
+function renderSections(skill) {
+  return (
     <>
       {skill.sections.map((section, i) => {
         return (
@@ -46,24 +47,21 @@ export function generateFormattedSkillText(skill, icon) {
                     component={"span"}
                     dangerouslySetInnerHTML={{ __html: subsection.text }}
                   >
-                    {/*<ReactMarkdown className={"Typography"} source={subsection.text} />*/}
                   </Typography>
                 </React.Fragment>
               );
             })}
-            {i < skill.sections.length - 1 && (
-              <Divider variant={"middle"} light />
-            )}
           </>
         );
-      })}
+      }).reduce((prev, curr) => [prev, <Divider variant={"middle"} light />, curr])}
     </>
   );
-
+}
+export function generateFormattedSkillText(skill, icon) {
   return (
     <React.Fragment>
-      {generateTitle()}
-      {renderSections()}
+      {generateTitle(skill, icon)}
+      {renderSections(skill)}
     </React.Fragment>
   );
 }
