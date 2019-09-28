@@ -12,10 +12,11 @@ import { generateFormattedSkillText } from "./FormattedSkillText";
 
 export class InDepthSkillList extends React.Component {
   render() {
-    let skillList = this.props.skillList;
-    let skillListComponents = skillList.map((skill, index, arr) => (
+    let articles = this.props.skillList;
+    console.log(articles);
+    let skillListComponents = articles.map((article, index, arr) => (
       <React.Fragment>
-        {generateFormattedSkillText(skill.detailedDescription, skill.icon)}
+        {generateFormattedSkillText(article, article.icon)}
         {index < arr.length - 1 && <hr />}
       </React.Fragment>
     ));
@@ -44,11 +45,11 @@ export class InDepthSkillList extends React.Component {
                 padding: this.props.theme.spacing.unit * 2
               }}
             >
-              {skillList.map((skill, index, array) => {
+              {articles.map((skill, index, array) => {
                 return (
                   <React.Fragment>
                     {InDepthSkillList.generateTableOfContents(
-                      skill.detailedDescription,
+                      skill,
                       skill.icon
                     )}
                     {index < array.length - 1 && (
@@ -64,21 +65,21 @@ export class InDepthSkillList extends React.Component {
                 <Typography>Contents</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
-                  <Typography>
-                {skillList.map((skill, index, array) => {
-                  return (
-                    <React.Fragment>
-                      {InDepthSkillList.generateTableOfContents(
-                        skill.detailedDescription,
-                        skill.icon
-                      )}
-                      {index < array.length - 1 && (
-                        <Divider light style={{ width: "90%" }} />
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-                  </Typography>
+                <Typography>
+                  {articles.map((skill, index, array) => {
+                    return (
+                      <React.Fragmenst>
+                        {InDepthSkillList.generateTableOfContents(
+                          skill,
+                          skill.icon
+                        )}
+                        {index < array.length - 1 && (
+                          <Divider light style={{ width: "90%" }} />
+                        )}
+                      </React.Fragmenst>
+                    );
+                  })}
+                </Typography>
               </ExpansionPanelDetails>
             </ExpansionPanel>
           )}
@@ -90,37 +91,46 @@ export class InDepthSkillList extends React.Component {
   static generateTableOfContents(skill, icon = null) {
     return (
       <React.Fragment>
-        <a href={"#" + skill.title.toLowerCase().replace(/\s/g, "")}>
+        <a href={"#" + skill.name.toLowerCase().replace(/\s/g, "")}>
           <Typography variant={"overline"}>
-            {skill.title}{" "}
+            {skill.name}{" "}
             {icon !== null && (
-              <img style={{ height: "1em" }} src={icon} alt={skill.title} />
+              <img style={{ height: "1em" }} src={icon} alt={skill.name} />
             )}{" "}
           </Typography>
         </a>
-        {skill.sections.map(section => (
-          <a href={"#" + section.title.toLowerCase().replace(/\s/g, "")}>
-            <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
-              {section.title}
-            </Typography>
-          </a>
-        ))}
-        <a
-          href={
-            "#" + skill.purchasableSkillType.toLowerCase().replace(/\s/g, "")
-          }
-        >
-          <Typography variant={"overline"}>
-            {skill.purchasableSkillType}
-          </Typography>
-        </a>
-        {skill.effects.map(section => (
-          <a href={"#" + section.title.toLowerCase().replace(/\s/g, "")}>
-            <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
-              {section.title}
-            </Typography>
-          </a>
-        ))}
+        {skill.sections.map(section => {
+          return (
+            <React.Fragment>
+              {section.name !== "" && (
+                <a href={"#" + section.name.toLowerCase().replace(/\s/g, "")}>
+                  <Typography variant={"overline"}>{section.name}</Typography>
+                </a>
+              )}
+              {section.subsections.map(subsection => {
+                return (
+                  <a
+                    href={
+                      "#" + subsection.name.toLowerCase().replace(/\s/g, "")
+                    }
+                  >
+                    <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
+                      {subsection.name}
+                    </Typography>
+                  </a>
+                );
+              })}
+            </React.Fragment>
+          );
+        })}
+
+        {/*{skill.effects.map(section => (*/}
+        {/*  <a href={"#" + section.name.toLowerCase().replace(/\s/g, "")}>*/}
+        {/*    <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>*/}
+        {/*      {section.name}*/}
+        {/*    </Typography>*/}
+        {/*  </a>*/}
+        {/*))}*/}
       </React.Fragment>
     );
   }

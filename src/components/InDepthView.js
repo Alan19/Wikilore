@@ -20,7 +20,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
  */
 export default class InDepthView extends Component {
   render() {
-    const skill = this.props.skillObject.detailedDescription;
+    const skill = this.props.skillObject;
     const icon = this.props.skillObject.icon;
     return (
       <Grid

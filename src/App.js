@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import RenderAppBar from "./components/Header";
-import {allSkills, copyright, defaultCategory} from "./info";
+import RulebookAppBar from "./components/Header";
 import { Overview } from "./components/Overview";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
@@ -11,12 +10,13 @@ import { InDepthSkillList } from "./components/InDepthSkillList";
 import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
-
+import { entries } from "./jsonParsing/jsonProcessingUtils";
+import { copyright } from "./config";
 function HistoryObject(currentState) {
   this.currentState = currentState;
 }
 
-function getFavoriteSkills() {
+function getFavoriteArticles() {
   return JSON.parse(localStorage.getItem("favorites"));
 }
 
@@ -84,7 +84,6 @@ const views = {
 
 class App extends Component {
   stack = [];
-
   constructor(props) {
     super(props);
     /**
@@ -98,12 +97,11 @@ class App extends Component {
      */
     this.state = {
       currentView: views.OVERVIEW,
-      viewInfo: defaultCategory.infoObj,
+      viewInfo: entries,
       theme: createTheme(blue, yellow, "light"),
       open: false,
-      name: `${defaultCategory.name} ${views.OVERVIEW}`
+      name: `All Skills ${views.OVERVIEW}`
     };
-
     this.toggleBool = false;
   }
 
@@ -112,14 +110,11 @@ class App extends Component {
    * @returns {Array} All of the skill objects that you have favorited
    */
   getSkillObjects = () => {
-    let skills = getFavoriteSkills();
+    let favorites = getFavoriteArticles();
     let skillObjects = [];
-    console.log(allSkills);
-    for (let i = 0; i < allSkills.length; i++) {
-      if (skills.includes(allSkills[i].name)) {
-        skillObjects.push(allSkills[i]);
-      }
-    }
+    entries.forEach(article => {
+      if (favorites.includes(article.name)) skillObjects.push(article);
+    });
     return skillObjects;
   };
 
@@ -181,6 +176,8 @@ class App extends Component {
    * @param viewName The name of the view that will be displayed
    */
   displayOverview = (overviewType, viewName) => {
+    console.log("Changing overview!");
+    console.log(overviewType);
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
@@ -242,11 +239,11 @@ class App extends Component {
     });
   };
 
-    /**
-     * Sets the state to display a list of all skills in a section
-     * @param skillCategory The category to display all skills of
-     * @param categoryName The name of the category being displayed
-     */
+  /**
+   * Sets the state to display a list of all skills in a category
+   * @param skillCategory The category to display all skills of
+   * @param categoryName The name of the category being displayed
+   */
   displayList = (skillCategory, categoryName) => {
     window.scrollTo(0, 0);
     this.setState({
@@ -275,7 +272,6 @@ class App extends Component {
 
   render() {
     this.toggleBool ? (this.toggleBool = false) : (this.toggleBool = true);
-    console.log(allSkills);
     this.stack.push(new HistoryObject(this.state));
     return (
       <MuiThemeProvider theme={this.state.theme}>
@@ -288,7 +284,7 @@ class App extends Component {
           }}
         >
           <div className="App" />
-          <RenderAppBar
+          <RulebookAppBar
             toggleDrawer={this.toggleDrawer}
             open={this.state.open}
             switchTheme={this.switchTheme}
