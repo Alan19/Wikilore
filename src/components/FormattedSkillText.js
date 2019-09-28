@@ -4,8 +4,8 @@ import { Divider, Typography } from "@material-ui/core";
 function generateTitle(skill, icon) {
   return (
     <>
-      <a id={skill.name.toLowerCase().replace(/\s/g, "")} />
       <Typography
+        id={skill.name.toLowerCase().replace(/\s/g, "")}
         variant={"h3"}
         style={{ overflow: "auto", overflowY: "hidden" }}
         component={"span"}
@@ -29,8 +29,11 @@ function renderSections(skill) {
             <>
               {section.name.trim() !== "" && (
                 <>
-                  <a id={section.name.toLowerCase().replace(/\s/g, "")} />
                   <Typography
+                    id={
+                      skill.name.toLowerCase().replace(/\s/g, "") +
+                      section.name.toLowerCase().replace(/\s/g, "")
+                    }
                     paragraph
                     style={{ paddingTop: 16 }}
                     variant={"h5"}
@@ -42,8 +45,13 @@ function renderSections(skill) {
               {section.subsections.map(subsection => {
                 return (
                   <React.Fragment>
-                    <a id={subsection.name.toLowerCase().replace(/\s/g, "")} />
-                    <Typography variant={"subtitle1"}>
+                    <Typography
+                      id={
+                        skill.name.toLowerCase().replace(/\s/g, "") +
+                        subsection.name.toLowerCase().replace(/\s/g, "")
+                      }
+                      variant={"subtitle1"}
+                    >
                       {subsection.name}
                     </Typography>
                     <Typography
@@ -51,7 +59,7 @@ function renderSections(skill) {
                       paragraph={true}
                       component={"span"}
                       dangerouslySetInnerHTML={{ __html: subsection.text }}
-                    ></Typography>
+                    />
                   </React.Fragment>
                 );
               })}

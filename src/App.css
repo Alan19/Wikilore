@@ -12,3 +12,7 @@ u {
 html {
   /*scroll-behavior: smooth;*/
 }
+
+.tableOfContentsNavigationLink:hover{
+  cursor: pointer;
+}

@@ -237,7 +237,7 @@ class SearchBar extends React.Component {
             onClick={() =>
               this.props.changeview(
                 suggestion,
-                section.name.toLowerCase().replace(/\s/g, "")
+                suggestion.name.toLowerCase().replace(/\s/g, "") + section.name.toLowerCase().replace(/\s/g, "")
               )
             }
             onMouseOver={event => {

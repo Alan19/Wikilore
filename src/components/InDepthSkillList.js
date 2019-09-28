@@ -84,31 +84,56 @@ export function InDepthSkillList(props) {
   );
 }
 
+function scrollToSection(sectionID) {
+  window.scrollTo(0, document.getElementById(sectionID).offsetTop - 100);
+}
+
 InDepthSkillList.generateTableOfContents = (skill, icon = null) => (
   <React.Fragment>
-    <a href={"#" + skill.name.toLowerCase().replace(/\s/g, "")}>
-      <Typography variant={"overline"}>
-        {skill.name}{" "}
-        {icon !== null && (
-          <img style={{ height: "1em" }} src={icon} alt={skill.name} />
-        )}{" "}
-      </Typography>
-    </a>
+    <Typography
+      className={"tableOfContentsNavigationLink"}
+      variant={"overline"}
+      onClick={() =>
+        scrollToSection(`${skill.name.toLowerCase().replace(/\s/g, "")}`)
+      }
+    >
+      {skill.name}{" "}
+      {icon !== null && (
+        <img style={{ height: "1em" }} src={icon} alt={skill.name} />
+      )}{" "}
+    </Typography>
     {skill.sections.map(section => {
       return (
         <React.Fragment>
           {section.name !== "" && (
-            <a href={"#" + section.name.toLowerCase().replace(/\s/g, "")}>
-              <Typography variant={"overline"}>{section.name}</Typography>
-            </a>
+            <Typography
+              className={"tableOfContentsNavigationLink"}
+              onClick={() =>
+                scrollToSection(
+                  skill.name.toLowerCase().replace(/\s/g, "") +
+                    section.name.toLowerCase().replace(/\s/g, "")
+                )
+              }
+              variant={"overline"}
+            >
+              {section.name}
+            </Typography>
           )}
           {section.subsections.map(subsection => {
             return (
-              <a href={"#" + subsection.name.toLowerCase().replace(/\s/g, "")}>
-                <Typography style={{ fontSize: 15 }} variant={"subtitle1"}>
-                  {subsection.name}
-                </Typography>
-              </a>
+              <Typography
+                className={"tableOfContentsNavigationLink"}
+                onClick={() =>
+                  scrollToSection(
+                    skill.name.toLowerCase().replace(/\s/g, "") +
+                      subsection.name.toLowerCase().replace(/\s/g, "")
+                  )
+                }
+                style={{ fontSize: 15 }}
+                variant={"subtitle1"}
+              >
+                {subsection.name}
+              </Typography>
             );
           })}
         </React.Fragment>
