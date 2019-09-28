@@ -12,7 +12,7 @@ import {
   withStyles
 } from "@material-ui/core";
 import classNames from "classnames";
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import * as PropTypes from "prop-types";
 import SearchBar from "./SearchBar";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -280,21 +280,19 @@ SkillDrawer.propTypes = {
   open: PropTypes.bool
 };
 
-class BackButton extends Component {
-  render() {
-    const { classes, visibility, onClick } = this.props;
-    return (
-      <IconButton
-        style={{ visibility: visibility }}
-        color="inherit"
-        aria-label="Menu"
-        onClick={onClick}
-        className={classes.menuButton}
-      >
-        <Icon>arrow_back</Icon>
-      </IconButton>
-    );
-  }
+function BackButton(props) {
+  const { classes, visibility, onClick } = props;
+  return (
+    <IconButton
+      style={{ visibility: visibility }}
+      color="inherit"
+      aria-label="Menu"
+      onClick={onClick}
+      className={classes.menuButton}
+    >
+      <Icon>arrow_back</Icon>
+    </IconButton>
+  );
 }
 
 BackButton.propTypes = {
