@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Button,
   Card,
@@ -12,46 +12,51 @@ import {
 import { Overview } from "./Overview";
 
 function SkillTitle(props) {
+  const { icon, name } = props.skill;
   return (
     <span>
-      {props.skill.name}
+      {name}
       &nbsp;
-      <img style={{height: '1em'}} src={props.skill.icon} alt={props.skill.name} />{" "}
+      <img style={{ height: "1em" }} src={icon} alt={name} />{" "}
     </span>
   );
 }
 
-export class SkillCard extends Component {
-  render() {
-    return (
-      <Card>
-        <CardHeader title={<SkillTitle skill={this.props.skill} />} />
-        {this.props.isDesktop && (
-          <CardContent
-            style={{
-              height: 175,
-              textOverflow: "ellipsis",
-              overflow: "hidden"
-            }}
+export function SkillCard(props) {
+  const { learnMore, addToCheatSheet, isDesktop, skill } = props;
+  return (
+    <Card>
+      <CardHeader title={<SkillTitle skill={skill} />} />
+      {isDesktop && (
+        <CardContent
+          style={{
+            height: 175,
+            textOverflow: "ellipsis",
+            overflow: "hidden"
+          }}
+        >
+          <Typography
+            style={{ textOverflow: "ellipsis", overflow: "hidden" }}
+            variant={"body1"}
           >
-            <Typography style={{textOverflow: "ellipsis", overflow: 'hidden'}} variant={"body1"}>{this.props.skill.cardInfo}</Typography>
-          </CardContent>
-        )}
-        <CardActions disableActionSpacing>
-          <div className={"left"} style={{ flexGrow: 1 }}>
-            <Button
-              size="small"
-              color={"primary"}
-              onClick={() => this.props.learnMore(this.props.skill)}
-            >
-              Learn More
-            </Button>
-          </div>
-          <IconButton onClick={this.props.addToCheatSheet}>
-            <Icon color={Overview.checkFavorited(this.props.skill)}>star</Icon>
-          </IconButton>
-        </CardActions>
-      </Card>
-    );
-  }
+            {skill.cardInfo}
+          </Typography>
+        </CardContent>
+      )}
+      <CardActions disableActionSpacing>
+        <div className={"left"} style={{ flexGrow: 1 }}>
+          <Button
+            size="small"
+            color={"primary"}
+            onClick={() => learnMore(skill)}
+          >
+            Learn More
+          </Button>
+        </div>
+        <IconButton onClick={addToCheatSheet}>
+          <Icon color={Overview.checkFavorited(skill)}>star</Icon>
+        </IconButton>
+      </CardActions>
+    </Card>
+  );
 }

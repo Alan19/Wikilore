@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Avatar,
   Icon,
@@ -13,36 +13,32 @@ import {
 import * as PropTypes from "prop-types";
 import { Overview } from "./Overview";
 
-export class MobileSkillList extends Component {
-  render() {
-    return (
-      <List
-        style={{
-          width: "100%",
-          maxWidth: 360,
-          backgroundColor: this.props.theme.palette.background.paper
-        }}
-        component={"nav"}
-      >
-        <ListItem onClick={this.props.onClick}>
-          <ListItemIcon>
-            <Avatar src={this.props.skill.icon} />
-          </ListItemIcon>
-          <ListItemText
-            primary={this.props.skill.name}
-            secondary={<Typography noWrap>{this.props.skill.text}</Typography>}
-          />
-          <ListItemSecondaryAction>
-            <IconButton onClick={this.props.addToCheatSheet}>
-              <Icon color={Overview.checkFavorited(this.props.skill)}>
-                star
-              </Icon>
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
-    );
-  }
+export function MobileSkillList({ addToCheatSheet, onClick, skill, theme }) {
+  return (
+    <List
+      style={{
+        width: "100%",
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper
+      }}
+      component={"nav"}
+    >
+      <ListItem onClick={onClick}>
+        <ListItemIcon>
+          <Avatar src={skill.icon} />
+        </ListItemIcon>
+        <ListItemText
+          primary={skill.name}
+          secondary={<Typography noWrap>{skill.text}</Typography>}
+        />
+        <ListItemSecondaryAction>
+          <IconButton onClick={addToCheatSheet}>
+            <Icon color={Overview.checkFavorited(skill)}>star</Icon>
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+    </List>
+  );
 }
 
 MobileSkillList.propTypes = {

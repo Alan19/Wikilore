@@ -5,7 +5,7 @@ import {MobileSkillList} from "./MobileSkillList";
 import Fade from "@material-ui/core/Fade";
 
 export class Overview extends React.Component {
-  static checkFavorited(skill) {
+  static checkFavorited = skill => {
     if (localStorage.getItem("favorites") === null) {
       return "inherit";
     } else {
@@ -15,7 +15,7 @@ export class Overview extends React.Component {
         return "inherit";
       }
     }
-  }
+  };
 
   addToCheatSheet(skill, cheatSheetMethod) {
     if (localStorage.hasOwnProperty("favorites")) {

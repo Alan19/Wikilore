@@ -20,14 +20,20 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
  */
 export default class InDepthView extends Component {
   render() {
-    const skill = this.props.skillObject;
-    const icon = this.props.skillObject.icon;
+    const {
+      displayTableOfContents,
+      skillObject,
+      theme,
+      isDesktop
+    } = this.props;
+    const skill = skillObject;
+    const icon = skillObject.icon;
     return (
       <Grid
         wrap={"nowrap"}
-        direction={!this.props.isDesktop ? "column-reverse" : "row"}
+        direction={!isDesktop ? "column-reverse" : "row"}
         container
-        spacing={this.props.theme.spacing.unit * 3}
+        spacing={theme.spacing.unit * 3}
       >
         <Grid item md={2} />
         <Fade in={true}>
@@ -37,15 +43,15 @@ export default class InDepthView extends Component {
         </Fade>
 
         {/*Table of Contents*/}
-        {this.props.displayTableOfContents && (
+        {displayTableOfContents && (
           <Grid item md={4}>
-            {this.props.isDesktop ? (
+            {isDesktop ? (
               <div
                 style={{
                   position: "fixed",
                   overflowY: "auto",
                   maxHeight: "85%",
-                  padding: this.props.theme.spacing.unit * 2
+                  padding: theme.spacing.unit * 2
                 }}
               >
                 {InDepthSkillList.generateTableOfContents(skill)}

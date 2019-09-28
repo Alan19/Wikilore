@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import "./App.css";
 import RulebookAppBar from "./components/Header";
 import { Overview } from "./components/Overview";
@@ -12,6 +12,7 @@ import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_use
 import InDepthView from "./components/InDepthView";
 import { entries } from "./jsonParsing/jsonProcessingUtils";
 import { copyright } from "./config";
+
 function HistoryObject(currentState) {
   this.currentState = currentState;
 }
@@ -20,7 +21,17 @@ function getFavoriteArticles() {
   return JSON.parse(localStorage.getItem("favorites"));
 }
 
-function MainContent(props) {
+function MainContent(props: {
+  theme: PropTypes.any,
+  inDepth: PropTypes.bool,
+  toggleBool: PropTypes.bool,
+  skillObject: PropTypes.any,
+  currentView: PropTypes.any,
+  learnMore: PropTypes.func,
+  updateCheatSheet: PropTypes.func,
+  cheatSheetInDepth: PropTypes.bool,
+  skillList: PropTypes.any
+}) {
   const isDesktop = unstable_useMediaQuery("(min-width:600px)");
   return (
     <div
@@ -82,10 +93,11 @@ const views = {
   LIST: "List"
 };
 
-class App extends Component {
+class App extends PureComponent {
   stack = [];
   constructor(props) {
     super(props);
+    let hasFavoritedSkills = this.getFavoritedSkills().length > 0;
     /**
      * States:
      * currentView: The view the overview should display (magic, culture, etc.)
@@ -97,10 +109,10 @@ class App extends Component {
      */
     this.state = {
       currentView: views.OVERVIEW,
-      viewInfo: entries,
+      viewInfo: hasFavoritedSkills > 0 ? this.getFavoritedSkills() : entries,
       theme: createTheme(blue, yellow, "light"),
       open: false,
-      name: `All Skills ${views.OVERVIEW}`
+      name: hasFavoritedSkills ? `All Skills ${views.OVERVIEW}` : "Cheat Sheet"
     };
     this.toggleBool = false;
   }
@@ -109,7 +121,7 @@ class App extends Component {
    * Returns an array of favorited objects/skills
    * @returns {Array} All of the skill objects that you have favorited
    */
-  getSkillObjects = () => {
+  getFavoritedSkills = () => {
     let favorites = getFavoriteArticles();
     let skillObjects = [];
     entries.forEach(article => {
@@ -124,7 +136,7 @@ class App extends Component {
   updateCheatSheet = () => {
     if (this.state.view === views.OVERVIEW) {
       this.setState({
-        viewInfo: this.getSkillObjects()
+        viewInfo: this.getFavoritedSkills()
       });
     }
   };
@@ -193,7 +205,7 @@ class App extends Component {
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
-      viewInfo: this.getSkillObjects(),
+      viewInfo: this.getFavoritedSkills(),
       name: "Cheat Sheet"
     });
     this.forceUpdate();
@@ -234,7 +246,7 @@ class App extends Component {
     this.setState({
       currentView: views.LIST,
       open: false,
-      viewInfo: this.getSkillObjects(),
+      viewInfo: this.getFavoritedSkills(),
       name: "Cheat Sheet"
     });
   };
