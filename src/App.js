@@ -1,4 +1,3 @@
-import React, { PureComponent } from "react";
 import "./App.css";
 import RulebookAppBar from "./components/Header";
 import { Overview } from "./components/Overview";
@@ -7,11 +6,13 @@ import { createTheme } from "./ThemeProvider";
 import { CssBaseline, Typography } from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
-import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
 import { entries } from "./jsonParsing/jsonProcessingUtils";
 import { copyright } from "./config";
+import { PureComponent } from "react";
+import React from "react";
+import * as PropTypes from "prop-types";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -76,15 +77,15 @@ function MainContent(props: {
 }
 
 MainContent.propTypes = {
-  theme: PropTypes.any,
-  inDepth: PropTypes.bool,
-  toggleBool: PropTypes.bool,
-  skillObject: PropTypes.any,
-  currentView: PropTypes.any,
-  learnMore: PropTypes.func,
-  updateCheatSheet: PropTypes.func,
   cheatSheetInDepth: PropTypes.bool,
-  skillList: PropTypes.any
+  currentView: PropTypes.any,
+  inDepth: PropTypes.bool,
+  learnMore: PropTypes.func,
+  skillList: PropTypes.any,
+  skillObject: PropTypes.any,
+  theme: PropTypes.any,
+  toggleBool: PropTypes.bool,
+  updateCheatSheet: PropTypes.func
 };
 
 const views = {
