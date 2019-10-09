@@ -12,14 +12,13 @@ import { generateFormattedSkillText } from "./FormattedSkillText";
 
 export function InDepthSkillList(props) {
   const { skillList, theme, isDesktop } = props;
-  let articles = skillList;
-  console.log(articles);
-  let skillListComponents = articles.map((article, index, arr) => (
+  let skillListComponents = skillList.map((article, index, arr) => (
     <React.Fragment>
       {generateFormattedSkillText(article, article.icon)}
       {index < arr.length - 1 && <hr />}
     </React.Fragment>
   ));
+  console.log(skillList);
   return (
     <Grid
       wrap={"nowrap"}
@@ -44,7 +43,7 @@ export function InDepthSkillList(props) {
               padding: theme.spacing.unit * 2
             }}
           >
-            {articles.map((skill, index, array) => {
+            {skillList.map((skill, index, array) => {
               return (
                 <React.Fragment>
                   {InDepthSkillList.generateTableOfContents(skill, skill.icon)}
@@ -62,9 +61,9 @@ export function InDepthSkillList(props) {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <Typography>
-                {articles.map((skill, index, array) => {
+                {skillList.map((skill, index, array) => {
                   return (
-                    <React.Fragmenst>
+                    <>
                       {InDepthSkillList.generateTableOfContents(
                         skill,
                         skill.icon
@@ -72,7 +71,7 @@ export function InDepthSkillList(props) {
                       {index < array.length - 1 && (
                         <Divider light style={{ width: "90%" }} />
                       )}
-                    </React.Fragmenst>
+                    </>
                   );
                 })}
               </Typography>
