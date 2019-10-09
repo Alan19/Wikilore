@@ -18,7 +18,6 @@ export function InDepthSkillList(props) {
       {index < arr.length - 1 && <hr />}
     </React.Fragment>
   ));
-  console.log(skillList);
   return (
     <Grid
       wrap={"nowrap"}
