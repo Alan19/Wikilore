@@ -190,15 +190,16 @@ class App extends PureComponent {
    * Change the information the overview should display
    * @param overviewType The object containing the information that should be displayed
    * @param viewName The name of the view that will be displayed
+   * @param customName A custom name for the view
    */
-  displayOverview = (overviewType, viewName) => {
+  displayOverview = (overviewType, viewName, customName = '') => {
     console.log("Changing overview!");
     console.log(overviewType);
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
       viewInfo: overviewType,
-      name: `${viewName} ${views.OVERVIEW}`
+      name: customName ? customName : `${viewName} ${views.OVERVIEW}`
     });
   };
 
@@ -259,14 +260,15 @@ class App extends PureComponent {
    * Sets the state to display a list of all skills in a category
    * @param skillCategory The category to display all skills of
    * @param categoryName The name of the category being displayed
+   * @param customName A custom name for the view
    */
-  displayList = (skillCategory, categoryName) => {
+  displayList = (skillCategory, categoryName, customName = '') => {
     window.scrollTo(0, 0);
     this.setState({
       viewInfo: skillCategory,
       currentView: views.LIST,
       open: false,
-      name: categoryName + " " + views.LIST
+      name: customName ? customName : `${categoryName} ${views.LIST}`
     });
   };
 

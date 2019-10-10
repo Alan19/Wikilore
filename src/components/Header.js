@@ -207,11 +207,11 @@ class SkillDrawer extends PureComponent {
           <Divider />
           <React.Fragment>
             <Index
-              onClick={() => onclick(entries, "All Skills")}
+              onClick={() => onclick(entries, "Index", "Index")}
               key={"Index"}
             />
             <Glossary
-              onClick={() => renderCategory(entries, "All Skills")}
+              onClick={() => renderCategory(entries, "Index", "Index")}
               key={"Glossary"}
             />
             <Divider />
@@ -350,7 +350,7 @@ export function NavBar(props) {
             />
           )}
           <Typography variant="h5" color="inherit" style={{ flexGrow: 1 }}>
-            {name}
+            {name}&nbsp;&nbsp;
           </Typography>
           <SearchBar changeview={changeview} theme={theme} />
 
