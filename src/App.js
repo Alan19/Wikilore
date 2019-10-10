@@ -96,6 +96,7 @@ const views = {
 
 class App extends PureComponent {
   stack = [];
+
   constructor(props) {
     super(props);
     let hasFavoritedSkills = this.getFavoritedSkills().length > 0;
@@ -110,10 +111,10 @@ class App extends PureComponent {
      */
     this.state = {
       currentView: views.OVERVIEW,
-      viewInfo: hasFavoritedSkills > 0 ? this.getFavoritedSkills() : entries,
+      viewInfo: hasFavoritedSkills ? this.getFavoritedSkills() : entries,
       theme: createTheme(blue, yellow, "light"),
       open: false,
-      name: hasFavoritedSkills ? `All Skills ${views.OVERVIEW}` : "Cheat Sheet"
+      name: hasFavoritedSkills ? "Cheat Sheet" : `All Skills ${views.OVERVIEW}`
     };
     this.toggleBool = false;
   }
@@ -125,9 +126,11 @@ class App extends PureComponent {
   getFavoritedSkills = () => {
     let favorites = getFavoriteArticles();
     let skillObjects = [];
-    entries.forEach(article => {
-      if (favorites.includes(article.name)) skillObjects.push(article);
-    });
+    if (favorites) {
+      entries.forEach(article => {
+        if (favorites.includes(article.name)) skillObjects.push(article);
+      });
+    }
     return skillObjects;
   };
 
