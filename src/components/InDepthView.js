@@ -27,12 +27,11 @@ export default function InDepthView(props) {
       wrap={"nowrap"}
       direction={!isDesktop ? "column-reverse" : "row"}
       container
-      spacing={theme.spacing.unit * 3}
+      spacing={2}
     >
-      <Grid item md={2} />
       <Fade in={true}>
-        <Grid item md={6}>
-          {generateFormattedSkillText(skill, icon)}
+        <Grid item md>
+          {generateFormattedSkillText(skill, icon, theme)}
         </Grid>
       </Fade>
 

@@ -1,18 +1,16 @@
 import "./App.css";
 import RulebookAppBar from "./components/Header";
-import { Overview } from "./components/Overview";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import { createTheme } from "./ThemeProvider";
-import { CssBaseline, Typography } from "@material-ui/core";
-import { blue, yellow } from "@material-ui/core/colors";
-import { InDepthSkillList } from "./components/InDepthSkillList";
-import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
+import {Overview} from "./components/Overview";
+import {MuiThemeProvider} from "@material-ui/core/styles";
+import {createTheme} from "./ThemeProvider";
+import {Container, CssBaseline, useMediaQuery} from "@material-ui/core";
+import {blue, yellow} from "@material-ui/core/colors";
+import {InDepthSkillList} from "./components/InDepthSkillList";
 import InDepthView from "./components/InDepthView";
-import { entries } from "./jsonParsing/jsonProcessingUtils";
-import { copyright } from "./config";
-import { PureComponent } from "react";
-import React from "react";
+import {entries} from "./jsonParsing/jsonProcessingUtils";
+import React, {PureComponent} from "react";
 import * as PropTypes from "prop-types";
+import {CopyrightFooter} from "./components/footer/copyright_footer";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -33,7 +31,7 @@ function MainContent(props: {
   cheatSheetInDepth: PropTypes.bool,
   skillList: PropTypes.any
 }) {
-  const isDesktop = unstable_useMediaQuery("(min-width:600px)");
+  const isDesktop = useMediaQuery("(min-width:600px)");
   return (
     <div
       color={"primary"}
@@ -293,7 +291,7 @@ class App extends PureComponent {
     this.stack.push(new HistoryObject(this.state));
     return (
       <MuiThemeProvider theme={this.state.theme}>
-        <CssBaseline />
+        <CssBaseline/>
         <div
           style={{
             display: "flex",
@@ -301,7 +299,7 @@ class App extends PureComponent {
             flexDirection: "column"
           }}
         >
-          <div className="App" />
+          <div className="App"/>
           <RulebookAppBar
             toggleDrawer={this.toggleDrawer}
             open={this.state.open}
@@ -319,21 +317,17 @@ class App extends PureComponent {
             renderCategory={this.displayList}
             theme={this.state.theme}
           />
-          <MainContent
-            theme={this.state.theme}
-            toggleBool={this.toggleBool}
-            skillObject={this.state.viewInfo}
-            currentView={this.state.currentView}
-            learnMore={this.displayInDepthView}
-            updateCheatSheet={this.updateCheatSheet}
-          />
-
-          <Typography
-            style={{ textAlign: "right", paddingRight: 5 }}
-            variant={"overline"}
-          >
-            {copyright}
-          </Typography>
+          <Container>
+            <MainContent
+              theme={this.state.theme}
+              toggleBool={this.toggleBool}
+              skillObject={this.state.viewInfo}
+              currentView={this.state.currentView}
+              learnMore={this.displayInDepthView}
+              updateCheatSheet={this.updateCheatSheet}
+            />
+          </Container>
+          <CopyrightFooter/>
         </div>
       </MuiThemeProvider>
     );
