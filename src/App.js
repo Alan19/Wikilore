@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import "./App.css";
 import RulebookAppBar from "./components/Header";
 import { Overview } from "./components/Overview";
@@ -7,11 +6,14 @@ import { createTheme } from "./ThemeProvider";
 import { CssBaseline, Typography } from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
-import * as PropTypes from "prop-types";
 import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
 import { entries } from "./jsonParsing/jsonProcessingUtils";
 import { copyright } from "./config";
+import { PureComponent } from "react";
+import React from "react";
+import * as PropTypes from "prop-types";
+
 function HistoryObject(currentState) {
   this.currentState = currentState;
 }
@@ -20,7 +22,17 @@ function getFavoriteArticles() {
   return JSON.parse(localStorage.getItem("favorites"));
 }
 
-function MainContent(props) {
+function MainContent(props: {
+  theme: PropTypes.any,
+  inDepth: PropTypes.bool,
+  toggleBool: PropTypes.bool,
+  skillObject: PropTypes.any,
+  currentView: PropTypes.any,
+  learnMore: PropTypes.func,
+  updateCheatSheet: PropTypes.func,
+  cheatSheetInDepth: PropTypes.bool,
+  skillList: PropTypes.any
+}) {
   const isDesktop = unstable_useMediaQuery("(min-width:600px)");
   return (
     <div
@@ -65,15 +77,15 @@ function MainContent(props) {
 }
 
 MainContent.propTypes = {
-  theme: PropTypes.any,
-  inDepth: PropTypes.bool,
-  toggleBool: PropTypes.bool,
-  skillObject: PropTypes.any,
-  currentView: PropTypes.any,
-  learnMore: PropTypes.func,
-  updateCheatSheet: PropTypes.func,
   cheatSheetInDepth: PropTypes.bool,
-  skillList: PropTypes.any
+  currentView: PropTypes.any,
+  inDepth: PropTypes.bool,
+  learnMore: PropTypes.func,
+  skillList: PropTypes.any,
+  skillObject: PropTypes.any,
+  theme: PropTypes.any,
+  toggleBool: PropTypes.bool,
+  updateCheatSheet: PropTypes.func
 };
 
 const views = {
@@ -82,10 +94,12 @@ const views = {
   LIST: "List"
 };
 
-class App extends Component {
+class App extends PureComponent {
   stack = [];
+
   constructor(props) {
     super(props);
+    let hasFavoritedSkills = this.getFavoritedSkills().length > 0;
     /**
      * States:
      * currentView: The view the overview should display (magic, culture, etc.)
@@ -97,10 +111,10 @@ class App extends Component {
      */
     this.state = {
       currentView: views.OVERVIEW,
-      viewInfo: entries,
+      viewInfo: hasFavoritedSkills ? this.getFavoritedSkills() : entries,
       theme: createTheme(blue, yellow, "light"),
       open: false,
-      name: `All Skills ${views.OVERVIEW}`
+      name: hasFavoritedSkills ? "Cheat Sheet" : `All Skills ${views.OVERVIEW}`
     };
     this.toggleBool = false;
   }
@@ -109,12 +123,14 @@ class App extends Component {
    * Returns an array of favorited objects/skills
    * @returns {Array} All of the skill objects that you have favorited
    */
-  getSkillObjects = () => {
+  getFavoritedSkills = () => {
     let favorites = getFavoriteArticles();
     let skillObjects = [];
-    entries.forEach(article => {
-      if (favorites.includes(article.name)) skillObjects.push(article);
-    });
+    if (favorites) {
+      entries.forEach(article => {
+        if (favorites.includes(article.name)) skillObjects.push(article);
+      });
+    }
     return skillObjects;
   };
 
@@ -124,7 +140,7 @@ class App extends Component {
   updateCheatSheet = () => {
     if (this.state.view === views.OVERVIEW) {
       this.setState({
-        viewInfo: this.getSkillObjects()
+        viewInfo: this.getFavoritedSkills()
       });
     }
   };
@@ -174,15 +190,16 @@ class App extends Component {
    * Change the information the overview should display
    * @param overviewType The object containing the information that should be displayed
    * @param viewName The name of the view that will be displayed
+   * @param customName A custom name for the view
    */
-  displayOverview = (overviewType, viewName) => {
+  displayOverview = (overviewType, viewName, customName = '') => {
     console.log("Changing overview!");
     console.log(overviewType);
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
       viewInfo: overviewType,
-      name: `${viewName} ${views.OVERVIEW}`
+      name: customName ? customName : `${viewName} ${views.OVERVIEW}`
     });
   };
 
@@ -193,7 +210,7 @@ class App extends Component {
     window.scrollTo(0, 0);
     this.setState({
       currentView: views.OVERVIEW,
-      viewInfo: this.getSkillObjects(),
+      viewInfo: this.getFavoritedSkills(),
       name: "Cheat Sheet"
     });
     this.forceUpdate();
@@ -234,7 +251,7 @@ class App extends Component {
     this.setState({
       currentView: views.LIST,
       open: false,
-      viewInfo: this.getSkillObjects(),
+      viewInfo: this.getFavoritedSkills(),
       name: "Cheat Sheet"
     });
   };
@@ -243,14 +260,15 @@ class App extends Component {
    * Sets the state to display a list of all skills in a category
    * @param skillCategory The category to display all skills of
    * @param categoryName The name of the category being displayed
+   * @param customName A custom name for the view
    */
-  displayList = (skillCategory, categoryName) => {
+  displayList = (skillCategory, categoryName, customName = '') => {
     window.scrollTo(0, 0);
     this.setState({
       viewInfo: skillCategory,
       currentView: views.LIST,
       open: false,
-      name: categoryName + " " + views.LIST
+      name: customName ? customName : `${categoryName} ${views.LIST}`
     });
   };
 

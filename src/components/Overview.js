@@ -1,11 +1,11 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import Grid from "@material-ui/core/Grid";
 import {SkillCard} from "./SkillCard";
 import {MobileSkillList} from "./MobileSkillList";
 import Fade from "@material-ui/core/Fade";
 
-export class Overview extends React.Component {
-  static checkFavorited(skill) {
+export class Overview extends PureComponent {
+  static checkFavorited = skill => {
     if (localStorage.getItem("favorites") === null) {
       return "inherit";
     } else {
@@ -15,7 +15,7 @@ export class Overview extends React.Component {
         return "inherit";
       }
     }
-  }
+  };
 
   addToCheatSheet(skill, cheatSheetMethod) {
     if (localStorage.hasOwnProperty("favorites")) {

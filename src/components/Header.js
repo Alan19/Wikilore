@@ -12,7 +12,7 @@ import {
   withStyles
 } from "@material-ui/core";
 import classNames from "classnames";
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import * as PropTypes from "prop-types";
 import SearchBar from "./SearchBar";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -69,22 +69,20 @@ const styles = theme => ({
   }
 });
 
-class AppBarButtons extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Tooltip title={"Toggle Light/Dark Theme"}>
-          <IconButton
-            onClick={this.props.switchTheme}
-            color={"inherit"}
-            label={"Switch Light/Dark Theme"}
-          >
-            <Icon>highlight</Icon>
-          </IconButton>
-        </Tooltip>
-      </React.Fragment>
-    );
-  }
+function AppBarButtons(props) {
+  return (
+    <React.Fragment>
+      <Tooltip title={"Toggle Light/Dark Theme"}>
+        <IconButton
+          onClick={props.switchTheme}
+          color={"inherit"}
+          label={"Switch Light/Dark Theme"}
+        >
+          <Icon>highlight</Icon>
+        </IconButton>
+      </Tooltip>
+    </React.Fragment>
+  );
 }
 
 AppBarButtons.propTypes = {
@@ -93,39 +91,38 @@ AppBarButtons.propTypes = {
   onClick2: PropTypes.func
 };
 
-class CheatSheetItems extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Tooltip title={"Your Favorites"} placement={"right"}>
-          <ListItem onClick={this.props.onClick} button>
-            <ListItemIcon>
-              <CheatSheetIcon />
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{ noWrap: true }}
-              primary={"Your Favorites"}
-            />
-          </ListItem>
-        </Tooltip>
-        <Tooltip title={"Cheat Sheet"} placement={"right"}>
-          <ListItem
-            onClick={() => this.props.cheatSheetInDepth()}
-            button
-            key={"Cheat Sheet"}
-          >
-            <ListItemIcon>
-              <ExpandedCheatSheetIcon />
-            </ListItemIcon>
-            <ListItemText
-              primaryTypographyProps={{ noWrap: true }}
-              primary={"Cheat Sheet"}
-            />
-          </ListItem>
-        </Tooltip>
-      </React.Fragment>
-    );
-  }
+function CheatSheetItems(props) {
+  const { cheatSheetInDepth, onClick } = props;
+  return (
+    <React.Fragment>
+      <Tooltip title={"Your Favorites"} placement={"right"}>
+        <ListItem onClick={onClick} button>
+          <ListItemIcon>
+            <CheatSheetIcon />
+          </ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ noWrap: true }}
+            primary={"Your Favorites"}
+          />
+        </ListItem>
+      </Tooltip>
+      <Tooltip title={"Cheat Sheet"} placement={"right"}>
+        <ListItem
+          onClick={() => cheatSheetInDepth()}
+          button
+          key={"Cheat Sheet"}
+        >
+          <ListItemIcon>
+            <ExpandedCheatSheetIcon />
+          </ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={{ noWrap: true }}
+            primary={"Cheat Sheet"}
+          />
+        </ListItem>
+      </Tooltip>
+    </React.Fragment>
+  );
 }
 
 CheatSheetItems.propTypes = { onClick: PropTypes.func };
@@ -138,17 +135,15 @@ let indexIcon = (
   />
 );
 
-class Index extends Component {
-  render() {
-    return (
-      <Tooltip title={"Index"} placement={"right"}>
-        <ListItem onClick={this.props.onClick} button>
-          <ListItemIcon>{indexIcon}</ListItemIcon>
-          <ListItemText primary={"Index"} />
-        </ListItem>
-      </Tooltip>
-    );
-  }
+function Index(props) {
+  return (
+    <Tooltip title={"Index"} placement={"right"}>
+      <ListItem onClick={props.onClick} button>
+        <ListItemIcon>{indexIcon}</ListItemIcon>
+        <ListItemText primary={"Index"} />
+      </ListItem>
+    </Tooltip>
+  );
 }
 
 Index.propTypes = { onClick: PropTypes.func };
@@ -161,56 +156,62 @@ let indexListIcon = (
   />
 );
 
-class Glossary extends Component {
-  render() {
-    return (
-      <Tooltip title={"Glossary"} placement={"right"}>
-        <ListItem onClick={this.props.onClick} button>
-          <ListItemIcon>{indexListIcon}</ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ noWrap: true }}
-            primary={"Glossary"}
-          />
-        </ListItem>
-      </Tooltip>
-    );
-  }
+function Glossary(props) {
+  return (
+    <Tooltip title={"Glossary"} placement={"right"}>
+      <ListItem onClick={props.onClick} button>
+        <ListItemIcon>{indexListIcon}</ListItemIcon>
+        <ListItemText
+          primaryTypographyProps={{ noWrap: true }}
+          primary={"Glossary"}
+        />
+      </ListItem>
+    </Tooltip>
+  );
 }
 
 Glossary.propTypes = { onClick: PropTypes.func };
 
-class SkillDrawer extends Component {
+class SkillDrawer extends PureComponent {
   render() {
+    const {
+      classes,
+      open,
+      renderCategory,
+      cheatSheetInDepth,
+      onclick,
+      cheatSheet
+    } = this.props;
     return (
       <Drawer
         variant="permanent"
-        className={classNames(this.props.classes.drawer, {
-          [this.props.classes.drawerOpen]: this.props.open,
-          [this.props.classes.drawerClose]: !this.props.open
+        className={classNames(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open
         })}
         classes={{
           paper: classNames({
-            [this.props.classes.drawerOpen]: this.props.open,
-            [this.props.classes.drawerClose]: !this.props.open
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open
           })
         }}
-        open={this.props.open}
+        open={open}
       >
-        <div className={this.props.classes.toolbar} />
+        <div className={classes.toolbar} />
         <List>
           <CheatSheetItems
-            cheatSheetInDepth={this.props.cheatSheetInDepth}
-            onClick={() => this.props.cheatSheet()}
+            cheatSheetInDepth={cheatSheetInDepth}
+            onClick={() => cheatSheet()}
             key={"Cheat Sheet"}
           />
           <Divider />
           <React.Fragment>
             <Index
-              onClick={() => this.props.onclick(entries, "All Skills")}
+              onClick={() => onclick(entries, "Index", "Index")}
               key={"Index"}
             />
             <Glossary
-              onClick={() => this.props.renderCategory(entries, "All Skills")}
+              onClick={() => renderCategory(entries, "Index", "Index")}
               key={"Glossary"}
             />
             <Divider />
@@ -224,21 +225,21 @@ class SkillDrawer extends Component {
   }
 
   generateListEntries(category) {
+    const { renderCategory } = this.props;
+    const { indexIcon: indexIcon1, articles, name } = category;
     return (
-      <Tooltip title={category.name + " List"} placement={"right"}>
+      <Tooltip title={name + " List"} placement={"right"}>
         <ListItem
-          onClick={() =>
-            this.props.renderCategory(category.articles, category.name)
-          }
+          onClick={() => renderCategory(articles, name)}
           button
-          key={category.name + " List"}
+          key={name + " List"}
         >
           <ListItemIcon>
-            <GameIconWrapper path={category.indexIcon} />
+            <GameIconWrapper path={indexIcon1} />
           </ListItemIcon>
           <ListItemText
             primaryTypographyProps={{ noWrap: true }}
-            primary={category.name + " List"}
+            primary={name + " List"}
           />
         </ListItem>
       </Tooltip>
@@ -251,22 +252,22 @@ class SkillDrawer extends Component {
    * @returns {*}
    */
   generateCategoryEntries(category) {
+    const { overviewIcon, name } = category;
     return (
-      <Tooltip title={category.name} placement={"right"}>
+      <Tooltip title={name} placement={"right"}>
         <ListItem
           onClick={() => {
-            console.log(category);
             return this.props.onclick(category.articles, category.name);
           }}
           button
-          key={category.name}
+          key={name}
         >
           <ListItemIcon>
-            <GameIconWrapper path={category.overviewIcon} />
+            <GameIconWrapper path={overviewIcon} />
           </ListItemIcon>
           <ListItemText
             primaryTypographyProps={{ noWrap: true }}
-            primary={category.name}
+            primary={name}
           />
         </ListItem>
       </Tooltip>
@@ -279,20 +280,19 @@ SkillDrawer.propTypes = {
   open: PropTypes.bool
 };
 
-class BackButton extends Component {
-  render() {
-    return (
-      <IconButton
-        style={{ visibility: this.props.visibility }}
-        color="inherit"
-        aria-label="Menu"
-        onClick={this.props.onClick}
-        className={this.props.classes.menuButton}
-      >
-        <Icon>arrow_back</Icon>
-      </IconButton>
-    );
-  }
+function BackButton(props) {
+  const { classes, visibility, onClick } = props;
+  return (
+    <IconButton
+      style={{ visibility: visibility }}
+      color="inherit"
+      aria-label="Menu"
+      onClick={onClick}
+      className={classes.menuButton}
+    >
+      <Icon>arrow_back</Icon>
+    </IconButton>
+  );
 }
 
 BackButton.propTypes = {
@@ -300,21 +300,19 @@ BackButton.propTypes = {
   onClick: PropTypes.func
 };
 
-class DrawerButton extends Component {
-  render() {
-    return (
-      <IconButton
-        color="inherit"
-        aria-label="Open drawer"
-        onClick={this.props.onClick}
-        className={classNames(this.props.classes.menuButton, {
-          [this.props.classes.hide]: this.props.open
-        })}
-      >
-        <Icon>menu</Icon>
-      </IconButton>
-    );
-  }
+function DrawerButton({ classes, onClick, open }) {
+  return (
+    <IconButton
+      color="inherit"
+      aria-label="Open drawer"
+      onClick={onClick}
+      className={classNames(classes.menuButton, {
+        [classes.hide]: open
+      })}
+    >
+      <Icon>menu</Icon>
+    </IconButton>
+  );
 }
 
 DrawerButton.propTypes = {
@@ -323,47 +321,54 @@ DrawerButton.propTypes = {
   open: PropTypes.any
 };
 
-export class NavBar extends Component {
-  render() {
-    const { classes } = this.props;
-    return (
-      <React.Fragment>
-        <AppBar position="sticky" className={classes.appBar} color={"primary"}>
-          <Toolbar>
-            {this.props.backable && (
-              <BackButton classes={classes} onClick={() => this.props.back()} />
-            )}
-            {!this.props.backable && (
-              <DrawerButton
-                onClick={this.props.toggleDrawer}
-                classes={classes}
-                open={this.props.open}
-              />
-            )}
-            <Typography variant="h5" color="inherit" style={{ flexGrow: 1 }}>
-              {this.props.name}
-            </Typography>
-            <SearchBar
-              changeview={this.props.changeview}
-              theme={this.props.theme}
+export function NavBar(props) {
+  const { classes } = props;
+  const {
+    switchTheme,
+    theme,
+    open,
+    renderCategory,
+    back,
+    backable,
+    cheatSheetInDepth,
+    name,
+    changeview,
+    cheatSheet,
+    toggleDrawer,
+    onclick
+  } = props;
+  return (
+    <React.Fragment>
+      <AppBar position="sticky" className={classes.appBar} color={"primary"}>
+        <Toolbar>
+          {backable && <BackButton classes={classes} onClick={() => back()} />}
+          {!backable && (
+            <DrawerButton
+              onClick={toggleDrawer}
+              classes={classes}
+              open={open}
             />
+          )}
+          <Typography variant="h5" color="inherit" style={{ flexGrow: 1 }}>
+            {name}&nbsp;&nbsp;
+          </Typography>
+          <SearchBar changeview={changeview} theme={theme} />
 
-            <div style={{ marginLeft: 30 }}>
-              <AppBarButtons switchTheme={() => this.props.switchTheme()} />
-            </div>
-          </Toolbar>
-        </AppBar>
-        <SkillDrawer
-          cheatSheet={this.props.cheatSheet}
-          cheatSheetInDepth={this.props.cheatSheetInDepth}
-          classes={classes}
-          open={this.props.open}
-          renderCategory={this.props.renderCategory}
-          onclick={this.props.onclick}
-        />
-      </React.Fragment>
-    );
-  }
+          <div style={{ marginLeft: 30 }}>
+            <AppBarButtons switchTheme={() => switchTheme()} />
+          </div>
+        </Toolbar>
+      </AppBar>
+      <SkillDrawer
+        cheatSheet={cheatSheet}
+        cheatSheetInDepth={cheatSheetInDepth}
+        classes={classes}
+        open={open}
+        renderCategory={renderCategory}
+        onclick={onclick}
+      />
+    </React.Fragment>
+  );
 }
 
 export default withStyles(styles, { withTheme: true })(NavBar);

@@ -33,3 +33,4 @@ src/categories/
 src/entries/
 /src/jsonParsing/categoryJsonLocations.js
 /src/jsonParsing/entryJsonLocations.js
+/distributions/
