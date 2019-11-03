@@ -1,16 +1,16 @@
 import "./App.css";
 import RulebookAppBar from "./components/Header";
-import {Overview} from "./components/Overview";
-import {MuiThemeProvider} from "@material-ui/core/styles";
-import {createTheme} from "./ThemeProvider";
-import {Container, CssBaseline, useMediaQuery} from "@material-ui/core";
-import {blue, yellow} from "@material-ui/core/colors";
-import {InDepthSkillList} from "./components/InDepthSkillList";
+import { Overview } from "./components/Overview";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
+import { createTheme } from "./ThemeProvider";
+import { Container, CssBaseline, useMediaQuery } from "@material-ui/core";
+import { blue, yellow } from "@material-ui/core/colors";
+import { InDepthSkillList } from "./components/InDepthSkillList";
 import InDepthView from "./components/InDepthView";
-import {entries} from "./jsonParsing/jsonProcessingUtils";
-import React, {PureComponent} from "react";
+import { entries } from "./jsonParsing/jsonProcessingUtils";
+import React, { PureComponent, useState } from "react";
 import * as PropTypes from "prop-types";
-import {CopyrightFooter} from "./components/footer/copyright_footer";
+import { CopyrightFooter } from "./components/footer/copyright_footer";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -43,33 +43,35 @@ function MainContent(props: {
           : props.theme.spacing.unit * 7 + 1
       }}
     >
-      {props.currentView === views.INDEPTH && (
-        <InDepthView
-          displayTableOfContents={true}
-          isDesktop={isDesktop}
-          toggleBool={props.toggleBool}
-          skillObject={props.skillObject}
-          theme={props.theme}
-        />
-      )}
-      {props.currentView === views.OVERVIEW && (
-        <Overview
-          theme={props.theme}
-          learnMore={props.learnMore}
-          currentView={props.skillObject}
-          updateCheatSheet={props.updateCheatSheet}
-          toggleBool={props.toggleBool}
-          isDesktop={isDesktop}
-        />
-      )}
-      {props.currentView === views.LIST && (
-        <InDepthSkillList
-          toggleBool={props.toggleBool}
-          skillList={props.skillObject}
-          isDesktop={isDesktop}
-          theme={props.theme}
-        />
-      )}
+      <Container>
+        {props.currentView === views.INDEPTH && (
+          <InDepthView
+            displayTableOfContents={true}
+            isDesktop={isDesktop}
+            toggleBool={props.toggleBool}
+            skillObject={props.skillObject}
+            theme={props.theme}
+          />
+        )}
+        {props.currentView === views.OVERVIEW && (
+          <Overview
+            theme={props.theme}
+            learnMore={props.learnMore}
+            currentView={props.skillObject}
+            updateCheatSheet={props.updateCheatSheet}
+            toggleBool={props.toggleBool}
+            isDesktop={isDesktop}
+          />
+        )}
+        {props.currentView === views.LIST && (
+          <InDepthSkillList
+            toggleBool={props.toggleBool}
+            skillList={props.skillObject}
+            isDesktop={isDesktop}
+            theme={props.theme}
+          />
+        )}
+      </Container>
     </div>
   );
 }
@@ -190,7 +192,7 @@ class App extends PureComponent {
    * @param viewName The name of the view that will be displayed
    * @param customName A custom name for the view
    */
-  displayOverview = (overviewType, viewName, customName = '') => {
+  displayOverview = (overviewType, viewName, customName = "") => {
     console.log("Changing overview!");
     console.log(overviewType);
     window.scrollTo(0, 0);
@@ -260,7 +262,7 @@ class App extends PureComponent {
    * @param categoryName The name of the category being displayed
    * @param customName A custom name for the view
    */
-  displayList = (skillCategory, categoryName, customName = '') => {
+  displayList = (skillCategory, categoryName, customName = "") => {
     window.scrollTo(0, 0);
     this.setState({
       viewInfo: skillCategory,
@@ -291,7 +293,7 @@ class App extends PureComponent {
     this.stack.push(new HistoryObject(this.state));
     return (
       <MuiThemeProvider theme={this.state.theme}>
-        <CssBaseline/>
+        <CssBaseline />
         <div
           style={{
             display: "flex",
@@ -299,7 +301,7 @@ class App extends PureComponent {
             flexDirection: "column"
           }}
         >
-          <div className="App"/>
+          <div className="App" />
           <RulebookAppBar
             toggleDrawer={this.toggleDrawer}
             open={this.state.open}
@@ -317,17 +319,15 @@ class App extends PureComponent {
             renderCategory={this.displayList}
             theme={this.state.theme}
           />
-          <Container>
-            <MainContent
-              theme={this.state.theme}
-              toggleBool={this.toggleBool}
-              skillObject={this.state.viewInfo}
-              currentView={this.state.currentView}
-              learnMore={this.displayInDepthView}
-              updateCheatSheet={this.updateCheatSheet}
-            />
-          </Container>
-          <CopyrightFooter/>
+          <MainContent
+            theme={this.state.theme}
+            toggleBool={this.toggleBool}
+            skillObject={this.state.viewInfo}
+            currentView={this.state.currentView}
+            learnMore={this.displayInDepthView}
+            updateCheatSheet={this.updateCheatSheet}
+          />
+          <CopyrightFooter />
         </div>
       </MuiThemeProvider>
     );

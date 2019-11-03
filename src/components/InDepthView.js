@@ -44,7 +44,7 @@ export default function InDepthView(props) {
                 position: "fixed",
                 overflowY: "auto",
                 maxHeight: "85%",
-                padding: theme.spacing.unit * 2
+                padding: theme.spacing(2)
               }}
             >
               {InDepthSkillList.generateTableOfContents(skill)}
