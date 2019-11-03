@@ -32,18 +32,25 @@ function MainContent(props: {
   skillList: PropTypes.any
 }) {
   const isDesktop = useMediaQuery("(min-width:600px)");
+  var isViewingSkill =
+    !isDesktop && [views.INDEPTH, views.LIST].includes(props.currentView);
   return (
     <div
       color={"primary"}
       style={{
-        padding: props.theme.spacing.unit * 3,
+        padding: isViewingSkill ? "0" : props.theme.spacing(3),
         flex: 1,
         marginLeft: isDesktop
           ? props.theme.spacing.unit * 9 + 1
           : props.theme.spacing.unit * 7 + 1
       }}
     >
-      <Container>
+      <Container
+        style={{
+          paddingLeft: isViewingSkill && "0",
+          paddingRight: isViewingSkill && "0"
+        }}
+      >
         {props.currentView === views.INDEPTH && (
           <InDepthView
             displayTableOfContents={true}
