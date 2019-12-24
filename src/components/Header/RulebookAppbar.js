@@ -34,7 +34,7 @@ export const RulebookAppbar = props => {
 };
 
 RulebookAppbar.propTypes = {
-  classes: PropTypes.func,
+  classes: PropTypes.object,
   open: PropTypes.bool,
   onClick: PropTypes.func
 };
