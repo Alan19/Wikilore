@@ -1,7 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import {
-  Divider,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
@@ -13,10 +12,9 @@ import { generateFormattedSkillText } from "./FormattedSkillText";
 export function InDepthSkillList(props) {
   const { skillList, theme, isDesktop } = props;
   let skillListComponents = skillList.map((article, index, arr) => (
-    <React.Fragment>
-      {generateFormattedSkillText(article, article.icon)}
-      {index < arr.length - 1 && <hr />}
-    </React.Fragment>
+    <div style={{marginBottom: props.theme.spacing(3)}}>
+      {generateFormattedSkillText(article, article.icon, props.theme)}
+    </div>
   ));
   return (
     <Grid
@@ -25,9 +23,8 @@ export function InDepthSkillList(props) {
       container
       spacing={theme.spacing.unit * 3}
     >
-      <Grid item md={2} />
       <Fade in={true}>
-        <Grid item md={6}>
+        <Grid item md>
           {skillListComponents}
         </Grid>
       </Fade>
@@ -46,9 +43,6 @@ export function InDepthSkillList(props) {
               return (
                 <React.Fragment>
                   {InDepthSkillList.generateTableOfContents(skill, skill.icon)}
-                  {index < array.length - 1 && (
-                    <Divider light style={{ width: "90%" }} />
-                  )}
                 </React.Fragment>
               );
             })}{" "}
@@ -66,9 +60,6 @@ export function InDepthSkillList(props) {
                       {InDepthSkillList.generateTableOfContents(
                         skill,
                         skill.icon
-                      )}
-                      {index < array.length - 1 && (
-                        <Divider light style={{ width: "90%" }} />
                       )}
                     </>
                   );

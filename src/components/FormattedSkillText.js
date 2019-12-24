@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Typography } from "@material-ui/core";
+import {Divider, Paper, Typography} from "@material-ui/core";
 
 function generateTitle(skill, icon) {
   return (
@@ -8,7 +8,6 @@ function generateTitle(skill, icon) {
         id={skill.name.toLowerCase().replace(/\s/g, "")}
         variant={"h3"}
         style={{ overflow: "auto", overflowY: "hidden" }}
-        component={"span"}
       >
         {skill.name}{" "}
         <img style={{ height: "1em" }} src={icon} alt={skill.name} />
@@ -24,7 +23,7 @@ function renderSections(skill) {
   return (
     <>
       {skill.sections
-        .map((section, i) => {
+        .map((section) => {
           return (
             <>
               {section.name.trim() !== "" && (
@@ -36,7 +35,7 @@ function renderSections(skill) {
                     }
                     paragraph
                     style={{ paddingTop: 16 }}
-                    variant={"h5"}
+                    variant={"h4"}
                   >
                     {section.name}
                   </Typography>
@@ -50,14 +49,13 @@ function renderSections(skill) {
                         skill.name.toLowerCase().replace(/\s/g, "") +
                         subsection.name.toLowerCase().replace(/\s/g, "")
                       }
-                      variant={"subtitle1"}
+                      variant={"h6"}
                     >
                       {subsection.name}
                     </Typography>
                     <Typography
                       variant={"body1"}
                       paragraph={true}
-                      component={"span"}
                       dangerouslySetInnerHTML={{ __html: subsection.text }}
                     />
                   </React.Fragment>
@@ -74,11 +72,11 @@ function renderSections(skill) {
     </>
   );
 }
-export function generateFormattedSkillText(skill, icon) {
+export function generateFormattedSkillText(skill, icon, theme) {
   return (
-    <React.Fragment>
+    <Paper style={{padding: theme.spacing(3, 2)}}>
       {generateTitle(skill, icon)}
       {renderSections(skill)}
-    </React.Fragment>
+    </Paper>
   );
 }

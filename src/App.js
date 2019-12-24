@@ -1,18 +1,16 @@
 import "./App.css";
 import RulebookAppBar from "./components/Header";
 import { Overview } from "./components/Overview";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import { createTheme } from "./ThemeProvider";
-import { CssBaseline, Typography } from "@material-ui/core";
+import { Container, CssBaseline, useMediaQuery } from "@material-ui/core";
 import { blue, yellow } from "@material-ui/core/colors";
 import { InDepthSkillList } from "./components/InDepthSkillList";
-import unstable_useMediaQuery from "@material-ui/core/useMediaQuery/unstable_useMediaQuery";
 import InDepthView from "./components/InDepthView";
 import { entries } from "./jsonParsing/jsonProcessingUtils";
-import { copyright } from "./config";
-import { PureComponent } from "react";
-import React from "react";
+import React, { PureComponent, useState } from "react";
 import * as PropTypes from "prop-types";
+import { CopyrightFooter } from "./components/footer/copyright_footer";
 
 function HistoryObject(currentState) {
   this.currentState = currentState;
@@ -33,45 +31,54 @@ function MainContent(props: {
   cheatSheetInDepth: PropTypes.bool,
   skillList: PropTypes.any
 }) {
-  const isDesktop = unstable_useMediaQuery("(min-width:600px)");
+  const isDesktop = useMediaQuery("(min-width:600px)");
+  var isViewingSkill =
+    !isDesktop && [views.INDEPTH, views.LIST].includes(props.currentView);
   return (
     <div
       color={"primary"}
       style={{
-        padding: props.theme.spacing.unit * 3,
+        padding: isViewingSkill ? "0" : props.theme.spacing(3),
         flex: 1,
         marginLeft: isDesktop
           ? props.theme.spacing.unit * 9 + 1
           : props.theme.spacing.unit * 7 + 1
       }}
     >
-      {props.currentView === views.INDEPTH && (
-        <InDepthView
-          displayTableOfContents={true}
-          isDesktop={isDesktop}
-          toggleBool={props.toggleBool}
-          skillObject={props.skillObject}
-          theme={props.theme}
-        />
-      )}
-      {props.currentView === views.OVERVIEW && (
-        <Overview
-          theme={props.theme}
-          learnMore={props.learnMore}
-          currentView={props.skillObject}
-          updateCheatSheet={props.updateCheatSheet}
-          toggleBool={props.toggleBool}
-          isDesktop={isDesktop}
-        />
-      )}
-      {props.currentView === views.LIST && (
-        <InDepthSkillList
-          toggleBool={props.toggleBool}
-          skillList={props.skillObject}
-          isDesktop={isDesktop}
-          theme={props.theme}
-        />
-      )}
+      <Container
+        style={{
+          paddingLeft: isViewingSkill && "0",
+          paddingRight: isViewingSkill && "0"
+        }}
+      >
+        {props.currentView === views.INDEPTH && (
+          <InDepthView
+            displayTableOfContents={true}
+            isDesktop={isDesktop}
+            toggleBool={props.toggleBool}
+            skillObject={props.skillObject}
+            theme={props.theme}
+          />
+        )}
+        {props.currentView === views.OVERVIEW && (
+          <Overview
+            theme={props.theme}
+            learnMore={props.learnMore}
+            currentView={props.skillObject}
+            updateCheatSheet={props.updateCheatSheet}
+            toggleBool={props.toggleBool}
+            isDesktop={isDesktop}
+          />
+        )}
+        {props.currentView === views.LIST && (
+          <InDepthSkillList
+            toggleBool={props.toggleBool}
+            skillList={props.skillObject}
+            isDesktop={isDesktop}
+            theme={props.theme}
+          />
+        )}
+      </Container>
     </div>
   );
 }
@@ -192,7 +199,7 @@ class App extends PureComponent {
    * @param viewName The name of the view that will be displayed
    * @param customName A custom name for the view
    */
-  displayOverview = (overviewType, viewName, customName = '') => {
+  displayOverview = (overviewType, viewName, customName = "") => {
     console.log("Changing overview!");
     console.log(overviewType);
     window.scrollTo(0, 0);
@@ -262,7 +269,7 @@ class App extends PureComponent {
    * @param categoryName The name of the category being displayed
    * @param customName A custom name for the view
    */
-  displayList = (skillCategory, categoryName, customName = '') => {
+  displayList = (skillCategory, categoryName, customName = "") => {
     window.scrollTo(0, 0);
     this.setState({
       viewInfo: skillCategory,
@@ -327,13 +334,7 @@ class App extends PureComponent {
             learnMore={this.displayInDepthView}
             updateCheatSheet={this.updateCheatSheet}
           />
-
-          <Typography
-            style={{ textAlign: "right", paddingRight: 5 }}
-            variant={"overline"}
-          >
-            {copyright}
-          </Typography>
+          <CopyrightFooter />
         </div>
       </MuiThemeProvider>
     );

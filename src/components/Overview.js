@@ -40,13 +40,9 @@ export class Overview extends PureComponent {
       <Fade in={true}>
         <Grid
           container
-          spacing={this.props.theme.spacing.unit * 3}
+          spacing={3}
           justify="flex-start"
           alignItems={"stretch"}
-          style={{
-            width: this.props.isDesktop ? "70%" : "100%",
-            margin: "auto"
-          }}
         >
           {this.props.currentView.map(skill =>
             this.props.isDesktop ? (
