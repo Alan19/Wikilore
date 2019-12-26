@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { Card, CardContent, Container, makeStyles } from "@material-ui/core";
+import ReactMarkdown from "react-markdown";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -31,8 +32,8 @@ export const ImportantIdea = ({ description, name }) => {
           <Typography variant={"h5"} gutterBottom>
             {name}
           </Typography>
-          <Typography variant={"body2"} component={"p"}>
-            {description}
+          <Typography variant={"body2"} component={"div"}>
+            <ReactMarkdown className={'noTopAndBottomMargins'} source={description}/>
           </Typography>
         </CardContent>
       </Card>

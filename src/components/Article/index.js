@@ -10,11 +10,7 @@ import ReactMarkdown from "react-markdown";
 
 const generateTitle = ({ blurb, icon, name }) => (
   <>
-    <Typography
-      id={name.toLowerCase().replace(/\s/g, "")}
-      variant={"h3"}
-      style={{ overflow: "auto", overflowY: "hidden" }}
-    >
+    <Typography id={name.toLowerCase().replace(/\s/g, "")} variant={"h3"} style={{ overflow: "auto", overflowY: "hidden" }}>
       {name} <img style={{ height: "1em" }} src={icon} alt={name} />
     </Typography>
     <Typography variant={"subtitle2"} paragraph={true}>
@@ -26,24 +22,17 @@ const generateTitle = ({ blurb, icon, name }) => (
 const renderSections = json => (
   <>
     {json.sections
-      .map(section => {
-        const processComponent = component => {
+      .map((section) => {
+        const processComponent = (component, index) => {
           switch (component.type) {
             case "emphasis":
-              return (
-                <ImportantIdea
-                  name={component.name}
-                  description={component.text}
-                />
-              );
+              return <ImportantIdea name={component.name} description={component.text} />;
             default:
               return (
                 <>
-                  {component.name && (
-                    <Typography variant={"h6"}>{component.name}</Typography>
-                  )}
-                  <Typography variant={"body1"}>
-                    <ReactMarkdown source={component.text} />
+                  {component.name && <Typography variant={"h6"}>{component.name}</Typography>}
+                  <Typography component={"div"} variant={"body1"}>
+                    <ReactMarkdown className={index === 0 ? 'noTopAndBottomMargins' : ''} source={component.text} />
                   </Typography>
                 </>
               );
@@ -54,45 +43,23 @@ const renderSections = json => (
           <>
             {section.name.trim() !== "" && (
               <>
-                <Typography
-                  id={
-                    json.name.toLowerCase().replace(/\s/g, "") +
-                    section.name.toLowerCase().replace(/\s/g, "")
-                  }
-                  paragraph
-                  style={{ paddingTop: 16 }}
-                  variant={"h4"}
-                >
+                <Typography id={json.name.toLowerCase().replace(/\s/g, "") + section.name.toLowerCase().replace(/\s/g, "")} paragraph style={{ paddingTop: 16 }} variant={"h4"}>
                   {section.name}
                 </Typography>
               </>
             )}
-            {section.subsections.map(subsection => (
-              <React.Fragment>
-                <Typography
-                  id={
-                    json.name.toLowerCase().replace(/\s/g, "") +
-                    subsection.name.toLowerCase().replace(/\s/g, "")
-                  }
-                  variant={"h6"}
-                >
+            {section.subsections.map((subsection) => (
+              <>
+                <Typography id={json.name.toLowerCase().replace(/\s/g, "") + subsection.name.toLowerCase().replace(/\s/g, "")} variant={"h6"}>
                   {subsection.name}
                 </Typography>
-                <Typography paragraph>
-                  {subsection.components.map(component =>
-                    processComponent(component)
-                  )}
-                </Typography>
-              </React.Fragment>
+                <Typography component={"div"} paragraph>{subsection.components.map((component, componentIndex) => processComponent(component, componentIndex))}</Typography>
+              </>
             ))}
           </>
         );
       })
-      .reduce((prev, curr) => [
-        prev,
-        <Divider variant={"middle"} light />,
-        curr
-      ])}
+      .reduce((prev, curr) => [prev, <Divider variant={"middle"} light />, curr])}
   </>
 );
 
@@ -105,7 +72,7 @@ export const generateArticle = (json, theme) => (
 
 export const Article = props => {
   return (
-    <Grid wrap={"nowrap"} direction={"column-reverse"} container spacing={2}>
+    <Grid key={props.json.name} wrap={"nowrap"} direction={"column-reverse"} container spacing={2}>
       <Fade in={true}>
         <Grid item md={8}>
           {generateArticle(props.json, useTheme())}

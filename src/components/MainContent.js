@@ -81,7 +81,7 @@ export default (props) => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Container>
-          {props.articles.map(article => <Article json={article} />)}
+          {props.articles.map(article => <Article key={article} json={article} />)}
         </Container>
       </main>
     </div>
