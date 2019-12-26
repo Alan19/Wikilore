@@ -6,69 +6,7 @@ import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { ImportantIdea } from "../ArticleComponents/ImportantIdea";
-import ReactMarkdown from "react-markdown";
-
-const generateTitle = ({ blurb, icon, name }) => (
-  <>
-    <Typography id={name.toLowerCase().replace(/\s/g, "")} variant={"h3"} style={{ overflow: "auto", overflowY: "hidden" }}>
-      {name} <img style={{ height: "1em" }} src={icon} alt={name} />
-    </Typography>
-    <Typography variant={"subtitle2"} paragraph={true}>
-      {blurb}
-    </Typography>
-  </>
-);
-
-const renderSections = json => (
-  <>
-    {json.sections
-      .map((section) => {
-        const processComponent = (component, index) => {
-          switch (component.type) {
-            case "emphasis":
-              return <ImportantIdea name={component.name} description={component.text} />;
-            default:
-              return (
-                <>
-                  {component.name && <Typography variant={"h6"}>{component.name}</Typography>}
-                  <Typography component={"div"} variant={"body1"}>
-                    <ReactMarkdown className={index === 0 ? 'noTopAndBottomMargins' : ''} source={component.text} />
-                  </Typography>
-                </>
-              );
-          }
-        };
-
-        return (
-          <>
-            {section.name.trim() !== "" && (
-              <>
-                <Typography id={json.name.toLowerCase().replace(/\s/g, "") + section.name.toLowerCase().replace(/\s/g, "")} paragraph style={{ paddingTop: 16 }} variant={"h4"}>
-                  {section.name}
-                </Typography>
-              </>
-            )}
-            {section.subsections.map((subsection) => (
-              <>
-                <Typography id={json.name.toLowerCase().replace(/\s/g, "") + subsection.name.toLowerCase().replace(/\s/g, "")} variant={"h6"}>
-                  {subsection.name}
-                </Typography>
-                <Typography component={"div"} paragraph>{subsection.components.map((component, componentIndex) => processComponent(component, componentIndex))}</Typography>
-              </>
-            ))}
-          </>
-        );
-      })
-      .reduce((prev, curr) => [prev, <Divider variant={"middle"} light />, curr])}
-  </>
-);
-
-export const generateArticle = (json, theme) => (
-  <Paper style={{ padding: theme.spacing(3, 2) }}>
-    {generateTitle(json)}
-    {renderSections(json)}
-  </Paper>
-);
+import { TextComponent } from "../ArticleComponents/TextComponent";
 
 export const Article = props => {
   return (
@@ -85,3 +23,64 @@ export const Article = props => {
 Article.propTypes = {
   json: PropTypes.object.isRequired
 };
+
+export const generateArticle = (json, theme) => (
+  <Paper style={{ padding: theme.spacing(3, 2) }}>
+    {generateTitle(json)}
+    {renderSections(json)}
+  </Paper>
+);
+
+const generateTitle = ({ blurb, icon, name }) => (
+  <>
+    <Typography id={name.toLowerCase().replace(/\s/g, "")} variant={"h3"} style={{ overflow: "auto", overflowY: "hidden" }}>
+      {name} <img style={{ height: "1em" }} src={icon} alt={name} />
+    </Typography>
+    <Typography variant={"subtitle2"} paragraph={true}>
+      {blurb}
+    </Typography>
+  </>
+);
+
+const processComponent = (component, index) => {
+  switch (component.type) {
+    case "emphasis":
+      return <ImportantIdea name={component.name} description={component.text} />;
+    default:
+      return <TextComponent component={component} index={index} />;
+  }
+};
+
+const generateSubsectionTitle = subsection => (
+  <>
+    {subsection.name}
+    {subsection.related && subsection.related.length && ` (${subsection.related.reduce((prev, curr) => [prev, ", ", curr])})`}
+    {subsection.links && subsection.links.length && ` [${subsection.links.reduce((prev, curr) => [prev, ", ", curr])}]`}
+  </>
+);
+
+const renderSections = json => (
+  <>
+    {json.sections
+      .map(section => (
+        <>
+          {section.name.trim() !== "" && (
+            <Typography id={json.name.toLowerCase().replace(/\s/g, "") + section.name.toLowerCase().replace(/\s/g, "")} paragraph style={{ paddingTop: 16 }} variant={"h4"}>
+              {section.name}
+            </Typography>
+          )}
+          {section.subsections.map(subsection => (
+            <>
+              <Typography id={json.name.toLowerCase().replace(/\s/g, "") + subsection.name.toLowerCase().replace(/\s/g, "")} variant={"h6"}>
+                {generateSubsectionTitle(subsection)}
+              </Typography>
+              <Typography component={"div"} paragraph>
+                {subsection.components.map((component, componentIndex) => processComponent(component, componentIndex))}
+              </Typography>
+            </>
+          ))}
+        </>
+      ))
+      .reduce((prev, curr) => [prev, <Divider variant={"middle"} light />, curr])}
+  </>
+);
