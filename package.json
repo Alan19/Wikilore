@@ -1,6 +1,7 @@
 {
   "name": "rulebook3",
-  "version": "0.1.0",
+  "version": "3.0.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.8.1",
@@ -11,11 +12,12 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-markdown": "^4.2.2",
     "react-scripts": "3.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "node src/scripts/CombineJson.js && react-scripts start",
+    "build": "node src/scripts/CombineJson.js && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
