@@ -1,12 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { RulebookAppbar } from "./Header";
-import { Container } from "@material-ui/core";
+import {Container, Fade} from "@material-ui/core";
 import { RulebookDrawer } from "./Drawer";
 import {Article} from "./Article";
-import {ListCard} from "./ListCard";
+import {ListCard} from "./GridCard";
 import Grid from "@material-ui/core/Grid";
+import ViewListIcon from '@material-ui/icons/ViewList';
+import ViewModuleIcon from '@material-ui/icons/ViewModule';
+
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+
+
 
 const drawerWidth = 240;
 
@@ -74,7 +81,7 @@ export default (props) => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const ViewsEnum = Object.freeze({LIST: 'LIST', ARTICLE: 'ARTICLE'});
+  const ViewsEnum = Object.freeze({GRID: 'GRID', ARTICLE: 'ARTICLE'});
   const [view, setView] = useState(ViewsEnum.ARTICLE);
   const [loadedArticles, setLoadedArticles] = useState(props.articles);
   return (
@@ -85,8 +92,15 @@ export default (props) => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Container>
-          {view === ViewsEnum.ARTICLE && loadedArticles.map(article => <Article key={article} json={article} />)}
-          {view === ViewsEnum.LIST && <Grid container>{loadedArticles.map(article => <Grid item md={4}><ListCard article={article}/></Grid>)}</Grid>}
+          <Grid container justify={"flex-end"}>
+            {
+              view === ViewsEnum.GRID ?
+                <Tooltip title={'Article View'}><IconButton onClick={() => setView(ViewsEnum.ARTICLE)}><ViewListIcon/></IconButton></Tooltip> :
+                <Tooltip title={'Grid View'}><IconButton onClick={() => setView(ViewsEnum.GRID)}><ViewModuleIcon/></IconButton></Tooltip>
+            }
+          </Grid>
+          {view === ViewsEnum.ARTICLE && <>{loadedArticles.map(article => <Article key={article} json={article} />)}</>}
+          {view === ViewsEnum.GRID && <>{<Grid spacing={1} container>{loadedArticles.map(article => <Grid item md={4}><ListCard article={article}/></Grid>)}</Grid>}</>}
         </Container>
       </main>
     </div>

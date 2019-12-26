@@ -31,27 +31,13 @@ Promise.all([
   //Read categories
   readFiles(
     "./src/resources/categories/",
-    (fileName, content) =>
-      (data = {
-        ...data,
-        categories: {
-          ...data.categories,
-          [fileName]: JSON.parse(content)
-        }
-      }),
+    (fileName, content) => data.categories[fileName] = JSON.parse(content),
     error => console.log(error)
   ),
   //Read articles
   readFiles(
     "./src/resources/articles/",
-    (fileName, content) =>
-      (data = {
-        ...data,
-        articles: {
-          ...data.articles,
-          [fileName]: JSON.parse(content)
-        }
-      }),
+    (fileName, content) => data.articles[fileName] = JSON.parse(content),
     error => console.log(error)
   )
 ]).then(() => {
