@@ -1,19 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { RulebookAppbar } from "./Header";
-import {Container, Fade} from "@material-ui/core";
+import { Container, createMuiTheme, MuiThemeProvider, useMediaQuery } from "@material-ui/core";
 import { RulebookDrawer } from "./Drawer";
-import {Article} from "./Article";
-import {ListCard} from "./GridCard";
+import { Article } from "./Article";
 import Grid from "@material-ui/core/Grid";
-import ViewListIcon from '@material-ui/icons/ViewList';
-import ViewModuleIcon from '@material-ui/icons/ViewModule';
+import ViewListIcon from "@material-ui/icons/ViewList";
+import ViewModuleIcon from "@material-ui/icons/ViewModule";
 
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-
-
+import { GridView } from "./GridView";
+import {blue, orange} from "@material-ui/core/colors";
 
 const drawerWidth = 240;
 
@@ -74,35 +73,52 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default (props) => {
+export default props => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const ViewsEnum = Object.freeze({GRID: 'GRID', ARTICLE: 'ARTICLE'});
-  const [view, setView] = useState(ViewsEnum.ARTICLE);
+  const ViewsEnum = Object.freeze({ GRID: "GRID", ARTICLE: "ARTICLE" });
+  const [view, setView] = useState(ViewsEnum.GRID);
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [loadedArticles, setLoadedArticles] = useState(props.articles);
+  const theme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          primary: blue,
+          secondary: orange,
+          type: prefersDarkMode ? "dark" : "light"
+        }
+      }),
+    [prefersDarkMode]
+  );
+
+  const learnMore = article => {
+    setLoadedArticles([article]);
+    setView(ViewsEnum.ARTICLE);
+  };
+
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <RulebookAppbar classes={classes} open={open} onClick={toggleDrawer} />
-      <RulebookDrawer classes={classes} open={open} />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Container>
-          <Grid container justify={"flex-end"}>
-            {
-              view === ViewsEnum.GRID ?
-                <Tooltip title={'Article View'}><IconButton onClick={() => setView(ViewsEnum.ARTICLE)}><ViewListIcon/></IconButton></Tooltip> :
-                <Tooltip title={'Grid View'}><IconButton onClick={() => setView(ViewsEnum.GRID)}><ViewModuleIcon/></IconButton></Tooltip>
-            }
-          </Grid>
-          {view === ViewsEnum.ARTICLE && <>{loadedArticles.map(article => <Article key={article} json={article} />)}</>}
-          {view === ViewsEnum.GRID && <>{<Grid spacing={1} container>{loadedArticles.map(article => <Grid item md={4}><ListCard article={article}/></Grid>)}</Grid>}</>}
-        </Container>
-      </main>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <CssBaseline />
+        <RulebookAppbar classes={classes} open={open} onClick={toggleDrawer} />
+        <RulebookDrawer classes={classes} open={open} />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Container>
+            <Grid container justify={"flex-end"}>
+              {view === ViewsEnum.GRID ? (<Tooltip title={"Article View"}><IconButton onClick={() => setView(ViewsEnum.ARTICLE)}><ViewListIcon /></IconButton></Tooltip>) :
+                (<Tooltip title={"Grid View"}><IconButton onClick={() => setView(ViewsEnum.GRID)}><ViewModuleIcon /></IconButton></Tooltip>)}
+            </Grid>
+            {view === ViewsEnum.ARTICLE && (<>{loadedArticles.map(article => (<Article key={article} json={article} />))}</>)}
+            {view === ViewsEnum.GRID && <GridView learnMore={learnMore} loadedArticles={loadedArticles} />}
+          </Container>
+        </main>
+      </div>
+    </MuiThemeProvider>
   );
 };

@@ -5,9 +5,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import {CardTitle} from "./CardTitle";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 
-export function ListCard(props) {
+export function GridCard(props) {
   const { article } = props;
   return (
     <Card>
@@ -27,13 +28,14 @@ export function ListCard(props) {
       </CardContent>
       <CardActions disableActionSpacing>
         <div className={"left"} style={{ flexGrow: 1 }}>
-          {/*<Button*/}
-          {/*  size="small"*/}
-          {/*  color={"primary"}*/}
-          {/*  onClick={() => learnMore(skill)}*/}
-          {/*>*/}
-          {/*  Learn More*/}
-          {/*</Button>*/}
+          <Button
+            size="small"
+            variant={"contained"}
+            color={"primary"}
+            onClick={() => props.learnMore(article)}
+          >
+            Learn More
+          </Button>
         </div>
         {/*<IconButton onClick={addToCheatSheet}>*/}
         {/*  <Icon color={Overview.checkFavorited(skill)}>star</Icon>*/}
