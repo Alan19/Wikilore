@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { RulebookAppbar } from "./Header";
 import { Container } from "@material-ui/core";
 import { RulebookDrawer } from "./Drawer";
 import {Article} from "./Article";
+import {ListCard} from "./ListCard";
+import Grid from "@material-ui/core/Grid";
 
 const drawerWidth = 240;
 
@@ -72,7 +74,9 @@ export default (props) => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
+  const ViewsEnum = Object.freeze({LIST: 'LIST', ARTICLE: 'ARTICLE'});
+  const [view, setView] = useState(ViewsEnum.ARTICLE);
+  const [loadedArticles, setLoadedArticles] = useState(props.articles);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -81,7 +85,8 @@ export default (props) => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Container>
-          {props.articles.map(article => <Article key={article} json={article} />)}
+          {view === ViewsEnum.ARTICLE && loadedArticles.map(article => <Article key={article} json={article} />)}
+          {view === ViewsEnum.LIST && <Grid container>{loadedArticles.map(article => <Grid item md={4}><ListCard article={article}/></Grid>)}</Grid>}
         </Container>
       </main>
     </div>
