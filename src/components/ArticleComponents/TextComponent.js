@@ -6,8 +6,10 @@ import React from "react";
 export function TextComponent(props) {
   return (
     <>
-      {props.component.name && <Typography variant={"h6"}>{props.component.name}</Typography>}
-      <Typography component={"div"} variant={"body1"}>
+      {props.component.name && <Typography variant={"h6"}>
+        {props.component.name}
+      </Typography>}
+      <Typography component={"p"} variant={"body1"}>
         <ReactMarkdown className={props.index === 0 ? "noTopAndBottomMargins" : ""} source={props.component.text} />
       </Typography>
     </>

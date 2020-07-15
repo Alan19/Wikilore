@@ -10,3 +10,8 @@
 html{
   overflow-y: scroll;
 }
+
+.link:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}

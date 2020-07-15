@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { ImportantIdea } from "../ArticleComponents/ImportantIdea";
 import { TextComponent } from "../ArticleComponents/TextComponent";
+import ReactMarkdown from "react-markdown";
+import LinkComponent from "../ArticleComponents/LinkComponent";
 
 export const Article = props => {
   return (
@@ -51,11 +53,14 @@ const processComponent = (component, index) => {
   }
 };
 
+const titleRenderer = {
+  linkReference: LinkComponent,
+  paragraph: props => <span>{props.children}</span>
+};
+
 const generateSubsectionTitle = subsection => (
   <>
-    {subsection.name}
-    {subsection.related && subsection.related.length && ` (${subsection.related.reduce((prev, curr) => [prev, ", ", curr])})`}
-    {subsection.links && subsection.links.length && ` [${subsection.links.reduce((prev, curr) => [prev, ", ", curr])}]`}
+    <ReactMarkdown renderers={titleRenderer} source={subsection.name}/>
   </>
 );
 
