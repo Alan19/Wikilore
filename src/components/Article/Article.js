@@ -76,7 +76,7 @@ const renderSections = json => (
           )}
           {section.subsections.map(subsection => (
             <>
-              <Typography id={json.name.toLowerCase().replace(/\s/g, "") + subsection.name.toLowerCase().replace(/\s/g, "")} variant={"h6"}>
+              <Typography id={json.name.toLowerCase().replace(/\s/g, "") + subsection.name.match(/[^[[(]*/)[0].toLowerCase().replace(/\s/g, "")} variant={"h6"}>
                 {generateSubsectionTitle(subsection)}
               </Typography>
               <Typography component={"div"} paragraph>

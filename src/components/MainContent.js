@@ -4,7 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { RulebookAppbar } from "./Header";
 import { Container, createMuiTheme, MuiThemeProvider, useMediaQuery } from "@material-ui/core";
 import { RulebookDrawer } from "./Drawer";
-import { Article } from "./Article";
+import { Article } from "./Article/Article";
 import Grid from "@material-ui/core/Grid";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
