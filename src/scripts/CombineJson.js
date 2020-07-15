@@ -8,18 +8,13 @@ const readFiles = (dirname, onFileContent, onError) => new Promise((resolve, rej
   fs.readdir(dirname, function (err, filenames) {
     if (err) {
       onError(err);
+      reject(`error on reading folder ${dirname}}`);
       return;
     }
     filenames.forEach(function (filename) {
-      fs.readFile(dirname + filename, "utf-8", function (err, content) {
-        if (err) {
-          onError(err);
-          reject(err);
-        }
-        onFileContent(filename, content);
-        resolve("file successfully read");
-      });
+      onFileContent(filename, fs.readFileSync(dirname + filename, {encoding:'utf8'}));
     });
+    resolve("files successfully read");
   });
 });
 
@@ -27,7 +22,7 @@ const readFiles = (dirname, onFileContent, onError) => new Promise((resolve, rej
 /**
  * Reads all of the JSON files in resources and combines them into one file before executing `npm run start`
  */
-Promise.all([
+Promise.allSettled([
   //Read categories
   readFiles(
     "./src/resources/categories/",
