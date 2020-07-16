@@ -8,6 +8,9 @@ import {Span} from "./Span";
 import {ImportantIdea} from "../ArticleComponents/ImportantIdea";
 import {TextComponent} from "../ArticleComponents/TextComponent";
 
+//Takes in a page and a section and returns a string with the both of their names lowercased and whitespace removed and removes links on the subsection name
+const getSubsectionTitle = (pageName, subsectionName) => pageName.toLowerCase().replace(/\s/g, "") + subsectionName.match(/[^[[(]*/)[0].toLowerCase().replace(/\s/g, "");
+
 export function renderSections(json) {
   return <>
     {json.sections
@@ -21,7 +24,7 @@ export function renderSections(json) {
         {section.subsections.map(subsection => (
           <>
             <Typography
-              id={json.name.toLowerCase().replace(/\s/g, "") + subsection.name.match(/[^[[(]*/)[0].toLowerCase().replace(/\s/g, "")}
+              id={getSubsectionTitle(json.name, subsection.name)}
               variant={"h6"}>
               {generateSubsectionTitle(subsection)}
             </Typography>
