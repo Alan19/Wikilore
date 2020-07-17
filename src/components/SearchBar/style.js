@@ -5,7 +5,13 @@ export const styles = theme => ({
   },
   root: {
     backgroundColor: "rgba(255, 255, 255, 0.15)",
-    borderRadius: 4
+    borderRadius: 4,
+    marginLeft: 0,
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
   },
   input: {
     color: "#FFFFFF",

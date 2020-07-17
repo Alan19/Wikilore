@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { RulebookAppbar } from "./Header";
@@ -81,10 +81,13 @@ export default props => {
     setOpen(!open);
   };
   const ViewsEnum = Object.freeze({ GRID: "GRID", ARTICLE: "ARTICLE" });
-  const [view, setView] = useState(ViewsEnum.GRID);
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  //State
+  const [view, setView] = useState(ViewsEnum.GRID);
   const [loadedArticles, setLoadedArticles] = useState(props.articles);
   const [targetId, setTargetId] = useState('');
+
   const theme = React.useMemo(
     () =>
       createMuiTheme({
@@ -97,10 +100,11 @@ export default props => {
     [prefersDarkMode]
   );
 
-  const setTarget = name => {
-    setTargetId(name);
-  };
-
+  /**
+   * Function to look at a certain article
+   * @param article The article to set as the view
+   * @param sectionId The ID of the section to scroll to
+   */
   const learnMore = (article, sectionId = '') => {
     window.scrollTo(0, 0);
     if (sectionId !== ''){

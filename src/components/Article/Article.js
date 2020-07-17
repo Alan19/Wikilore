@@ -37,7 +37,7 @@ const generateTitle = ({blurb, icon, name}) => (
   <>
     <Typography id={removeWhiteSpaceAndLowercase(name)} variant={"h3"}
                 style={{overflow: "auto", overflowY: "hidden"}}>
-      {name} <img style={{height: "1em"}} src={icon} alt={name}/>
+      {name} <img style={{height: ".85em"}} src={icon} alt={name}/>
     </Typography>
     <Typography variant={"subtitle2"} paragraph={true}>
       {blurb}

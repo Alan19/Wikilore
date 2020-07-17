@@ -21,7 +21,7 @@ export function SectionLinks(props) {
           onMouseOver={event => {return event.currentTarget.style.textDecoration = "underline";}}
           onMouseLeave={event => {return event.currentTarget.style.textDecoration = "none";}}
         >
-          {section.name}
+          {section.name.match(/[^[[(]*/)[0]}
         </span>)
       .reduce((prev, curr) => [prev, ", ", curr]);
   }
