@@ -91,7 +91,6 @@ class SearchBar extends React.Component {
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     const matches = match(suggestion.name, query);
     const parts = parse(suggestion.name, matches);
-    console.log(suggestion);
     return (
       <MenuItem
         onClick={() => this.props.changeview(suggestion)}
@@ -110,7 +109,7 @@ class SearchBar extends React.Component {
               </strong>
             )
           )}
-          <SectionLinks suggestion={suggestion} query={query}/>
+          <SectionLinks suggestion={suggestion} query={query} changeview={this.props.changeview}/>
         </div>
       </MenuItem>
     );

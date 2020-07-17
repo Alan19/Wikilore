@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { RulebookAppbar } from "./Header";
@@ -84,6 +84,7 @@ export default props => {
   const [view, setView] = useState(ViewsEnum.GRID);
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [loadedArticles, setLoadedArticles] = useState(props.articles);
+  const [targetId, setTargetId] = useState('');
   const theme = React.useMemo(
     () =>
       createMuiTheme({
@@ -96,15 +97,25 @@ export default props => {
     [prefersDarkMode]
   );
 
-  function learnMore(article, sectionId) {
-    console.log(article);
+  const setTarget = name => {
+    setTargetId(name);
+  };
+
+  const learnMore = (article, sectionId = '') => {
     window.scrollTo(0, 0);
+    if (sectionId !== ''){
+      setTargetId(sectionId);
+    }
     setLoadedArticles([article]);
     setView(ViewsEnum.ARTICLE);
-    if (sectionId != null){
-      window.scrollTo(0, document.getElementById(sectionId));
+  };
+
+  useEffect(() => {
+    if (targetId){
+      window.scrollTo(0, document.getElementById(targetId).offsetTop - 100);
     }
-  }
+    setTargetId('');
+  }, [targetId]);
 
   return (
     <MuiThemeProvider theme={theme}>

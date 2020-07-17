@@ -9,7 +9,7 @@ import {ImportantIdea} from "../ArticleComponents/ImportantIdea";
 import {TextComponent} from "../ArticleComponents/TextComponent";
 
 //Takes in a page and a section and returns a string with the both of their names lowercased and whitespace removed and removes links on the subsection name
-const getSectionId = (pageName, subsectionName) => pageName.toLowerCase().replace(/\s/g, "") + subsectionName.match(/[^[[(]*/)[0].toLowerCase().replace(/\s/g, "");
+export const getSectionId = (pageName, subsectionName) => pageName.toLowerCase().replace(/\s/g, "") + subsectionName.match(/[^[[(]*/)[0].toLowerCase().replace(/\s/g, "");
 
 export function renderSections(json) {
   return <>

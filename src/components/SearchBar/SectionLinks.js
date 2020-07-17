@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import Typography from "@material-ui/core/Typography";
+import {getSectionId} from "../Article/RenderSections";
 
 export function SectionLinks(props) {
   /**
@@ -16,19 +17,9 @@ export function SectionLinks(props) {
       .filter(subsection => subsection.name.slice(0, query.length).toLowerCase() === query.toLowerCase())
       .map(section =>
         <span
-          onClick={() =>
-            this.props.changeview(
-              suggestion,
-              suggestion.name.toLowerCase().replace(/\s/g, "") +
-              section.name.toLowerCase().replace(/\s/g, "")
-            )
-          }
-          onMouseOver={event => {
-            return event.currentTarget.style.textDecoration = "underline";
-          }}
-          onMouseLeave={event => {
-            return event.currentTarget.style.textDecoration = "none";
-          }}
+          onClick={() => props.changeview(suggestion, getSectionId(suggestion.name, section.name))}
+          onMouseOver={event => {return event.currentTarget.style.textDecoration = "underline";}}
+          onMouseLeave={event => {return event.currentTarget.style.textDecoration = "none";}}
         >
           {section.name}
         </span>)
