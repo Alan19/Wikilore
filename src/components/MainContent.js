@@ -105,7 +105,7 @@ export default props => {
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <RulebookAppbar classes={classes} open={open} onClick={toggleDrawer} />
+        <RulebookAppbar classes={classes} open={open} onClick={toggleDrawer} theme={theme} />
         <RulebookDrawer classes={classes} open={open} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
