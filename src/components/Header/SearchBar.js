@@ -44,6 +44,26 @@ function renderInputComponent(inputProps) {
 }
 
 /**
+ * Function to check if the input matches the suggestion. An suggestion matches the input if the starting part of the
+ * name is equal to the input, or if the start of its section and subsection names is equal to the input.
+ *
+ * @param suggestion The suggestion object, an article JSON
+ * @param inputLength The length of the input
+ * @param inputValue The value of the input
+ * @returns {boolean} Whether the input matches the suggestion
+ */
+function doesSuggestionMatch(suggestion, inputLength, inputValue) {
+  let includes = suggestion.sections
+    .map(section => section.subsections.concat({name:section.name}))
+    .flat()
+    .map(subsection =>
+      subsection.name.toLowerCase().slice(0, inputLength)
+    )
+    .includes(inputValue);
+  return includes;
+}
+
+/**
  * Get all of the articles whose name or subsection names matches the input
  * @param value The input value in the searchbar
  * @returns {*} An array of entry objects that matches the input value
@@ -53,34 +73,21 @@ function getSuggestions(value) {
   const inputLength = inputValue.length;
   let count = 0;
 
-  return inputLength === 0
+  let newVar = inputLength === 0
     ? []
     : //Filter results based on skill name matching or section name matching
-      suggestions.filter(suggestion => {
-        let sectionNames = [];
-        console.log(suggestion);
-        suggestion.sections.forEach(section =>
-          section.subsections.forEach(subsection =>
-            sectionNames.push(subsection.name)
-          )
-        );
-        const keep =
-          count < 5 &&
-          (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
-            (inputLength > 2 &&
-              //Use map to get the all subsections, and then flatten it to make it one array and then filter
-              suggestion.sections
-                .map(section => section.subsections)
-                .flat()
-                .map(subsection =>
-                  subsection.name.toLowerCase().slice(0, inputLength)
-                )
-                .includes(inputValue)));
-        if (keep) {
-          count += 1;
-        }
-        return keep;
-      });
+    suggestions.filter(suggestion => {
+      const keep =
+        count < 5 &&
+        (suggestion.name.slice(0, inputLength).toLowerCase() === inputValue ||
+          (inputLength > 2 &&
+            doesSuggestionMatch(suggestion, inputLength, inputValue)));
+      if (keep) {
+        count += 1;
+      }
+      return keep;
+    });
+  return newVar;
 }
 
 function getSuggestionValue(suggestion) {
@@ -222,37 +229,28 @@ class SearchBar extends React.Component {
    * @returns {*} A span element that takes the user to another page when clicked on
    */
   searchForSection(suggestion, query) {
-    let subsections = [];
-    suggestion.sections.forEach(section =>
-      section.subsections.forEach(subsection => subsections.push(subsection))
-    );
+    //Map each suggestion to its subsections object + the section name as a 'dummy' subsection object
+    let subsections = suggestion.sections.map(section => section.subsections.concat({name: section.name})).flat();
     return subsections
-      .filter(
-        subsection =>
-          subsection.name.slice(0, query.length).toLowerCase() ===
-          query.toLowerCase()
-      )
-      .map(section => {
-        return (
-          <span
-            onClick={() =>
-              this.props.changeview(
-                suggestion,
-                suggestion.name.toLowerCase().replace(/\s/g, "") +
-                  section.name.toLowerCase().replace(/\s/g, "")
-              )
-            }
-            onMouseOver={event => {
-              return (event.currentTarget.style.textDecoration = "underline");
-            }}
-            onMouseLeave={event => {
-              return (event.currentTarget.style.textDecoration = "none");
-            }}
-          >
-            {section.name}
-          </span>
-        );
-      })
+      .filter(subsection => subsection.name.slice(0, query.length).toLowerCase() === query.toLowerCase())
+      .map(section =>
+        <span
+          onClick={() =>
+            this.props.changeview(
+              suggestion,
+              suggestion.name.toLowerCase().replace(/\s/g, "") +
+              section.name.toLowerCase().replace(/\s/g, "")
+            )
+          }
+          onMouseOver={event => {
+            return event.currentTarget.style.textDecoration = "underline";
+          }}
+          onMouseLeave={event => {
+            return event.currentTarget.style.textDecoration = "none";
+          }}
+        >
+          {section.name}
+        </span>)
       .reduce((prev, curr) => [prev, ", ", curr]);
   }
 
