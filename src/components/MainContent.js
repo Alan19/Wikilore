@@ -96,16 +96,21 @@ export default props => {
     [prefersDarkMode]
   );
 
-  const learnMore = article => {
+  function learnMore(article, sectionId) {
+    console.log(article);
+    window.scrollTo(0, 0);
     setLoadedArticles([article]);
     setView(ViewsEnum.ARTICLE);
-  };
+    if (sectionId != null){
+      window.scrollTo(0, document.getElementById(sectionId));
+    }
+  }
 
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <RulebookAppbar classes={classes} open={open} onClick={toggleDrawer} theme={theme} />
+        <RulebookAppbar classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} />
         <RulebookDrawer classes={classes} open={open} />
         <main className={classes.content}>
           <div className={classes.toolbar} />

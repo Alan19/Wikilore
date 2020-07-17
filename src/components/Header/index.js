@@ -6,7 +6,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
 import * as PropTypes from "prop-types";
 import React from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../SearchBar";
 
 export const RulebookAppbar = props => {
   const { appBar, appBarShift } = props.classes;
@@ -29,7 +29,7 @@ export const RulebookAppbar = props => {
         <Typography variant="h6" noWrap>
           Rulebook V3
         </Typography>
-        <SearchBar theme={props.theme}/>
+        <SearchBar changeview={props.changeView} theme={props.theme}/>
       </Toolbar>
     </AppBar>
   );
