@@ -73,15 +73,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+export const ViewsEnum = Object.freeze({ GRID: "GRID", ARTICLE: "ARTICLE" });
 export default props => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
 
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const ViewsEnum = Object.freeze({ GRID: "GRID", ARTICLE: "ARTICLE" });
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") === "true" : useMediaQuery("(prefers-color-scheme: dark)"))
 
   //State
   const [view, setView] = useState(ViewsEnum.GRID);
@@ -94,10 +95,10 @@ export default props => {
         palette: {
           primary: blue,
           secondary: orange,
-          type: prefersDarkMode ? "dark" : "light"
+          type: darkMode ? "dark" : "light"
         }
       }),
-    [prefersDarkMode]
+    [darkMode]
   );
 
   /**
@@ -121,19 +122,24 @@ export default props => {
     setTargetId('');
   }, [targetId]);
 
+  /**
+   * Switch between light and dark theme
+   */
+  const switchTheme = () => {
+    setDarkMode(!darkMode);
+  };
+
+  useEffect(() => localStorage.setItem("darkMode", darkMode ? 'true' : 'false'), [darkMode]);
+
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <RulebookAppbar classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} />
+        <RulebookAppbar switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} setView={setView} view={view} />
         <RulebookDrawer classes={classes} open={open} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Container>
-            <Grid container justify={"flex-end"}>
-              {view === ViewsEnum.GRID ? (<Tooltip title={"Article View"}><IconButton onClick={() => setView(ViewsEnum.ARTICLE)}><ViewListIcon /></IconButton></Tooltip>) :
-                (<Tooltip title={"Grid View"}><IconButton onClick={() => setView(ViewsEnum.GRID)}><ViewModuleIcon /></IconButton></Tooltip>)}
-            </Grid>
             {view === ViewsEnum.ARTICLE && (<>{loadedArticles.map(article => (<Article key={article} json={article} />))}</>)}
             {view === ViewsEnum.GRID && <GridView learnMore={learnMore} loadedArticles={loadedArticles} />}
           </Container>
