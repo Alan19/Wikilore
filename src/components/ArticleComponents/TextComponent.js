@@ -10,7 +10,7 @@ export function TextComponent(props) {
         {props.component.name}
       </Typography>}
       <Typography component={"p"} variant={"body1"}>
-        <ReactMarkdown className={props.index === 0 ? "noTopAndBottomMargins" : ""} source={props.component.text} />
+        <ReactMarkdown escapeHtml={false} renderers={{paragraph: props => <p style={{marginTop: 0}}>{props.children}</p>}} source={props.component.text} />
       </Typography>
     </>
   );
