@@ -57,7 +57,7 @@ export function GridCard(props) {
         <div className={"left"} style={{flexGrow: 1}}>
           <Button
             size="small"
-            variant={"text"}
+            variant={"contained"}
             color={"primary"}
             onClick={() => props.learnMore(article)}
           >
