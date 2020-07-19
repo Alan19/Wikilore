@@ -5,12 +5,6 @@ import { RulebookAppbar } from "./Header";
 import { Container, createMuiTheme, MuiThemeProvider, useMediaQuery } from "@material-ui/core";
 import { RulebookDrawer } from "./Drawer";
 import { Article } from "./Article/Article";
-import Grid from "@material-ui/core/Grid";
-import ViewListIcon from "@material-ui/icons/ViewList";
-import ViewModuleIcon from "@material-ui/icons/ViewModule";
-
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 import { GridView } from "./GridView";
 import {blue, orange} from "@material-ui/core/colors";
 
@@ -88,6 +82,7 @@ export default props => {
   const [view, setView] = useState(ViewsEnum.GRID);
   const [loadedArticles, setLoadedArticles] = useState(props.articles);
   const [targetId, setTargetId] = useState('');
+  const [history, setHistory] = useState([]);
 
   const theme = React.useMemo(
     () =>
@@ -111,7 +106,7 @@ export default props => {
     if (sectionId !== ''){
       setTargetId(sectionId);
     }
-    setLoadedArticles([article]);
+    handleArticleChange([article]);
     setView(ViewsEnum.ARTICLE);
   };
 
@@ -131,11 +126,42 @@ export default props => {
 
   useEffect(() => localStorage.setItem("darkMode", darkMode ? 'true' : 'false'), [darkMode]);
 
+  const handleViewChange = (view) => {
+    pushHistory();
+    setView(view);
+  }
+
+  const handleArticleChange = (articles) => {
+    pushHistory();
+    setLoadedArticles(articles);
+  }
+
+  const pushHistory = () => {
+    history.push({view: view, loadedArticles: loadedArticles});
+    setHistory(history);
+  }
+
+  const back = () => {
+    const newState = history.pop();
+    setHistory(history);
+    setView(newState.view);
+    setLoadedArticles(newState.loadedArticles);
+  }
+
+  const toggleViewType = () => {
+    if (view === ViewsEnum.GRID){
+      setView(ViewsEnum.ARTICLE)
+    }
+    else {
+      setView(ViewsEnum.GRID);
+    }
+  };
+
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <RulebookAppbar switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} setView={setView} view={view} />
+        <RulebookAppbar toggleViewType={toggleViewType} history={history} back={back} switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} setView={handleViewChange} view={view} />
         <RulebookDrawer classes={classes} open={open} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
