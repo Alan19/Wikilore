@@ -110,6 +110,9 @@ export default props => {
     setView(ViewsEnum.ARTICLE);
   };
 
+  /**
+   * Scroll to a certain part of the page when the view is changed and supplied with an ID to jump to
+   */
   useEffect(() => {
     if (targetId){
       window.scrollTo(0, document.getElementById(targetId).offsetTop - 100);
@@ -124,23 +127,40 @@ export default props => {
     setDarkMode(!darkMode);
   };
 
+  /**
+   * Updates the localstorage when the light/dark theme is toggled
+   */
   useEffect(() => localStorage.setItem("darkMode", darkMode ? 'true' : 'false'), [darkMode]);
 
+  /**
+   * Changes the current view type, and updates the history
+   * @param view The view type to switch to
+   */
   const handleViewChange = (view) => {
     pushHistory();
     setView(view);
   }
 
+  /**
+   * Changes the current article, and updates the history
+   * @param articles The list of articles to display
+   */
   const handleArticleChange = (articles) => {
     pushHistory();
     setLoadedArticles(articles);
   }
 
+  /**
+   * Pushes an element to the history 'stack', which includes the view and loaded article
+   */
   const pushHistory = () => {
     history.push({view: view, loadedArticles: loadedArticles});
     setHistory(history);
   }
 
+  /**
+   * Pops the history 'stack' and set the article and view state to the popped element
+   */
   const back = () => {
     const newState = history.pop();
     setHistory(history);
@@ -148,6 +168,9 @@ export default props => {
     setLoadedArticles(newState.loadedArticles);
   }
 
+  /**
+   * Toggles the view type (article/grid), but does not update the history
+   */
   const toggleViewType = () => {
     if (view === ViewsEnum.GRID){
       setView(ViewsEnum.ARTICLE)
