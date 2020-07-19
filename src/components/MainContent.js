@@ -180,12 +180,18 @@ export default props => {
     }
   };
 
+  const changeCategory = (articles) => {
+    pushHistory();
+    setLoadedArticles(articles);
+    setView(ViewsEnum.GRID);
+  }
+
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
         <RulebookAppbar toggleViewType={toggleViewType} history={history} back={back} switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} setView={handleViewChange} view={view} />
-        <RulebookDrawer classes={classes} open={open} />
+        <RulebookDrawer articles={props.articles} categories={props.categories} switchArticles={changeCategory} classes={classes} open={open} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Container>

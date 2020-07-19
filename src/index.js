@@ -11,7 +11,7 @@ const convertJsonToArticle = responseJson => ({
   ...responseJson, icon: require(`./resources/icons/articles/${responseJson.icon}`)
 });
 const convertJsonToCategory = category => ({
-  ...category, icon: require(`./resources/icons/categories/${category.icon}`)
+  ...category
 });
 Object.keys(MasterJson.articles).forEach(articleKey => jsonArticles.push(convertJsonToArticle(MasterJson.articles[articleKey])));
 Object.keys(MasterJson.categories).forEach(categoryKey => jsonCategories.push(convertJsonToCategory(MasterJson.categories[categoryKey])));
