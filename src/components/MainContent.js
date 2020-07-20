@@ -69,6 +69,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const ViewsEnum = Object.freeze({ GRID: "GRID", ARTICLE: "ARTICLE" });
+
+export function getFavoriteArticles(articles) {
+  return articles.filter(article => JSON.parse(localStorage.getItem("favoriteArticles")).includes(article.name));
+}
+
 export default props => {
   const classes = useStyles();
 
@@ -81,7 +86,7 @@ export default props => {
 
   //State
   const [view, setView] = useState(ViewsEnum.GRID);
-  const [loadedArticles, setLoadedArticles] = useState(props.articles);
+  const [loadedArticles, setLoadedArticles] = useState(getFavoriteArticles(props.articles));
   const [targetId, setTargetId] = useState('');
   const [history, setHistory] = useState([]);
 
@@ -184,6 +189,7 @@ export default props => {
   const changeCategory = (articles) => {
     pushHistory();
     setLoadedArticles(articles);
+    setOpen(false);
     setView(ViewsEnum.GRID);
   }
 
