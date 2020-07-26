@@ -34,26 +34,28 @@ export function Navigation(props) {
   };
   const contents = (
     <>
-      {props.articles.map(article => (
-        <>
-          <Typography component={"div"} className={classes.link} variant={"button"} onClick={() => props.setSection(removeWhiteSpaceAndLowercase(article.name))}>
-            {article.name} {article.icon !== null && <img style={{ height: "1em" }} src={article.icon} alt={article.name} />}{" "}
-          </Typography>
-          {article.sections.map(section => (
-            <>
-              <Typography component={"div"} className={classes.link} variant={"overline"} onClick={() => props.setSection(getSectionId(article.name, section.name))}>
-                {section.name}
-              </Typography>
-
-              {section.subsections.map(subsection => (
-                <Typography component={"div"} className={classes.link} variant={"subtitle1"} onClick={() => props.setSection(getSectionId(article.name, subsection.name))}>
-                  {subsection.name.match(/[^[[(]*/)}
+      {props.articles
+        .map(article => (
+          <>
+            <Typography component={"div"} className={classes.link} variant={"button"} onClick={() => props.setSection(removeWhiteSpaceAndLowercase(article.name))}>
+              {article.name} {article.icon !== null && <img style={{ height: "1em" }} src={article.icon} alt={article.name} />}{" "}
+            </Typography>
+            {article.sections.map(section => (
+              <>
+                <Typography component={"div"} className={classes.link} variant={"overline"} onClick={() => props.setSection(getSectionId(article.name, section.name))}>
+                  {section.name}
                 </Typography>
-              ))}
-            </>
-          ))}
-        </>
-      )).reduce((left, right) => [left, <br/>, right])}
+
+                {section.subsections.map(subsection => (
+                  <Typography component={"div"} className={classes.link} variant={"subtitle1"} onClick={() => props.setSection(getSectionId(article.name, subsection.name))}>
+                    {subsection.name.match(/[^[[(]*/)}
+                  </Typography>
+                ))}
+              </>
+            ))}
+          </>
+        ))
+        .reduce((left, right) => [left, <br />, right])}
     </>
   );
 
@@ -69,7 +71,12 @@ export function Navigation(props) {
     </List>
   );
 
-  const standardNavigation = <div className={classes.navigationRoot}><Typography variant={"overline"}>Contents</Typography><br/> {contents}</div>;
+  const standardNavigation = (
+    <div className={classes.navigationRoot}>
+      <Typography variant={"overline"}>Contents</Typography>
+      <br /> {contents}
+    </div>
+  );
 
   return props.isMobilePortrait ? mobileNavigation : standardNavigation;
 }

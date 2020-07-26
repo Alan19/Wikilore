@@ -7,12 +7,16 @@ import { RulebookDrawer } from "./Drawer";
 import { GridView } from "./GridView";
 import { blue, orange } from "@material-ui/core/colors";
 import { ArticleView } from "./ArticleView";
+import Typography from "@material-ui/core/Typography";
+import { copyright } from "../config";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    minHeight: "100vh",
+    flexDirection: "column"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -205,6 +209,9 @@ export default props => {
             {view === ViewsEnum.GRID && <GridView learnMore={learnMore} loadedArticles={loadedArticles} />}
           </Container>
         </main>
+        <Typography style={{ textAlign: "right", paddingRight: 5 }} variant={"overline"}>
+          {copyright}
+        </Typography>
       </div>
     </MuiThemeProvider>
   );
