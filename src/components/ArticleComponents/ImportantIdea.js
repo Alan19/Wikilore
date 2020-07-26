@@ -32,7 +32,7 @@ export const ImportantIdea = ({ description, name }) => {
           <Typography variant={"h5"} gutterBottom>
             {name}
           </Typography>
-          <Typography variant={"body2"} component={"div"}>
+          <Typography variant={"body1"} component={"div"}>
             <ReactMarkdown className={'noTopAndBottomMargins'} source={description}/>
           </Typography>
         </CardContent>

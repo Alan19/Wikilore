@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { RulebookAppbar } from "./Header";
 import { Container, createMuiTheme, MuiThemeProvider, useMediaQuery } from "@material-ui/core";
 import { RulebookDrawer } from "./Drawer";
-import { Article } from "./Article/Article";
 import { GridView } from "./GridView";
-import {blue, orange} from "@material-ui/core/colors";
+import { blue, orange } from "@material-ui/core/colors";
+import { ArticleView } from "./ArticleView";
 
 const drawerWidth = 240;
 
@@ -82,12 +82,12 @@ export default props => {
     setOpen(!open);
   };
 
-  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") === "true" : useMediaQuery("(prefers-color-scheme: dark)"))
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") === "true" : useMediaQuery("(prefers-color-scheme: dark)"));
 
   //State
   const [view, setView] = useState(ViewsEnum.GRID);
   const [loadedArticles, setLoadedArticles] = useState(getFavoriteArticles(props.articles));
-  const [targetId, setTargetId] = useState('');
+  const [targetId, setTargetId] = useState("");
   const [history, setHistory] = useState([]);
 
   const theme = React.useMemo(
@@ -107,9 +107,9 @@ export default props => {
    * @param article The article to set as the view
    * @param sectionId The ID of the section to scroll to
    */
-  const learnMore = (article, sectionId = '') => {
+  const learnMore = (article, sectionId = "") => {
     window.scrollTo(0, 0);
-    if (sectionId !== ''){
+    if (sectionId !== "") {
       setTargetId(sectionId);
     }
     handleArticleChange([article]);
@@ -120,10 +120,10 @@ export default props => {
    * Scroll to a certain part of the page when the view is changed and supplied with an ID to jump to
    */
   useEffect(() => {
-    if (targetId){
+    if (targetId) {
       window.scrollTo(0, document.getElementById(targetId).offsetTop - 100);
     }
-    setTargetId('');
+    setTargetId("");
   }, [targetId]);
 
   /**
@@ -136,33 +136,33 @@ export default props => {
   /**
    * Updates the localstorage when the light/dark theme is toggled
    */
-  useEffect(() => localStorage.setItem("darkMode", darkMode ? 'true' : 'false'), [darkMode]);
+  useEffect(() => localStorage.setItem("darkMode", darkMode ? "true" : "false"), [darkMode]);
 
   /**
    * Changes the current view type, and updates the history
    * @param view The view type to switch to
    */
-  const handleViewChange = (view) => {
+  const handleViewChange = view => {
     pushHistory();
     setView(view);
-  }
+  };
 
   /**
    * Changes the current article, and updates the history
    * @param articles The list of articles to display
    */
-  const handleArticleChange = (articles) => {
+  const handleArticleChange = articles => {
     pushHistory();
     setLoadedArticles(articles);
-  }
+  };
 
   /**
    * Pushes an element to the history 'stack', which includes the view and loaded article
    */
   const pushHistory = () => {
-    history.push({view: view, loadedArticles: loadedArticles});
+    history.push({ view: view, loadedArticles: loadedArticles });
     setHistory(history);
-  }
+  };
 
   /**
    * Pops the history 'stack' and set the article and view state to the popped element
@@ -172,26 +172,25 @@ export default props => {
     setHistory(history);
     setView(newState.view);
     setLoadedArticles(newState.loadedArticles);
-  }
+  };
 
   /**
    * Toggles the view type (article/grid), but does not update the history
    */
   const toggleViewType = () => {
-    if (view === ViewsEnum.GRID){
-      setView(ViewsEnum.ARTICLE)
-    }
-    else {
+    if (view === ViewsEnum.GRID) {
+      setView(ViewsEnum.ARTICLE);
+    } else {
       setView(ViewsEnum.GRID);
     }
   };
 
-  const changeCategory = (articles) => {
+  const changeCategory = articles => {
     pushHistory();
     setLoadedArticles(articles);
     setOpen(false);
     setView(ViewsEnum.GRID);
-  }
+  };
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -202,7 +201,7 @@ export default props => {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Container>
-            {view === ViewsEnum.ARTICLE && (<>{loadedArticles.map(article => (<Article key={article} json={article} />))}</>)}
+            {view === ViewsEnum.ARTICLE && <ArticleView loadedArticles={loadedArticles} setSection={setTargetId} />}
             {view === ViewsEnum.GRID && <GridView learnMore={learnMore} loadedArticles={loadedArticles} />}
           </Container>
         </main>
