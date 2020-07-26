@@ -8,6 +8,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import Collapse from "@material-ui/core/Collapse";
+import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
   navigationRoot: {
@@ -21,6 +22,9 @@ const useStyles = makeStyles(theme => ({
   },
   nested: {
     paddingLeft: theme.spacing(4)
+  },
+  articleTitle:{
+    fontSize: '1rem'
   }
 }));
 
@@ -37,7 +41,7 @@ export function Navigation(props) {
       {props.articles
         .map(article => (
           <>
-            <Typography component={"div"} className={classes.link} variant={"button"} onClick={() => props.setSection(removeWhiteSpaceAndLowercase(article.name))}>
+            <Typography component={"div"} className={clsx(classes.link, classes.articleTitle)} variant={"button"} onClick={() => props.setSection(removeWhiteSpaceAndLowercase(article.name))}>
               {article.name} {article.icon !== null && <img style={{ height: "1em" }} src={article.icon} alt={article.name} />}{" "}
             </Typography>
             {article.sections.map(section => (
