@@ -1,22 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Paper, useTheme } from "@material-ui/core";
+import {Paper, useTheme} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { renderSections } from "./RenderSections";
+import { Sections } from "./RenderSections";
 
-export const Article = props => {
-  return <>{generateArticle(props.json, useTheme())}</>;
-};
-
-Article.propTypes = {
-  json: PropTypes.object.isRequired
-};
-
-export function generateArticle(json, theme) {
+export function Article(props) {
+  const { setSection, json } = props;
   return (
-    <Paper style={{ padding: theme.spacing(3, 2), marginBottom: theme.spacing(1) }}>
+    <Paper style={{ padding: useTheme().spacing(3, 2), marginBottom: useTheme().spacing(1) }}>
       {generateTitle(json)}
-      {renderSections(json)}
+      <Sections json={json} setSection={setSection} />
     </Paper>
   );
 }
@@ -33,3 +26,9 @@ const generateTitle = ({ blurb, icon, name }) => (
     </Typography>
   </>
 );
+
+Article.propTypes = {
+  json: PropTypes.object.isRequired,
+  setSection: PropTypes.func.isRequired,
+  theme: PropTypes.object.isRequired
+};

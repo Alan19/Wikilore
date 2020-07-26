@@ -124,7 +124,7 @@ export default props => {
    * Scroll to a certain part of the page when the view is changed and supplied with an ID to jump to
    */
   useEffect(() => {
-    if (targetId) {
+    if (targetId && document.getElementById(targetId)) {
       window.scrollTo(0, document.getElementById(targetId).offsetTop - 100);
     }
     setTargetId("");

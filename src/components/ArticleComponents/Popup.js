@@ -27,10 +27,7 @@ export default function Popup(props) {
       >
         The content of the Popover.
       </Popover>
-      <span
-        className={"popoverTrigger"}
-        onClick={event => handleClick(event.currentTarget)}
-      >
+      <span className={"popoverTrigger"} onClick={event => handleClick(event.currentTarget)}>
         {props.children}
       </span>
     </>

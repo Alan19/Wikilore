@@ -11,21 +11,21 @@ import {TextComponent} from "../ArticleComponents/TextComponent";
 //Takes in a page and a section and returns a string with the both of their names lowercased and whitespace removed and removes links on the subsection name
 export const getSectionId = (pageName, subsectionName) => pageName.toLowerCase().replace(/\s/g, "") + subsectionName.match(/[^[[(]*/)[0].toLowerCase().replace(/\s/g, "");
 
-export function renderSections(json) {
+export function Sections(props) {
   return <>
-    {json.sections
+    {props.json.sections
       .map(section => <>
         {section.name.trim() !== "" && (
-          <Typography id={getSectionId(json.name, section.name)} paragraph style={{paddingTop: 16}} variant={"h4"}>
+          <Typography id={getSectionId(props.json.name, section.name)} paragraph style={{paddingTop: 16}} variant={"h4"}>
             {section.name}
           </Typography>
         )}
         {section.subsections.map(subsection => (
           <>
             <Typography
-              id={getSectionId(json.name, subsection.name)}
+              id={getSectionId(props.json.name, subsection.name)}
               variant={"h6"}>
-              {generateSubsectionTitle(subsection)}
+              {generateSubsectionTitle(props.json.name, subsection, props.setSection)}
             </Typography>
             <Typography component={"div"} paragraph>
               {subsection.components.map((component, componentIndex) => processComponent(component, componentIndex))}
@@ -37,15 +37,23 @@ export function renderSections(json) {
   </>;
 }
 
-const titleRenderer = {
-  linkReference: LinkComponent,
-  link: Popup,
-  paragraph: Span
+function titleRenderer (articleName, setSection) {
+  return {
+    linkReference: (props) => <LinkComponent setSection={() => setSection(getSectionId(articleName, props.children[0].props.children))} articleName={articleName}>{props.children}</LinkComponent>,
+    inlineCode: (props) => {
+      if (props.value.startsWith('popup')) {
+        return <Popup children={props.children.substring(5).trim()}/>
+      }
+      const code = React.createElement('code');
+      return React.createElement('pre', {}, code);
+    },
+    paragraph: Span
+  }
 }
 
-function generateSubsectionTitle(subsection) {
+function generateSubsectionTitle(articleName, subsection, setSection) {
   return <>
-    <ReactMarkdown renderers={titleRenderer} source={subsection.name}/>
+    <ReactMarkdown renderers={titleRenderer(articleName, setSection)} source={subsection.name}/>
   </>;
 }
 

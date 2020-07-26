@@ -14,7 +14,7 @@ export function ArticleView(props) {
         <Fade in={true}>
           <Grid item md={8} sm={9}>
             {props.loadedArticles.map(article => (
-              <Article key={article} json={article} />
+              <Article key={article} json={article} setSection={props.setSection} />
             ))}
           </Grid>
         </Fade>
