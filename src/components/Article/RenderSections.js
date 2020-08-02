@@ -6,7 +6,7 @@ import LinkComponent from "../ArticleComponents/LinkComponent";
 import Popup from "../ArticleComponents/Popup";
 import { Span } from "./Span";
 import { ImportantIdea } from "../ArticleComponents/ImportantIdea";
-import { TextComponent } from "../ArticleComponents/TextComponent";
+import TextComponent  from "../ArticleComponents/TextComponent";
 
 //Takes in a page and a section and returns a string with the both of their names lowercased and whitespace removed and removes links on the subsection name
 export const getSectionId = (pageName, subsectionName) =>
@@ -16,7 +16,7 @@ export const getSectionId = (pageName, subsectionName) =>
     .toLowerCase()
     .replace(/\s/g, "");
 
-export function Sections(props) {
+function Sections(props) {
   return (
     <>
       {props.json.sections
@@ -72,3 +72,5 @@ function generateSubsectionTitle(articleName, subsection, setSection) {
     </>
   );
 }
+
+export default React.memo(Sections);

@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export function Navigation(props) {
+function Navigation(props) {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
@@ -84,3 +84,5 @@ export function Navigation(props) {
 
   return props.isMobilePortrait ? mobileNavigation : standardNavigation;
 }
+
+export default React.memo(Navigation)

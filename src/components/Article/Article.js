@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Paper, useTheme } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { Sections } from "./RenderSections";
+import Sections from "./RenderSections";
 
-export function Article(props) {
+function Article(props) {
   const { setSection, json } = props;
   return (
     <Paper style={{ padding: useTheme().spacing(3, 2), marginBottom: useTheme().spacing(1) }}>
@@ -32,3 +32,5 @@ Article.propTypes = {
   setSection: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired
 };
+
+export default React.memo(Article)

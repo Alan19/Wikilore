@@ -6,7 +6,7 @@ import { Container, createMuiTheme, MuiThemeProvider, useMediaQuery } from "@mat
 import { RulebookDrawer } from "./Drawer";
 import { GridView } from "./GridView";
 import { blue, orange } from "@material-ui/core/colors";
-import { ArticleView } from "./ArticleView";
+import ArticleView from "./ArticleView";
 import Typography from "@material-ui/core/Typography";
 import { copyright } from "../config";
 
@@ -75,7 +75,7 @@ const useStyles = makeStyles(theme => ({
 export const ViewsEnum = Object.freeze({ GRID: "GRID", ARTICLE: "ARTICLE" });
 
 export function getFavoriteArticles(articles) {
-  return articles.filter(article => JSON.parse(localStorage.getItem("favoriteArticles")).includes(article.name));
+  return localStorage.getItem("favoriteArticles") ? articles.filter(article => JSON.parse(localStorage.getItem("favoriteArticles")).includes(article.name)) : articles;
 }
 
 export default props => {
@@ -164,7 +164,7 @@ export default props => {
    * Pushes an element to the history 'stack', which includes the view and loaded article
    */
   const pushHistory = () => {
-    history.push({ view: view, loadedArticles: loadedArticles });
+    history.push({ view: view, loadedArticles: loadedArticles, verticalPosition: window.scrollY });
     setHistory(history);
   };
 

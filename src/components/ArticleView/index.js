@@ -2,11 +2,11 @@ import Grid from "@material-ui/core/Grid";
 import Fade from "@material-ui/core/Fade";
 import * as PropTypes from "prop-types";
 import React from "react";
-import { Article } from "../Article/Article";
-import { Navigation } from "./Navigation";
+import Article from "../Article/Article";
+import Navigation from "./Navigation";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-export function ArticleView(props) {
+function ArticleView(props) {
   const isMobilePortrait = !useMediaQuery("(min-width:600px)") && window.innerHeight > window.innerWidth;
   return (
     <>
@@ -31,3 +31,5 @@ export function ArticleView(props) {
 ArticleView.propTypes = {
   loadedArticles: PropTypes.any
 };
+
+export default React.memo(ArticleView);

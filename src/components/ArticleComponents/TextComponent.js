@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { titleRenderer } from "../Article/RenderSections";
 
-export function TextComponent(props) {
+function TextComponent(props) {
   return (
     <>
       <Typography component={"p"} variant={"body1"}>
@@ -28,3 +28,5 @@ TextComponent.propTypes = {
   setSection: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired
 }
+
+export default React.memo(TextComponent);
