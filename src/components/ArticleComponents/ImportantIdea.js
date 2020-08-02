@@ -23,17 +23,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const ImportantIdea = ({ description, name }) => {
+export const ImportantIdea = ({ description }) => {
   const classes = useStyles();
   return (
     <Container>
       <Card elevation={4} className={classes.card}>
         <CardContent>
-          <Typography variant={"h5"} gutterBottom>
-            {name}
-          </Typography>
           <Typography variant={"body1"} component={"div"}>
-            <ReactMarkdown className={'noTopAndBottomMargins'} source={description}/>
+            <ReactMarkdown
+              className={"noTopAndBottomMargins contentMarkdown"}
+              escapeHtml={false}
+              source={description}
+            />
           </Typography>
         </CardContent>
       </Card>

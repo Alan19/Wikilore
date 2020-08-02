@@ -28,7 +28,7 @@ export function Sections(props) {
               {generateSubsectionTitle(props.json.name, subsection, props.setSection)}
             </Typography>
             <Typography component={"div"} paragraph>
-              {subsection.components.map((component, componentIndex) => processComponent(component, componentIndex))}
+              {subsection.components.map((component, componentIndex) => <TextComponent component={component} index={componentIndex} articleName={props.json.name} setSection={props.setSection}/>)}
             </Typography>
           </>
         ))}
@@ -37,12 +37,15 @@ export function Sections(props) {
   </>;
 }
 
-function titleRenderer (articleName, setSection) {
+export function titleRenderer (articleName, setSection) {
   return {
     linkReference: (props) => <LinkComponent setSection={() => setSection(getSectionId(articleName, props.children[0].props.children))} articleName={articleName}>{props.children}</LinkComponent>,
     inlineCode: (props) => {
       if (props.value.startsWith('popup')) {
         return <Popup children={props.children.substring(5).trim()}/>
+      }
+      if (props.value.startsWith('emphasis')){
+        return <ImportantIdea description={props.children.substring(8).trim()}/>
       }
       const code = React.createElement('code');
       return React.createElement('pre', {}, code);
@@ -55,13 +58,4 @@ function generateSubsectionTitle(articleName, subsection, setSection) {
   return <>
     <ReactMarkdown renderers={titleRenderer(articleName, setSection)} source={subsection.name}/>
   </>;
-}
-
-function processComponent(component, index) {
-  switch (component.type) {
-    case "emphasis":
-      return <ImportantIdea name={component.name} description={component.text}/>;
-    default:
-      return <TextComponent component={component} index={index}/>;
-  }
 }
