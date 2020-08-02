@@ -33,9 +33,7 @@ export function Sections(props) {
                   {generateSubsectionTitle(props.json.name, subsection, props.setSection)}
                 </Typography>
                 <Typography component={"div"} paragraph>
-                  {subsection.components.map((component, componentIndex) => (
-                    <TextComponent component={component} index={componentIndex} articleName={props.json.name} setSection={props.setSection} />
-                  ))}
+                  <TextComponent text={subsection.text} articleName={props.json.name} setSection={props.setSection} />
                 </Typography>
               </>
             ))}

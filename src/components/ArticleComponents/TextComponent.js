@@ -16,7 +16,7 @@ export function TextComponent(props) {
             paragraph: markdownProps => <p style={{ marginTop: 0 }}>{markdownProps.children}</p>,
             ...titleRenderer(props.articleName, props.setSection)
           }}
-          source={props.component.text}
+          source={props.text}
         />
       </Typography>
     </>
@@ -24,6 +24,7 @@ export function TextComponent(props) {
 }
 
 TextComponent.propTypes = {
-  component: PropTypes.any,
-  index: PropTypes.any
-};
+  articleName: PropTypes.string.isRequired,
+  setSection: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired
+}
