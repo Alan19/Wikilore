@@ -10,9 +10,9 @@ export function TextComponent(props) {
       <Typography component={"p"} variant={"body1"}>
         <ReactMarkdown
           escapeHtml={false}
-          className={'contentMarkdown'}
+          className={"contentMarkdown"}
           renderers={{
-            heading : markdownProps => <Typography variant={"body1"}>{markdownProps.children}</Typography>,
+            heading: markdownProps => <Typography variant={"body1"}>{markdownProps.children}</Typography>,
             paragraph: markdownProps => <p style={{ marginTop: 0 }}>{markdownProps.children}</p>,
             ...titleRenderer(props.articleName, props.setSection)
           }}

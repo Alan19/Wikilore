@@ -9,21 +9,14 @@ import * as PropTypes from "prop-types";
 export function CategoryIcon(props) {
   return (
     <Tooltip title={props.name} placement={"right"}>
-      <ListItem
-        onClick={props.switchArticles}
-        button
-        key={props.name}
-      >
+      <ListItem onClick={props.switchArticles} button key={props.name}>
         <ListItemIcon>
           <GameIconWrapper path={props.path} />
         </ListItemIcon>
-        <ListItemText
-          primaryTypographyProps={{ noWrap: true }}
-          primary={props.name}
-        />
+        <ListItemText primaryTypographyProps={{ noWrap: true }} primary={props.name} />
       </ListItem>
     </Tooltip>
-  )
+  );
 }
 
 function GameIconWrapper(props) {
@@ -40,4 +33,4 @@ CategoryIcon.propTypes = {
   name: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   switchArticles: PropTypes.func.isRequired
-}
+};

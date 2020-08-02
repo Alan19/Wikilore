@@ -30,11 +30,7 @@ export const ImportantIdea = ({ description }) => {
       <Card elevation={4} className={classes.card}>
         <CardContent>
           <Typography variant={"body1"} component={"div"}>
-            <ReactMarkdown
-              className={"noTopAndBottomMargins contentMarkdown"}
-              escapeHtml={false}
-              source={description}
-            />
+            <ReactMarkdown className={"noTopAndBottomMargins contentMarkdown"} escapeHtml={false} source={description} />
           </Typography>
         </CardContent>
       </Card>

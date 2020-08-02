@@ -8,10 +8,10 @@ export const styles = theme => ({
     borderRadius: 4,
     marginLeft: 0,
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
+      width: "auto"
+    }
   },
   input: {
     color: "#FFFFFF",

@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
   nested: {
     paddingLeft: theme.spacing(4)
   },
-  articleTitle:{
-    fontSize: '1rem'
+  articleTitle: {
+    fontSize: "1rem"
   }
 }));
 

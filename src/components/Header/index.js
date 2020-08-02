@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import BackIcon from "@material-ui/icons/ArrowBack"
+import BackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "@material-ui/core/Typography";
 import * as PropTypes from "prop-types";
 import React from "react";
@@ -91,4 +91,4 @@ RulebookAppbar.propTypes = {
 ViewTypeToggleButton.propTypes = {
   toggleViewType: PropTypes.func.isRequired,
   view: PropTypes.object.isRequired
-}
+};

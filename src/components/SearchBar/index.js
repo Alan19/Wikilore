@@ -122,7 +122,13 @@ function SearchBar(props) {
 
   return (
     <div className={classes.root}>
-      <Autosuggest renderSuggestion={renderSuggestion} {...autosuggestProps} inputProps={inputProps} theme={theme} renderSuggestionsContainer={options => <SuggestionsContainer options={options} theme={props.theme} />} />
+      <Autosuggest
+        renderSuggestion={renderSuggestion}
+        {...autosuggestProps}
+        inputProps={inputProps}
+        theme={theme}
+        renderSuggestionsContainer={options => <SuggestionsContainer options={options} theme={props.theme} />}
+      />
     </div>
   );
 }
