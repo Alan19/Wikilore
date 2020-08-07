@@ -14,11 +14,12 @@ import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import DarkModeIcon from "@material-ui/icons/WbIncandescent";
 import { ViewsEnum } from "../MainContent";
 import { makeStyles } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
-  },
+  }
 }));
 
 function ViewTypeToggleButton(props) {
@@ -61,10 +62,11 @@ const RulebookAppbar = props => {
             <MenuIcon />
           </IconButton>
         )}
-
-        <Typography variant="h6" noWrap>
-          {props.name}
-        </Typography>
+        {!useMediaQuery("(min-width:600px)") && window.innerHeight > window.innerWidth && (
+          <Typography variant="h6" noWrap>
+            {props.name}
+          </Typography>
+        )}
         <SearchBar changeview={props.changeView} theme={props.theme} />
         <div className={classes.grow} />
         <ViewTypeToggleButton view={props.view} toggleViewType={props.toggleViewType} />
@@ -96,4 +98,4 @@ RulebookAppbar.propTypes = {
   theme: PropTypes.object.isRequired,
   toggleViewType: PropTypes.func.isRequired,
   view: PropTypes.object.isRequired
-}
+};
