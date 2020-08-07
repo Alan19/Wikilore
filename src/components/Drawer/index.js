@@ -26,13 +26,13 @@ export function RulebookDrawer(props) {
       <div className={props.classes.toolbar} />
       <Divider />
       <List>
-        <CategoryIcon name={"Cheat Sheet"} path={bookmarklet} switchArticles={() => props.switchArticles(getFavoriteArticles(props.articles))} />
-        <CategoryIcon switchArticles={() => props.switchArticles(props.articles)} path={ruleBook} name={"Index"} />
+        <CategoryIcon name={"Cheat Sheet"} path={bookmarklet} switchArticles={() => props.switchArticles(getFavoriteArticles(props.articles), "Cheat Sheet")} />
+        <CategoryIcon switchArticles={() => props.switchArticles(props.articles, "Index")} path={ruleBook} name={"Index"} />
       </List>
       <Divider />
       <List>
         {props.categories.map(category => (
-          <CategoryIcon name={category.overviewName} path={category.icon} switchArticles={() => props.switchArticles(props.articles.filter(article => article.tags.includes(category.overviewName)))} />
+          <CategoryIcon name={category.overviewName} path={category.icon} switchArticles={() => props.switchArticles(props.articles.filter(article => article.tags.includes(category.overviewName)), category.overviewName)} />
         ))}
       </List>
     </Drawer>

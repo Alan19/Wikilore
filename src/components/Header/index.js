@@ -18,7 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1
-  }
+  },
 }));
 
 function ViewTypeToggleButton(props) {
@@ -41,7 +41,7 @@ function ViewTypeToggleButton(props) {
   );
 }
 
-export const RulebookAppbar = props => {
+const RulebookAppbar = props => {
   const { appBar, appBarShift } = props.classes;
   const classes = useStyles();
   return (
@@ -63,7 +63,7 @@ export const RulebookAppbar = props => {
         )}
 
         <Typography variant="h6" noWrap>
-          Rulebook V3
+          {props.name}
         </Typography>
         <SearchBar changeview={props.changeView} theme={props.theme} />
         <div className={classes.grow} />
@@ -82,13 +82,18 @@ export const RulebookAppbar = props => {
   );
 };
 
-RulebookAppbar.propTypes = {
-  classes: PropTypes.object,
-  open: PropTypes.bool,
-  onClick: PropTypes.func
-};
+export default React.memo(RulebookAppbar);
 
-ViewTypeToggleButton.propTypes = {
+RulebookAppbar.propTypes = {
+  back: PropTypes.func.isRequired,
+  changeView: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  open: PropTypes.func.isRequired,
+  switchTheme: PropTypes.func.isRequired,
+  theme: PropTypes.object.isRequired,
   toggleViewType: PropTypes.func.isRequired,
   view: PropTypes.object.isRequired
-};
+}

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { RulebookAppbar } from "./Header";
-import { Container, createMuiTheme, MuiThemeProvider, useMediaQuery } from "@material-ui/core";
+import RulebookAppbar from "./Header";
+import { Container, createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import { RulebookDrawer } from "./Drawer";
 import { GridView } from "./GridView";
 import { blue, orange } from "@material-ui/core/colors";
@@ -106,6 +106,7 @@ export default props => {
   const [view, setView] = useState(ViewsEnum.GRID);
   const [loadedArticles, setLoadedArticles] = useState(getFavoriteArticles(props.articles));
   const [targetId, setTargetId] = useState("");
+  const [viewName, setViewName] = useState(JSON.parse(localStorage.getItem("favoriteArticles")) ? "Cheat Sheet" : "Index");
 
   const [history, setHistory] = useState([]);
 
@@ -119,6 +120,7 @@ export default props => {
     if (sectionId !== "") {
       setTargetId(sectionId);
     }
+    setViewName(article.name)
     handleArticleChange([article]);
     setView(ViewsEnum.ARTICLE);
   };
@@ -144,7 +146,7 @@ export default props => {
    * Changes the current article, and updates the history
    * @param articles The list of articles to display
    */
-  const handleArticleChange = articles => {
+  const handleArticleChange = (articles) => {
     pushHistory();
     setLoadedArticles(articles);
   };
@@ -153,7 +155,7 @@ export default props => {
    * Pushes an element to the history 'stack', which includes the view and loaded article
    */
   const pushHistory = () => {
-    history.push({ view: view, loadedArticles: loadedArticles, verticalPosition: window.scrollY });
+    history.push({ view: view, loadedArticles: loadedArticles, verticalPosition: window.scrollY, viewName: viewName });
     setHistory(history);
   };
 
@@ -165,6 +167,7 @@ export default props => {
     setHistory(history);
     setView(newState.view);
     setLoadedArticles(newState.loadedArticles);
+    setViewName(newState.viewName)
   };
 
   /**
@@ -178,9 +181,10 @@ export default props => {
     }
   };
 
-  const changeCategory = articles => {
+  const changeCategory = (articles, categoryName) => {
     pushHistory();
     setLoadedArticles(articles);
+    setViewName(categoryName);
     setOpen(false);
     setView(ViewsEnum.GRID);
   };
@@ -189,7 +193,7 @@ export default props => {
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <RulebookAppbar toggleViewType={toggleViewType} history={history} back={back} switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} view={view} />
+        <RulebookAppbar name={viewName} toggleViewType={toggleViewType} history={history} back={back} switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} view={view} />
         <RulebookDrawer articles={props.articles} categories={props.categories} switchArticles={changeCategory} classes={classes} open={open} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
