@@ -86,25 +86,28 @@ export default props => {
     setOpen(!open);
   };
 
-  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") === "true" : useMediaQuery("(prefers-color-scheme: dark)"));
-
-  //State
-  const [view, setView] = useState(ViewsEnum.GRID);
-  const [loadedArticles, setLoadedArticles] = useState(getFavoriteArticles(props.articles));
-  const [targetId, setTargetId] = useState("");
-  const [history, setHistory] = useState([]);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
 
   const theme = React.useMemo(
-    () =>
-      createMuiTheme({
+    () => {
+      localStorage.setItem("darkMode", darkMode ? "true" : "false");
+      return createMuiTheme({
         palette: {
           primary: blue,
           secondary: orange,
           type: darkMode ? "dark" : "light"
         }
-      }),
+      });
+    },
     [darkMode]
   );
+
+  //State
+  const [view, setView] = useState(ViewsEnum.GRID);
+  const [loadedArticles, setLoadedArticles] = useState(getFavoriteArticles(props.articles));
+  const [targetId, setTargetId] = useState("");
+
+  const [history, setHistory] = useState([]);
 
   /**
    * Function to look at a certain article
@@ -131,24 +134,10 @@ export default props => {
   }, [targetId]);
 
   /**
-   * Switch between light and dark theme
+   * Switch between light and dark theme and update localstorage
    */
   const switchTheme = () => {
-    setDarkMode(!darkMode);
-  };
-
-  /**
-   * Updates the localstorage when the light/dark theme is toggled
-   */
-  useEffect(() => localStorage.setItem("darkMode", darkMode ? "true" : "false"), [darkMode]);
-
-  /**
-   * Changes the current view type, and updates the history
-   * @param view The view type to switch to
-   */
-  const handleViewChange = view => {
-    pushHistory();
-    setView(view);
+    setDarkMode(darkMode !== true);
   };
 
   /**
@@ -200,7 +189,7 @@ export default props => {
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <RulebookAppbar toggleViewType={toggleViewType} history={history} back={back} switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} setView={handleViewChange} view={view} />
+        <RulebookAppbar toggleViewType={toggleViewType} history={history} back={back} switchTheme={switchTheme} classes={classes} open={open} onClick={toggleDrawer} theme={theme} changeView={learnMore} view={view} />
         <RulebookDrawer articles={props.articles} categories={props.categories} switchArticles={changeCategory} classes={classes} open={open} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
