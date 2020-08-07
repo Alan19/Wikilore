@@ -53,7 +53,7 @@ const RulebookAppbar = props => {
       })}
     >
       <Toolbar>
-        {props.history.length > 0 ? (
+        {props.history.length > 0 && props.view === ViewsEnum.ARTICLE ? (
           <IconButton color="inherit" aria-label="open drawer" onClick={props.back} edge="start">
             <BackIcon />
           </IconButton>

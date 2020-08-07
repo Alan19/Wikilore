@@ -51,9 +51,6 @@ const useStyles = makeStyles(theme => ({
     }),
     overflowX: "hidden",
     width: theme.spacing(7) + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1
-    }
   },
   toolbar: {
     display: "flex",
@@ -120,7 +117,7 @@ export default props => {
     if (sectionId !== "") {
       setTargetId(sectionId);
     }
-    setViewName(article.name)
+    setViewName(article.name);
     handleArticleChange([article]);
     setView(ViewsEnum.ARTICLE);
   };
@@ -174,6 +171,8 @@ export default props => {
    * Toggles the view type (article/grid), but does not update the history
    */
   const toggleViewType = () => {
+    pushHistory();
+
     if (view === ViewsEnum.GRID) {
       setView(ViewsEnum.ARTICLE);
     } else {
@@ -188,6 +187,10 @@ export default props => {
     setOpen(false);
     setView(ViewsEnum.GRID);
   };
+
+  useEffect(() => {
+    document.title = viewName
+  }, [viewName]);
 
   return (
     <MuiThemeProvider theme={theme}>
