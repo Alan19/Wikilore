@@ -44,7 +44,7 @@ function ViewTypeToggleButton(props) {
 
 const RulebookAppbar = props => {
   const { appBar, appBarShift } = props.classes;
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <AppBar
       position="fixed"
@@ -62,7 +62,7 @@ const RulebookAppbar = props => {
             <MenuIcon />
           </IconButton>
         )}
-        {!useMediaQuery("(min-width:600px)") && window.innerHeight > window.innerWidth && (
+        {(useMediaQuery("(min-width:600px)") || window.innerHeight < window.innerWidth) && (
           <Typography variant="h6" noWrap>
             {props.name}
           </Typography>
