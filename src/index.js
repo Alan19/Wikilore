@@ -3,18 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import MasterJson from "./resources/combined";
-
-export let jsonArticles = [];
-export let jsonCategories = [];
-const convertJsonToArticle = responseJson => ({
-  ...responseJson, icon: require(`./resources/icons/articles/${responseJson.icon}`)
-});
-const convertJsonToCategory = category => ({
-  ...category
-});
-Object.keys(MasterJson.articles).forEach(articleKey => jsonArticles.push(convertJsonToArticle(MasterJson.articles[articleKey])));
-Object.keys(MasterJson.categories).forEach(categoryKey => jsonCategories.push(convertJsonToCategory(MasterJson.categories[categoryKey])));
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
